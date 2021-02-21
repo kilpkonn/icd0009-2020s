@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+        <UserSecretsId>aspnet-WebApplication-448A786D-DDA0-4088-8207-B9610993C836</UserSecretsId>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="5.0.3" />
+        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.3" />
+        <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="5.0.3" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="5.0.3" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.3" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\DAL.EF\DAL.EF.csproj" />
+    </ItemGroup>
+
+</Project>
