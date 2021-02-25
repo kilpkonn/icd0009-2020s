@@ -1,4 +1,5 @@
-﻿using Domain;
+﻿using System.Linq;
+using Domain;
 using Microsoft.EntityFrameworkCore;
 
 namespace DAL.EF
@@ -32,6 +33,13 @@ namespace DAL.EF
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            
+            foreach (var relationship in modelBuilder.Model.GetEntityTypes()
+                .SelectMany(e => e.GetForeignKeys()))
+            {
+                relationship.DeleteBehavior = DeleteBehavior.Restrict;
+            }
+
 
             // modelBuilder.Entity<Player>()
             //     .HasMany<GameSession>()
@@ -44,7 +52,7 @@ namespace DAL.EF
             //     .WithOne(x => x.PlayerBlack)
             //     .HasForeignKey(x => x.PlayerBlackId)
             //     .OnDelete(DeleteBehavior.Restrict);
-
+            //
             // modelBuilder.Entity<GameSession>()
             //     .HasMany<BoardState>()
             //     .WithOne(x => x.GameSession)
@@ -56,7 +64,7 @@ namespace DAL.EF
             //     .WithOne(x => x.BoardState)
             //     .HasForeignKey(x => x.BoardStateId)
             //     .OnDelete(DeleteBehavior.Cascade);
-
+            //
             // modelBuilder.Entity<BoardTile>()
             //     .HasIndex(x => x.CoordX);
             //

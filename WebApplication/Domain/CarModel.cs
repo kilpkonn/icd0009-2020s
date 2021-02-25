@@ -5,7 +5,7 @@ namespace Domain
     public class CarModel
     {
         public Guid Id { get; set; }
-        public string Name { get; set; }
+        public string Name { get; set; } = null!;
         public DateTime ReleaseDate { get; set; }
         
         public Guid? CarTypeId { get; set; }

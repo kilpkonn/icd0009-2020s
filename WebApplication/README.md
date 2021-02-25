@@ -1,4 +1,4 @@
-# Battleships
+# Car App
 
 ## How to run locally
 
@@ -15,4 +15,9 @@ Running from IDE works just fine or `./path/to/executable`
 ### Create migrations
 ```bash
 dotnet ef migrations add InitialMigration --project DAL.EF --startup-project WebApplication
+```
+
+### Create ApiControllers
+```bash
+dotnet aspnet-codegenerator controller -name CarController     -m Car     -actions -dc AppDbContext -outDir ApiControllers -api --useAsyncActions  -f
 ```

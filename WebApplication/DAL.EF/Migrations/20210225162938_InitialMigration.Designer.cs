@@ -3,32 +3,35 @@ using System;
 using DAL.EF;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DAL.EF.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20210221183634_InitialMigration")]
+    [Migration("20210225162938_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "5.0.3");
+                .HasAnnotation("Relational:MaxIdentifierLength", 128)
+                .HasAnnotation("ProductVersion", "5.0.3")
+                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("Domain.Car", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("AddedAt")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("datetime2");
 
                     b.Property<Guid?>("CarModelId")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -41,16 +44,16 @@ namespace DAL.EF.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("CarAccessTypeId")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("CarId")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("UserId")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -65,14 +68,14 @@ namespace DAL.EF.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("AccessLevel")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -83,16 +86,16 @@ namespace DAL.EF.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<long>("CanData")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("bigint");
 
                     b.Property<int>("CanId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("DetectedAt")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -103,11 +106,11 @@ namespace DAL.EF.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -118,17 +121,17 @@ namespace DAL.EF.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("CarTypeId")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("ReleaseDate")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -141,14 +144,14 @@ namespace DAL.EF.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("CarMarkId")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -161,19 +164,19 @@ namespace DAL.EF.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<float>("AmountRefilled")
-                        .HasColumnType("REAL");
+                        .HasColumnType("real");
 
                     b.Property<Guid?>("CarId")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<float>("Cost")
-                        .HasColumnType("REAL");
+                        .HasColumnType("real");
 
                     b.Property<DateTime>("Timestamp")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -186,19 +189,19 @@ namespace DAL.EF.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("CarId")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<float>("Distance")
-                        .HasColumnType("REAL");
+                        .HasColumnType("real");
 
                     b.Property<DateTime>("EndTimestamp")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime>("StartTimestamp")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -211,31 +214,31 @@ namespace DAL.EF.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<float>("Accuracy")
-                        .HasColumnType("REAL");
+                        .HasColumnType("real");
 
                     b.Property<float>("Elevation")
-                        .HasColumnType("REAL");
+                        .HasColumnType("real");
 
                     b.Property<float>("ElevationAccuracy")
-                        .HasColumnType("REAL");
+                        .HasColumnType("real");
 
                     b.Property<double>("Lat")
-                        .HasColumnType("REAL");
+                        .HasColumnType("float");
 
                     b.Property<double>("Lng")
-                        .HasColumnType("REAL");
+                        .HasColumnType("float");
 
                     b.Property<float>("Rpm")
-                        .HasColumnType("REAL");
+                        .HasColumnType("real");
 
                     b.Property<float>("Speed")
-                        .HasColumnType("REAL");
+                        .HasColumnType("real");
 
                     b.Property<Guid?>("TrackId")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -248,7 +251,8 @@ namespace DAL.EF.Migrations
                 {
                     b.HasOne("Domain.CarModel", "CarModel")
                         .WithMany()
-                        .HasForeignKey("CarModelId");
+                        .HasForeignKey("CarModelId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("CarModel");
                 });
@@ -257,11 +261,13 @@ namespace DAL.EF.Migrations
                 {
                     b.HasOne("Domain.CarAccessType", "CarAccessType")
                         .WithMany()
-                        .HasForeignKey("CarAccessTypeId");
+                        .HasForeignKey("CarAccessTypeId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Domain.Car", "Car")
                         .WithMany()
-                        .HasForeignKey("CarId");
+                        .HasForeignKey("CarId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Car");
 
@@ -272,7 +278,8 @@ namespace DAL.EF.Migrations
                 {
                     b.HasOne("Domain.CarType", "CarType")
                         .WithMany()
-                        .HasForeignKey("CarTypeId");
+                        .HasForeignKey("CarTypeId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("CarType");
                 });
@@ -281,7 +288,8 @@ namespace DAL.EF.Migrations
                 {
                     b.HasOne("Domain.CarMark", "CarMark")
                         .WithMany()
-                        .HasForeignKey("CarMarkId");
+                        .HasForeignKey("CarMarkId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("CarMark");
                 });
@@ -290,7 +298,8 @@ namespace DAL.EF.Migrations
                 {
                     b.HasOne("Domain.Car", "Car")
                         .WithMany()
-                        .HasForeignKey("CarId");
+                        .HasForeignKey("CarId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Car");
                 });
@@ -299,7 +308,8 @@ namespace DAL.EF.Migrations
                 {
                     b.HasOne("Domain.Car", "Car")
                         .WithMany()
-                        .HasForeignKey("CarId");
+                        .HasForeignKey("CarId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Car");
                 });
@@ -308,7 +318,8 @@ namespace DAL.EF.Migrations
                 {
                     b.HasOne("Domain.Track", "Track")
                         .WithMany()
-                        .HasForeignKey("TrackId");
+                        .HasForeignKey("TrackId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Track");
                 });

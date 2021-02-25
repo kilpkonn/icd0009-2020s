@@ -11,9 +11,9 @@ namespace DAL.EF.Migrations
                 name: "CarAccessTypes",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Name = table.Column<string>(type: "TEXT", nullable: false),
-                    AccessLevel = table.Column<int>(type: "INTEGER", nullable: false)
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AccessLevel = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -24,10 +24,10 @@ namespace DAL.EF.Migrations
                 name: "CarErrorCodes",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    CanId = table.Column<int>(type: "INTEGER", nullable: false),
-                    CanData = table.Column<long>(type: "INTEGER", nullable: false),
-                    DetectedAt = table.Column<DateTime>(type: "TEXT", nullable: false)
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CanId = table.Column<int>(type: "int", nullable: false),
+                    CanData = table.Column<long>(type: "bigint", nullable: false),
+                    DetectedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -38,8 +38,8 @@ namespace DAL.EF.Migrations
                 name: "CarMarks",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Name = table.Column<string>(type: "TEXT", nullable: false)
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -50,9 +50,9 @@ namespace DAL.EF.Migrations
                 name: "CarTypes",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Name = table.Column<string>(type: "TEXT", nullable: false),
-                    CarMarkId = table.Column<Guid>(type: "TEXT", nullable: true)
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CarMarkId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -69,10 +69,10 @@ namespace DAL.EF.Migrations
                 name: "CarModels",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Name = table.Column<string>(type: "TEXT", nullable: false),
-                    ReleaseDate = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    CarTypeId = table.Column<Guid>(type: "TEXT", nullable: true)
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ReleaseDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CarTypeId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -89,9 +89,9 @@ namespace DAL.EF.Migrations
                 name: "Cars",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    AddedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    CarModelId = table.Column<Guid>(type: "TEXT", nullable: true)
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    AddedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CarModelId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -108,10 +108,10 @@ namespace DAL.EF.Migrations
                 name: "CarAccesses",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    UserId = table.Column<Guid>(type: "TEXT", nullable: true),
-                    CarId = table.Column<Guid>(type: "TEXT", nullable: true),
-                    CarAccessTypeId = table.Column<Guid>(type: "TEXT", nullable: true)
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    CarId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    CarAccessTypeId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -134,11 +134,11 @@ namespace DAL.EF.Migrations
                 name: "GasRefills",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    AmountRefilled = table.Column<float>(type: "REAL", nullable: false),
-                    Timestamp = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    Cost = table.Column<float>(type: "REAL", nullable: false),
-                    CarId = table.Column<Guid>(type: "TEXT", nullable: true)
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    AmountRefilled = table.Column<float>(type: "real", nullable: false),
+                    Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Cost = table.Column<float>(type: "real", nullable: false),
+                    CarId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -155,11 +155,11 @@ namespace DAL.EF.Migrations
                 name: "Tracks",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    StartTimestamp = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    EndTimestamp = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    Distance = table.Column<float>(type: "REAL", nullable: false),
-                    CarId = table.Column<Guid>(type: "TEXT", nullable: true)
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    StartTimestamp = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndTimestamp = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Distance = table.Column<float>(type: "real", nullable: false),
+                    CarId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -176,15 +176,15 @@ namespace DAL.EF.Migrations
                 name: "TrackLocations",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Lat = table.Column<double>(type: "REAL", nullable: false),
-                    Lng = table.Column<double>(type: "REAL", nullable: false),
-                    Elevation = table.Column<float>(type: "REAL", nullable: false),
-                    Accuracy = table.Column<float>(type: "REAL", nullable: false),
-                    ElevationAccuracy = table.Column<float>(type: "REAL", nullable: false),
-                    Speed = table.Column<float>(type: "REAL", nullable: false),
-                    Rpm = table.Column<float>(type: "REAL", nullable: false),
-                    TrackId = table.Column<Guid>(type: "TEXT", nullable: true)
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Lat = table.Column<double>(type: "float", nullable: false),
+                    Lng = table.Column<double>(type: "float", nullable: false),
+                    Elevation = table.Column<float>(type: "real", nullable: false),
+                    Accuracy = table.Column<float>(type: "real", nullable: false),
+                    ElevationAccuracy = table.Column<float>(type: "real", nullable: false),
+                    Speed = table.Column<float>(type: "real", nullable: false),
+                    Rpm = table.Column<float>(type: "real", nullable: false),
+                    TrackId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
