@@ -1,11 +1,11 @@
 using System;
+using Car.Domain.Base;
+using Domain.Base;
 
-namespace Domain
+namespace Domain.App
 {
-    public class CarAccess
+    public class CarAccess : DomainEntity
     {
-        public Guid Id { get; set; }
-        
         public Guid? UserId { get; set; }
         // TODO: User link
         

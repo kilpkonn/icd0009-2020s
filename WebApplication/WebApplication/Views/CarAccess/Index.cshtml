@@ -1,4 +1,4 @@
-@model IEnumerable<Domain.CarAccess>
+@model IEnumerable<Domain.App.CarAccess>
 
 @{
     ViewData["Title"] = "Index";
@@ -31,10 +31,10 @@
                 @Html.DisplayFor(modelItem => item.UserId)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Car.Id)
+                @Html.DisplayFor(modelItem => item.Car!.Id)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.CarAccessType.Name)
+                @Html.DisplayFor(modelItem => item.CarAccessType!.Name)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

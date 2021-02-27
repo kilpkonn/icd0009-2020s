@@ -1,11 +1,11 @@
 using System;
+using Car.Domain.Base;
+using Domain.Base;
 
-namespace Domain
+namespace Domain.App
 {
-    public class Track
+    public class Track : DomainEntity
     {
-        public Guid Id { get; set; }
-        
         public DateTime StartTimestamp { get; set; }
         public DateTime EndTimestamp { get; set; }
         public float Distance { get; set; }

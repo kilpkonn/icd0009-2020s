@@ -1,10 +1,11 @@
 using System;
+using Car.Domain.Base;
+using Domain.Base;
 
-namespace Domain
+namespace Domain.App
 {
-    public class CarAccessType
+    public class CarAccessType : DomainEntityId
     {
-        public Guid Id { get; set; }
         public string Name { get; set; } = null!;
         public int AccessLevel { get; set; }
     }

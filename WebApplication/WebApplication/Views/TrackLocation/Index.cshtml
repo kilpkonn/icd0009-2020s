@@ -1,4 +1,4 @@
-@model IEnumerable<Domain.TrackLocation>
+@model IEnumerable<Domain.App.TrackLocation>
 
 @{
     ViewData["Title"] = "Index";
@@ -64,7 +64,7 @@
                 @Html.DisplayFor(modelItem => item.Rpm)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Track.Id)
+                @Html.DisplayFor(modelItem => item.Track!.Id)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

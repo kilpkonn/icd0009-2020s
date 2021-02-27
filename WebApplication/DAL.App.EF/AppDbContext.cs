@@ -1,12 +1,12 @@
 ﻿using System.Linq;
-using Domain;
+using Domain.App;
 using Microsoft.EntityFrameworkCore;
 
 namespace DAL.EF
 {
     public class AppDbContext: DbContext
     {
-        public DbSet<Car> Cars { get; set; } = null!;
+        public DbSet<Domain.App.Car> Cars { get; set; } = null!;
 
         public DbSet<CarAccess> CarAccesses { get; set; } = null!;
 

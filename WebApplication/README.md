@@ -17,6 +17,11 @@ Running from IDE works just fine or `./path/to/executable`
 dotnet ef migrations add InitialMigration --project DAL.EF --startup-project WebApplication
 ```
 
+### Create MVC Controllers
+```bash
+dotnet aspnet-codegenerator controller -name CarController        -actions -m  Car        -dc AppDbContext -outDir Controllers --useDefaultLayout --useAsyncActions --referenceScriptLibraries -f
+```
+
 ### Create ApiControllers
 ```bash
 dotnet aspnet-codegenerator controller -name CarController     -m Car     -actions -dc AppDbContext -outDir ApiControllers -api --useAsyncActions  -f

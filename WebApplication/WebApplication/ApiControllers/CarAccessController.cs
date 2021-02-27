@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using DAL.EF;
-using Domain;
+using Domain.App;
 
 namespace WebApplication.ApiControllers
 {

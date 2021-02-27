@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using DAL.EF;
-using Domain;
+using Domain.App;
 
 namespace WebApplication.ApiControllers
 {
@@ -23,14 +23,14 @@ namespace WebApplication.ApiControllers
 
         // GET: api/Car
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Car>>> GetCars()
+        public async Task<ActionResult<IEnumerable<Domain.App.Car>>> GetCars()
         {
             return await _context.Cars.ToListAsync();
         }
 
         // GET: api/Car/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Car>> GetCar(Guid id)
+        public async Task<ActionResult<Domain.App.Car>> GetCar(Guid id)
         {
             var car = await _context.Cars.FindAsync(id);
 
@@ -45,7 +45,7 @@ namespace WebApplication.ApiControllers
         // PUT: api/Car/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCar(Guid id, Car car)
+        public async Task<IActionResult> PutCar(Guid id, Domain.App.Car car)
         {
             if (id != car.Id)
             {
@@ -76,7 +76,7 @@ namespace WebApplication.ApiControllers
         // POST: api/Car
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Car>> PostCar(Car car)
+        public async Task<ActionResult<Domain.App.Car>> PostCar(Domain.App.Car car)
         {
             _context.Cars.Add(car);
             await _context.SaveChangesAsync();

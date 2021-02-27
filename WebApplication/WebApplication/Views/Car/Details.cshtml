@@ -1,4 +1,4 @@
-@model Domain.Car
+@model Domain.App.Car
 
 @{
     ViewData["Title"] = "Details";
@@ -11,16 +11,16 @@
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AddedAt)
+            @Html.DisplayNameFor(model => model.CreatedAt)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AddedAt)
+            @Html.DisplayFor(model => model.CreatedAt)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.CarModel)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CarModel.Name)
+            @Html.DisplayFor(model => model.CarModel!.Name)
         </dd>
     </dl>
 </div>

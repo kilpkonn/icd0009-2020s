@@ -1,10 +1,11 @@
 using System;
+using Car.Domain.Base;
+using Domain.Base;
 
-namespace Domain
+namespace Domain.App
 {
-    public class CarModel
+    public class CarModel : DomainEntity
     {
-        public Guid Id { get; set; }
         public string Name { get; set; } = null!;
         public DateTime ReleaseDate { get; set; }
         

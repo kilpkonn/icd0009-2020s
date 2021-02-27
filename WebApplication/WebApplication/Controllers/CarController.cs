@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DAL.EF;
-using Domain;
+using Domain.App;
 
 namespace WebApplication.Controllers
 {
@@ -57,7 +57,7 @@ namespace WebApplication.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,AddedAt,CarModelId")] Car car)
+        public async Task<IActionResult> Create([Bind("Id,AddedAt,CarModelId")] Domain.App.Car car)
         {
             if (ModelState.IsValid)
             {
@@ -92,7 +92,7 @@ namespace WebApplication.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,AddedAt,CarModelId")] Car car)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Id,AddedAt,CarModelId")] Domain.App.Car car)
         {
             if (id != car.Id)
             {

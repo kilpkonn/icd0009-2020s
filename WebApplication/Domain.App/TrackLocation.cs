@@ -1,11 +1,11 @@
 using System;
+using Car.Domain.Base;
+using Domain.Base;
 
-namespace Domain
+namespace Domain.App
 {
-    public class TrackLocation
+    public class TrackLocation : DomainEntityId
     {
-        public Guid Id { get; set; }
-        
         public double Lat { get; set; }
         public double Lng { get; set; }
         public float Elevation { get; set; }
