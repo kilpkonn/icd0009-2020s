@@ -7,23 +7,25 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Base.EF.Repositories
 {
-    public class BaseRepository<TEntity> : BaseRepository<Guid, TEntity>
+    public class BaseRepository<TEntity, TDbContext> : BaseRepository<Guid, TEntity, TDbContext>
         where TEntity : class, IDomainEntityId<Guid>
+        where TDbContext : DbContext
     {
-        public BaseRepository(DbContext dbContext) : base(dbContext)
+        public BaseRepository(TDbContext dbContext) : base(dbContext)
         {
         }
     }
 
-    public class BaseRepository<TKey, TEntity> : IBaseRepository<TKey, TEntity>
+    public class BaseRepository<TKey, TEntity, TDbContext> : IBaseRepository<TKey, TEntity>
         where TEntity : class, IDomainEntityId<TKey>
         where TKey : IEquatable<TKey>
+        where TDbContext : DbContext
 
     {
-        protected readonly DbContext DbContext;
+        protected readonly TDbContext DbContext;
         protected readonly DbSet<TEntity> DbSet;
 
-        public BaseRepository(DbContext dbContext)
+        public BaseRepository(TDbContext dbContext)
         {
             DbContext = dbContext;
             DbSet = DbContext.Set<TEntity>();

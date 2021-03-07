@@ -3,7 +3,7 @@ using DAL.Base.EF.Repositories;
 
 namespace DAL.EF.Repositories
 {
-    public class CarRepository : BaseRepository<Domain.App.Car>, ICarRepository
+    public class CarRepository : BaseRepository<Domain.App.Car, AppDbContext>, ICarRepository
     {
         public CarRepository(AppDbContext dbContext) : base(dbContext)
         {

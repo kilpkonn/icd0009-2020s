@@ -1,4 +1,6 @@
+using CarApp.DAL.App.Repositories;
 using DAL.EF;
+using DAL.EF.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -27,6 +29,18 @@ namespace WebApplication
             services.AddDatabaseDeveloperPageExceptionFilter();
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<AppDbContext>();
+
+            services.AddScoped<ICarRepository, CarRepository>();
+            services.AddScoped<ICarAccessRepository, CarAccessRepository>();
+            services.AddScoped<ICarAccessTypeRepository, CarAccessTypeRepository>();
+            services.AddScoped<ICarErrorCodeRepository, CarErrorCodeRepository>();
+            services.AddScoped<ICarMarkRepository, CarMarkRepository>();
+            services.AddScoped<ICarModelRepository, CarModelRepository>();
+            services.AddScoped<ICarTypeRepository, CarTypeRepository>();
+            services.AddScoped<IGasRefillRepository, GasRefillRepository>();
+            services.AddScoped<ITrackRepository, TrackRepository>();
+            services.AddScoped<ITrackLocationRepository, TrackLocationRepository>();
+            
             services.AddRazorPages();
         }
 
