@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.EF.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20210225162938_InitialMigration")]
+    [Migration("20210307173340_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,17 +21,28 @@ namespace DAL.EF.Migrations
                 .HasAnnotation("ProductVersion", "5.0.3")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Domain.Car", b =>
+            modelBuilder.Entity("Domain.App.Car", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("AddedAt")
-                        .HasColumnType("datetime2");
-
                     b.Property<Guid?>("CarModelId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -40,7 +51,7 @@ namespace DAL.EF.Migrations
                     b.ToTable("Cars");
                 });
 
-            modelBuilder.Entity("Domain.CarAccess", b =>
+            modelBuilder.Entity("Domain.App.CarAccess", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -51,6 +62,20 @@ namespace DAL.EF.Migrations
 
                     b.Property<Guid?>("CarId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid?>("UserId")
                         .HasColumnType("uniqueidentifier");
@@ -64,7 +89,7 @@ namespace DAL.EF.Migrations
                     b.ToTable("CarAccesses");
                 });
 
-            modelBuilder.Entity("Domain.CarAccessType", b =>
+            modelBuilder.Entity("Domain.App.CarAccessType", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -82,7 +107,7 @@ namespace DAL.EF.Migrations
                     b.ToTable("CarAccessTypes");
                 });
 
-            modelBuilder.Entity("Domain.CarErrorCode", b =>
+            modelBuilder.Entity("Domain.App.CarErrorCode", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -94,21 +119,46 @@ namespace DAL.EF.Migrations
                     b.Property<int>("CanId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("DetectedAt")
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.ToTable("CarErrorCodes");
                 });
 
-            modelBuilder.Entity("Domain.CarMark", b =>
+            modelBuilder.Entity("Domain.App.CarMark", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -117,7 +167,7 @@ namespace DAL.EF.Migrations
                     b.ToTable("CarMarks");
                 });
 
-            modelBuilder.Entity("Domain.CarModel", b =>
+            modelBuilder.Entity("Domain.App.CarModel", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -126,12 +176,26 @@ namespace DAL.EF.Migrations
                     b.Property<Guid?>("CarTypeId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("ReleaseDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -140,7 +204,7 @@ namespace DAL.EF.Migrations
                     b.ToTable("CarModels");
                 });
 
-            modelBuilder.Entity("Domain.CarType", b =>
+            modelBuilder.Entity("Domain.App.CarType", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -149,7 +213,21 @@ namespace DAL.EF.Migrations
                     b.Property<Guid?>("CarMarkId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -160,7 +238,7 @@ namespace DAL.EF.Migrations
                     b.ToTable("CarTypes");
                 });
 
-            modelBuilder.Entity("Domain.GasRefill", b =>
+            modelBuilder.Entity("Domain.App.GasRefill", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -185,7 +263,7 @@ namespace DAL.EF.Migrations
                     b.ToTable("GasRefills");
                 });
 
-            modelBuilder.Entity("Domain.Track", b =>
+            modelBuilder.Entity("Domain.App.Track", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -193,6 +271,13 @@ namespace DAL.EF.Migrations
 
                     b.Property<Guid?>("CarId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<float>("Distance")
                         .HasColumnType("real");
@@ -203,6 +288,13 @@ namespace DAL.EF.Migrations
                     b.Property<DateTime>("StartTimestamp")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CarId");
@@ -210,7 +302,7 @@ namespace DAL.EF.Migrations
                     b.ToTable("Tracks");
                 });
 
-            modelBuilder.Entity("Domain.TrackLocation", b =>
+            modelBuilder.Entity("Domain.App.TrackLocation", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -247,9 +339,9 @@ namespace DAL.EF.Migrations
                     b.ToTable("TrackLocations");
                 });
 
-            modelBuilder.Entity("Domain.Car", b =>
+            modelBuilder.Entity("Domain.App.Car", b =>
                 {
-                    b.HasOne("Domain.CarModel", "CarModel")
+                    b.HasOne("Domain.App.CarModel", "CarModel")
                         .WithMany()
                         .HasForeignKey("CarModelId")
                         .OnDelete(DeleteBehavior.Restrict);
@@ -257,14 +349,14 @@ namespace DAL.EF.Migrations
                     b.Navigation("CarModel");
                 });
 
-            modelBuilder.Entity("Domain.CarAccess", b =>
+            modelBuilder.Entity("Domain.App.CarAccess", b =>
                 {
-                    b.HasOne("Domain.CarAccessType", "CarAccessType")
+                    b.HasOne("Domain.App.CarAccessType", "CarAccessType")
                         .WithMany()
                         .HasForeignKey("CarAccessTypeId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("Domain.Car", "Car")
+                    b.HasOne("Domain.App.Car", "Car")
                         .WithMany()
                         .HasForeignKey("CarId")
                         .OnDelete(DeleteBehavior.Restrict);
@@ -274,9 +366,9 @@ namespace DAL.EF.Migrations
                     b.Navigation("CarAccessType");
                 });
 
-            modelBuilder.Entity("Domain.CarModel", b =>
+            modelBuilder.Entity("Domain.App.CarModel", b =>
                 {
-                    b.HasOne("Domain.CarType", "CarType")
+                    b.HasOne("Domain.App.CarType", "CarType")
                         .WithMany()
                         .HasForeignKey("CarTypeId")
                         .OnDelete(DeleteBehavior.Restrict);
@@ -284,9 +376,9 @@ namespace DAL.EF.Migrations
                     b.Navigation("CarType");
                 });
 
-            modelBuilder.Entity("Domain.CarType", b =>
+            modelBuilder.Entity("Domain.App.CarType", b =>
                 {
-                    b.HasOne("Domain.CarMark", "CarMark")
+                    b.HasOne("Domain.App.CarMark", "CarMark")
                         .WithMany()
                         .HasForeignKey("CarMarkId")
                         .OnDelete(DeleteBehavior.Restrict);
@@ -294,9 +386,9 @@ namespace DAL.EF.Migrations
                     b.Navigation("CarMark");
                 });
 
-            modelBuilder.Entity("Domain.GasRefill", b =>
+            modelBuilder.Entity("Domain.App.GasRefill", b =>
                 {
-                    b.HasOne("Domain.Car", "Car")
+                    b.HasOne("Domain.App.Car", "Car")
                         .WithMany()
                         .HasForeignKey("CarId")
                         .OnDelete(DeleteBehavior.Restrict);
@@ -304,9 +396,9 @@ namespace DAL.EF.Migrations
                     b.Navigation("Car");
                 });
 
-            modelBuilder.Entity("Domain.Track", b =>
+            modelBuilder.Entity("Domain.App.Track", b =>
                 {
-                    b.HasOne("Domain.Car", "Car")
+                    b.HasOne("Domain.App.Car", "Car")
                         .WithMany()
                         .HasForeignKey("CarId")
                         .OnDelete(DeleteBehavior.Restrict);
@@ -314,9 +406,9 @@ namespace DAL.EF.Migrations
                     b.Navigation("Car");
                 });
 
-            modelBuilder.Entity("Domain.TrackLocation", b =>
+            modelBuilder.Entity("Domain.App.TrackLocation", b =>
                 {
-                    b.HasOne("Domain.Track", "Track")
+                    b.HasOne("Domain.App.Track", "Track")
                         .WithMany()
                         .HasForeignKey("TrackId")
                         .OnDelete(DeleteBehavior.Restrict);

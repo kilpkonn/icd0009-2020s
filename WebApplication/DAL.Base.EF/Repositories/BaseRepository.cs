@@ -42,7 +42,7 @@ namespace DAL.Base.EF.Repositories
             return await query.ToListAsync();
         }
 
-        public async Task<TEntity> FirstOrDefaultAsync(TKey id, bool tracking = false)
+        public async Task<TEntity?> FirstOrDefaultAsync(TKey id, bool tracking = false)
         {
             var query = DbSet.AsQueryable();
             if (!tracking)
@@ -68,15 +68,16 @@ namespace DAL.Base.EF.Repositories
             return DbSet.Remove(entity).Entity;
         }
 
-        public async Task<TEntity> Remove(TKey id)
+        public async Task<TEntity> RemoveAsync(TKey id)
         {
             var entity = await FirstOrDefaultAsync(id);
-            return DbSet.Remove(entity).Entity;
+            return DbSet.Remove(entity!).Entity;
         }
 
         public async Task<bool> ExistsAsync(TKey id)
         {
             return await DbSet.AnyAsync(e => e.Id.Equals(id));
         }
+        
     }
 }

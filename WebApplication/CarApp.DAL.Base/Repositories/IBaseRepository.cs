@@ -10,16 +10,10 @@ namespace Car.DAL.Base.Repositories
     {
     }
 
-    public interface IBaseRepository<TKey, TEntity>
+    public interface IBaseRepository<TKey, TEntity> : IBaseRepositoryCommon<TKey, TEntity>,
+        IBaseRepositoryAsync<TKey, TEntity>
         where TKey : IEquatable<TKey>
         where TEntity : class, IDomainEntityId<TKey>
     {
-        Task<IEnumerable<TEntity>> GetAllAsync(bool tracking = false);
-        Task<TEntity> FirstOrDefaultAsync(TKey id, bool tracking = false);
-        TEntity Add(TEntity entity);
-        TEntity Update(TEntity entity);
-        TEntity Remove(TEntity entity);
-        Task<TEntity> Remove(TKey id);
-        Task<bool> ExistsAsync(TKey id);
     }
 }

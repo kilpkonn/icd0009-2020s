@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CarApp.DAL.App;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -12,17 +13,17 @@ namespace WebApplication.Controllers
 {
     public class CarMarkController : Controller
     {
-        private readonly AppDbContext _context;
+        private readonly IAppUnitOfWork _uow;
 
-        public CarMarkController(AppDbContext context)
+        public CarMarkController(IAppUnitOfWork uow)
         {
-            _context = context;
+            _uow = uow;
         }
 
         // GET: CarMark
         public async Task<IActionResult> Index()
         {
-            return View(await _context.CarMarks.ToListAsync());
+            return View(await _uow.CarMarks.GetAllAsync());
         }
 
         // GET: CarMark/Details/5
@@ -33,8 +34,8 @@ namespace WebApplication.Controllers
                 return NotFound();
             }
 
-            var carMark = await _context.CarMarks
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var carMark = await _uow.CarMarks
+                .FirstOrDefaultAsync((Guid) id);
             if (carMark == null)
             {
                 return NotFound();
@@ -59,10 +60,11 @@ namespace WebApplication.Controllers
             if (ModelState.IsValid)
             {
                 carMark.Id = Guid.NewGuid();
-                _context.Add(carMark);
-                await _context.SaveChangesAsync();
+                _uow.CarMarks.Add(carMark);
+                await _uow.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
             return View(carMark);
         }
 
@@ -74,11 +76,12 @@ namespace WebApplication.Controllers
                 return NotFound();
             }
 
-            var carMark = await _context.CarMarks.FindAsync(id);
+            var carMark = await _uow.CarMarks.FirstOrDefaultAsync((Guid) id);
             if (carMark == null)
             {
                 return NotFound();
             }
+
             return View(carMark);
         }
 
@@ -98,12 +101,12 @@ namespace WebApplication.Controllers
             {
                 try
                 {
-                    _context.Update(carMark);
-                    await _context.SaveChangesAsync();
+                    _uow.CarMarks.Update(carMark);
+                    await _uow.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CarMarkExists(carMark.Id))
+                    if (!await CarMarkExists(carMark.Id))
                     {
                         return NotFound();
                     }
@@ -112,8 +115,10 @@ namespace WebApplication.Controllers
                         throw;
                     }
                 }
+
                 return RedirectToAction(nameof(Index));
             }
+
             return View(carMark);
         }
 
@@ -125,8 +130,8 @@ namespace WebApplication.Controllers
                 return NotFound();
             }
 
-            var carMark = await _context.CarMarks
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var carMark = await _uow.CarMarks
+                .FirstOrDefaultAsync((Guid) id);
             if (carMark == null)
             {
                 return NotFound();
@@ -140,15 +145,19 @@ namespace WebApplication.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var carMark = await _context.CarMarks.FindAsync(id);
-            _context.CarMarks.Remove(carMark);
-            await _context.SaveChangesAsync();
+            var carMark = await _uow.CarMarks.FirstOrDefaultAsync(id);
+            if (carMark != null)
+            {
+                _uow.CarMarks.Remove(carMark);
+                await _uow.SaveChangesAsync();
+            }
+
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CarMarkExists(Guid id)
+        private async Task<bool> CarMarkExists(Guid id)
         {
-            return _context.CarMarks.Any(e => e.Id == id);
+            return await _uow.CarMarks.ExistsAsync(id);
         }
     }
 }

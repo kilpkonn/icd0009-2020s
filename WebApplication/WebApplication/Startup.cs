@@ -1,6 +1,5 @@
-using CarApp.DAL.App.Repositories;
+using CarApp.DAL.App;
 using DAL.EF;
-using DAL.EF.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -30,17 +29,8 @@ namespace WebApplication
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<AppDbContext>();
 
-            services.AddScoped<ICarRepository, CarRepository>();
-            services.AddScoped<ICarAccessRepository, CarAccessRepository>();
-            services.AddScoped<ICarAccessTypeRepository, CarAccessTypeRepository>();
-            services.AddScoped<ICarErrorCodeRepository, CarErrorCodeRepository>();
-            services.AddScoped<ICarMarkRepository, CarMarkRepository>();
-            services.AddScoped<ICarModelRepository, CarModelRepository>();
-            services.AddScoped<ICarTypeRepository, CarTypeRepository>();
-            services.AddScoped<IGasRefillRepository, GasRefillRepository>();
-            services.AddScoped<ITrackRepository, TrackRepository>();
-            services.AddScoped<ITrackLocationRepository, TrackLocationRepository>();
-            
+            services.AddScoped<IAppUnitOfWork, AppUnitOfWork>();
+
             services.AddRazorPages();
         }
 
@@ -48,7 +38,7 @@ namespace WebApplication
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             UpdateDatabase(app);
-            
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -77,7 +67,7 @@ namespace WebApplication
                 endpoints.MapRazorPages();
             });
         }
-        
+
         private static void UpdateDatabase(IApplicationBuilder app)
         {
             using var serviceScope = app.ApplicationServices

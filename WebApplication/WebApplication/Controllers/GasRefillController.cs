@@ -1,29 +1,26 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
+using CarApp.DAL.App;
+using Domain.App;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using DAL.EF;
-using Domain.App;
 
 namespace WebApplication.Controllers
 {
     public class GasRefillController : Controller
     {
-        private readonly AppDbContext _context;
+        private readonly IAppUnitOfWork _uow;
 
-        public GasRefillController(AppDbContext context)
+        public GasRefillController(IAppUnitOfWork uow)
         {
-            _context = context;
+            _uow = uow;
         }
 
         // GET: GasRefill
         public async Task<IActionResult> Index()
         {
-            var appDbContext = _context.GasRefills.Include(g => g.Car);
-            return View(await appDbContext.ToListAsync());
+            return View(await _uow.GasRefills.GetAllAsync());
         }
 
         // GET: GasRefill/Details/5
@@ -34,9 +31,8 @@ namespace WebApplication.Controllers
                 return NotFound();
             }
 
-            var gasRefill = await _context.GasRefills
-                .Include(g => g.Car)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var gasRefill = await _uow.GasRefills
+                .FirstOrDefaultAsync((Guid) id);
             if (gasRefill == null)
             {
                 return NotFound();
@@ -46,9 +42,9 @@ namespace WebApplication.Controllers
         }
 
         // GET: GasRefill/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["CarId"] = new SelectList(_context.Cars, "Id", "Id");
+            ViewData["CarId"] = new SelectList(await _uow.Cars.GetAllAsync(), "Id", "Id");
             return View();
         }
 
@@ -62,11 +58,11 @@ namespace WebApplication.Controllers
             if (ModelState.IsValid)
             {
                 gasRefill.Id = Guid.NewGuid();
-                _context.Add(gasRefill);
-                await _context.SaveChangesAsync();
+                _uow.GasRefills.Add(gasRefill);
+                await _uow.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CarId"] = new SelectList(_context.Cars, "Id", "Id", gasRefill.CarId);
+            ViewData["CarId"] = new SelectList(await _uow.Cars.GetAllAsync(), "Id", "Id", gasRefill.CarId);
             return View(gasRefill);
         }
 
@@ -78,12 +74,12 @@ namespace WebApplication.Controllers
                 return NotFound();
             }
 
-            var gasRefill = await _context.GasRefills.FindAsync(id);
+            var gasRefill = await _uow.GasRefills.FirstOrDefaultAsync((Guid) id);
             if (gasRefill == null)
             {
                 return NotFound();
             }
-            ViewData["CarId"] = new SelectList(_context.Cars, "Id", "Id", gasRefill.CarId);
+            ViewData["CarId"] = new SelectList(await _uow.Cars.GetAllAsync(), "Id", "Id", gasRefill.CarId);
             return View(gasRefill);
         }
 
@@ -103,12 +99,12 @@ namespace WebApplication.Controllers
             {
                 try
                 {
-                    _context.Update(gasRefill);
-                    await _context.SaveChangesAsync();
+                    _uow.GasRefills.Update(gasRefill);
+                    await _uow.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!GasRefillExists(gasRefill.Id))
+                    if (!await GasRefillExists(gasRefill.Id))
                     {
                         return NotFound();
                     }
@@ -119,7 +115,7 @@ namespace WebApplication.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CarId"] = new SelectList(_context.Cars, "Id", "Id", gasRefill.CarId);
+            ViewData["CarId"] = new SelectList(await _uow.Cars.GetAllAsync(), "Id", "Id", gasRefill.CarId);
             return View(gasRefill);
         }
 
@@ -131,9 +127,8 @@ namespace WebApplication.Controllers
                 return NotFound();
             }
 
-            var gasRefill = await _context.GasRefills
-                .Include(g => g.Car)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var gasRefill = await _uow.GasRefills
+                .FirstOrDefaultAsync((Guid) id);
             if (gasRefill == null)
             {
                 return NotFound();
@@ -147,15 +142,18 @@ namespace WebApplication.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var gasRefill = await _context.GasRefills.FindAsync(id);
-            _context.GasRefills.Remove(gasRefill);
-            await _context.SaveChangesAsync();
+            var gasRefill = await _uow.GasRefills.FirstOrDefaultAsync(id);
+            if (gasRefill != null)
+            {
+                _uow.GasRefills.Remove(gasRefill);
+                await _uow.SaveChangesAsync();
+            }
             return RedirectToAction(nameof(Index));
         }
 
-        private bool GasRefillExists(Guid id)
+        private async Task<bool> GasRefillExists(Guid id)
         {
-            return _context.GasRefills.Any(e => e.Id == id);
+            return await _uow.GasRefills.ExistsAsync(id);
         }
     }
 }

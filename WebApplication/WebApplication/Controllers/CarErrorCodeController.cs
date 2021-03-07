@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CarApp.DAL.App;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -12,17 +13,17 @@ namespace WebApplication.Controllers
 {
     public class CarErrorCodeController : Controller
     {
-        private readonly AppDbContext _context;
+        private readonly IAppUnitOfWork _uow;
 
-        public CarErrorCodeController(AppDbContext context)
+        public CarErrorCodeController(IAppUnitOfWork uow)
         {
-            _context = context;
+            _uow = uow;
         }
 
         // GET: CarErrorCode
         public async Task<IActionResult> Index()
         {
-            return View(await _context.CarErrorCodes.ToListAsync());
+            return View(await _uow.CarErrorCodes.GetAllAsync());
         }
 
         // GET: CarErrorCode/Details/5
@@ -33,8 +34,8 @@ namespace WebApplication.Controllers
                 return NotFound();
             }
 
-            var carErrorCode = await _context.CarErrorCodes
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var carErrorCode = await _uow.CarErrorCodes
+                .FirstOrDefaultAsync((Guid) id);
             if (carErrorCode == null)
             {
                 return NotFound();
@@ -59,10 +60,11 @@ namespace WebApplication.Controllers
             if (ModelState.IsValid)
             {
                 carErrorCode.Id = Guid.NewGuid();
-                _context.Add(carErrorCode);
-                await _context.SaveChangesAsync();
+                _uow.CarErrorCodes.Add(carErrorCode);
+                await _uow.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
             return View(carErrorCode);
         }
 
@@ -74,11 +76,12 @@ namespace WebApplication.Controllers
                 return NotFound();
             }
 
-            var carErrorCode = await _context.CarErrorCodes.FindAsync(id);
+            var carErrorCode = await _uow.CarErrorCodes.FirstOrDefaultAsync((Guid) id);
             if (carErrorCode == null)
             {
                 return NotFound();
             }
+
             return View(carErrorCode);
         }
 
@@ -98,12 +101,12 @@ namespace WebApplication.Controllers
             {
                 try
                 {
-                    _context.Update(carErrorCode);
-                    await _context.SaveChangesAsync();
+                    _uow.CarErrorCodes.Update(carErrorCode);
+                    await _uow.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CarErrorCodeExists(carErrorCode.Id))
+                    if (!await CarErrorCodeExists(carErrorCode.Id))
                     {
                         return NotFound();
                     }
@@ -112,8 +115,10 @@ namespace WebApplication.Controllers
                         throw;
                     }
                 }
+
                 return RedirectToAction(nameof(Index));
             }
+
             return View(carErrorCode);
         }
 
@@ -125,8 +130,8 @@ namespace WebApplication.Controllers
                 return NotFound();
             }
 
-            var carErrorCode = await _context.CarErrorCodes
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var carErrorCode = await _uow.CarErrorCodes
+                .FirstOrDefaultAsync((Guid) id);
             if (carErrorCode == null)
             {
                 return NotFound();
@@ -140,15 +145,19 @@ namespace WebApplication.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var carErrorCode = await _context.CarErrorCodes.FindAsync(id);
-            _context.CarErrorCodes.Remove(carErrorCode);
-            await _context.SaveChangesAsync();
+            var carErrorCode = await _uow.CarErrorCodes.FirstOrDefaultAsync(id);
+            if (carErrorCode != null)
+            {
+                _uow.CarErrorCodes.Remove(carErrorCode);
+                await _uow.SaveChangesAsync();
+            }
+
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CarErrorCodeExists(Guid id)
+        private async Task<bool> CarErrorCodeExists(Guid id)
         {
-            return _context.CarErrorCodes.Any(e => e.Id == id);
+            return await _uow.CarErrorCodes.ExistsAsync(id);
         }
     }
 }

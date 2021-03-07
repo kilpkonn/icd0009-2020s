@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CarApp.DAL.App;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -12,18 +13,17 @@ namespace WebApplication.Controllers
 {
     public class TrackController : Controller
     {
-        private readonly AppDbContext _context;
+        private readonly IAppUnitOfWork _uow;
 
-        public TrackController(AppDbContext context)
+        public TrackController(IAppUnitOfWork uow)
         {
-            _context = context;
+            _uow = uow;
         }
 
         // GET: Track
         public async Task<IActionResult> Index()
         {
-            var appDbContext = _context.Tracks.Include(t => t.Car);
-            return View(await appDbContext.ToListAsync());
+            return View(await _uow.Tracks.GetAllAsync());
         }
 
         // GET: Track/Details/5
@@ -34,9 +34,8 @@ namespace WebApplication.Controllers
                 return NotFound();
             }
 
-            var track = await _context.Tracks
-                .Include(t => t.Car)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var track = await _uow.Tracks
+                .FirstOrDefaultAsync((Guid) id);
             if (track == null)
             {
                 return NotFound();
@@ -46,9 +45,9 @@ namespace WebApplication.Controllers
         }
 
         // GET: Track/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["CarId"] = new SelectList(_context.Cars, "Id", "Id");
+            ViewData["CarId"] = new SelectList(await _uow.Cars.GetAllAsync(), "Id", "Id");
             return View();
         }
 
@@ -62,11 +61,11 @@ namespace WebApplication.Controllers
             if (ModelState.IsValid)
             {
                 track.Id = Guid.NewGuid();
-                _context.Add(track);
-                await _context.SaveChangesAsync();
+                _uow.Tracks.Add(track);
+                await _uow.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CarId"] = new SelectList(_context.Cars, "Id", "Id", track.CarId);
+            ViewData["CarId"] = new SelectList(await _uow.Cars.GetAllAsync(), "Id", "Id", track.CarId);
             return View(track);
         }
 
@@ -78,12 +77,12 @@ namespace WebApplication.Controllers
                 return NotFound();
             }
 
-            var track = await _context.Tracks.FindAsync(id);
+            var track = await _uow.Tracks.FirstOrDefaultAsync((Guid) id);
             if (track == null)
             {
                 return NotFound();
             }
-            ViewData["CarId"] = new SelectList(_context.Cars, "Id", "Id", track.CarId);
+            ViewData["CarId"] = new SelectList(await _uow.Cars.GetAllAsync(), "Id", "Id", track.CarId);
             return View(track);
         }
 
@@ -103,12 +102,12 @@ namespace WebApplication.Controllers
             {
                 try
                 {
-                    _context.Update(track);
-                    await _context.SaveChangesAsync();
+                    _uow.Tracks.Update(track);
+                    await _uow.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!TrackExists(track.Id))
+                    if (!await TrackExists(track.Id))
                     {
                         return NotFound();
                     }
@@ -119,7 +118,7 @@ namespace WebApplication.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CarId"] = new SelectList(_context.Cars, "Id", "Id", track.CarId);
+            ViewData["CarId"] = new SelectList(await _uow.Cars.GetAllAsync(), "Id", "Id", track.CarId);
             return View(track);
         }
 
@@ -131,9 +130,8 @@ namespace WebApplication.Controllers
                 return NotFound();
             }
 
-            var track = await _context.Tracks
-                .Include(t => t.Car)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var track = await _uow.Tracks
+                .FirstOrDefaultAsync((Guid) id);
             if (track == null)
             {
                 return NotFound();
@@ -147,15 +145,19 @@ namespace WebApplication.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var track = await _context.Tracks.FindAsync(id);
-            _context.Tracks.Remove(track);
-            await _context.SaveChangesAsync();
+            var track = await _uow.Tracks.FirstOrDefaultAsync(id);
+            if (track != null)
+            {
+                _uow.Tracks.Remove(track);
+                await _uow.SaveChangesAsync();
+            }
+            
             return RedirectToAction(nameof(Index));
         }
 
-        private bool TrackExists(Guid id)
+        private async Task<bool> TrackExists(Guid id)
         {
-            return _context.Tracks.Any(e => e.Id == id);
+            return await _uow.Tracks.ExistsAsync(id);
         }
     }
 }

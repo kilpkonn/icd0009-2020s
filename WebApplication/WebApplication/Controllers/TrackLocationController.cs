@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CarApp.DAL.App;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -12,18 +13,17 @@ namespace WebApplication.Controllers
 {
     public class TrackLocationController : Controller
     {
-        private readonly AppDbContext _context;
+        private readonly IAppUnitOfWork _uow;
 
-        public TrackLocationController(AppDbContext context)
+        public TrackLocationController(IAppUnitOfWork uow)
         {
-            _context = context;
+            _uow = uow;
         }
 
         // GET: TrackLocation
         public async Task<IActionResult> Index()
         {
-            var appDbContext = _context.TrackLocations.Include(t => t.Track);
-            return View(await appDbContext.ToListAsync());
+            return View(await _uow.TrackLocations.GetAllAsync());
         }
 
         // GET: TrackLocation/Details/5
@@ -34,9 +34,8 @@ namespace WebApplication.Controllers
                 return NotFound();
             }
 
-            var trackLocation = await _context.TrackLocations
-                .Include(t => t.Track)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var trackLocation = await _uow.TrackLocations
+                .FirstOrDefaultAsync((Guid) id);
             if (trackLocation == null)
             {
                 return NotFound();
@@ -46,9 +45,9 @@ namespace WebApplication.Controllers
         }
 
         // GET: TrackLocation/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["TrackId"] = new SelectList(_context.Tracks, "Id", "Id");
+            ViewData["TrackId"] = new SelectList(await _uow.Tracks.GetAllAsync(), "Id", "Id");
             return View();
         }
 
@@ -57,16 +56,19 @@ namespace WebApplication.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Lat,Lng,Elevation,Accuracy,ElevationAccuracy,Speed,Rpm,TrackId")] TrackLocation trackLocation)
+        public async Task<IActionResult> Create(
+            [Bind("Id,Lat,Lng,Elevation,Accuracy,ElevationAccuracy,Speed,Rpm,TrackId")]
+            TrackLocation trackLocation)
         {
             if (ModelState.IsValid)
             {
                 trackLocation.Id = Guid.NewGuid();
-                _context.Add(trackLocation);
-                await _context.SaveChangesAsync();
+                _uow.TrackLocations.Add(trackLocation);
+                await _uow.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["TrackId"] = new SelectList(_context.Tracks, "Id", "Id", trackLocation.TrackId);
+
+            ViewData["TrackId"] = new SelectList(await _uow.Tracks.GetAllAsync(), "Id", "Id", trackLocation.TrackId);
             return View(trackLocation);
         }
 
@@ -78,12 +80,13 @@ namespace WebApplication.Controllers
                 return NotFound();
             }
 
-            var trackLocation = await _context.TrackLocations.FindAsync(id);
+            var trackLocation = await _uow.TrackLocations.FirstOrDefaultAsync((Guid) id);
             if (trackLocation == null)
             {
                 return NotFound();
             }
-            ViewData["TrackId"] = new SelectList(_context.Tracks, "Id", "Id", trackLocation.TrackId);
+
+            ViewData["TrackId"] = new SelectList(await _uow.Tracks.GetAllAsync(), "Id", "Id", trackLocation.TrackId);
             return View(trackLocation);
         }
 
@@ -92,7 +95,9 @@ namespace WebApplication.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Lat,Lng,Elevation,Accuracy,ElevationAccuracy,Speed,Rpm,TrackId")] TrackLocation trackLocation)
+        public async Task<IActionResult> Edit(Guid id,
+            [Bind("Id,Lat,Lng,Elevation,Accuracy,ElevationAccuracy,Speed,Rpm,TrackId")]
+            TrackLocation trackLocation)
         {
             if (id != trackLocation.Id)
             {
@@ -103,12 +108,12 @@ namespace WebApplication.Controllers
             {
                 try
                 {
-                    _context.Update(trackLocation);
-                    await _context.SaveChangesAsync();
+                    _uow.TrackLocations.Update(trackLocation);
+                    await _uow.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!TrackLocationExists(trackLocation.Id))
+                    if (!await TrackLocationExists(trackLocation.Id))
                     {
                         return NotFound();
                     }
@@ -117,9 +122,11 @@ namespace WebApplication.Controllers
                         throw;
                     }
                 }
+
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["TrackId"] = new SelectList(_context.Tracks, "Id", "Id", trackLocation.TrackId);
+
+            ViewData["TrackId"] = new SelectList(await _uow.Tracks.GetAllAsync(), "Id", "Id", trackLocation.TrackId);
             return View(trackLocation);
         }
 
@@ -131,9 +138,8 @@ namespace WebApplication.Controllers
                 return NotFound();
             }
 
-            var trackLocation = await _context.TrackLocations
-                .Include(t => t.Track)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var trackLocation = await _uow.TrackLocations
+                .FirstOrDefaultAsync((Guid) id);
             if (trackLocation == null)
             {
                 return NotFound();
@@ -147,15 +153,19 @@ namespace WebApplication.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var trackLocation = await _context.TrackLocations.FindAsync(id);
-            _context.TrackLocations.Remove(trackLocation);
-            await _context.SaveChangesAsync();
+            var trackLocation = await _uow.TrackLocations.FirstOrDefaultAsync(id);
+            if (trackLocation != null)
+            {
+                _uow.TrackLocations.Remove(trackLocation);
+                await _uow.SaveChangesAsync();
+            }
+
             return RedirectToAction(nameof(Index));
         }
 
-        private bool TrackLocationExists(Guid id)
+        private async Task<bool> TrackLocationExists(Guid id)
         {
-            return _context.TrackLocations.Any(e => e.Id == id);
+            return await _uow.TrackLocations.ExistsAsync(id);
         }
     }
 }

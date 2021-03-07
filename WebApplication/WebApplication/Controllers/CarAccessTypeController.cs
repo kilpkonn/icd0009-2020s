@@ -1,28 +1,25 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using DAL.EF;
+using CarApp.DAL.App;
 using Domain.App;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace WebApplication.Controllers
 {
     public class CarAccessTypeController : Controller
     {
-        private readonly AppDbContext _context;
+        private readonly IAppUnitOfWork _uow;
 
-        public CarAccessTypeController(AppDbContext context)
+        public CarAccessTypeController(IAppUnitOfWork uow)
         {
-            _context = context;
+            _uow = uow;
         }
 
         // GET: CarAccessType
         public async Task<IActionResult> Index()
         {
-            return View(await _context.CarAccessTypes.ToListAsync());
+            return View(await _uow.CarAccessTypes.GetAllAsync());
         }
 
         // GET: CarAccessType/Details/5
@@ -33,8 +30,8 @@ namespace WebApplication.Controllers
                 return NotFound();
             }
 
-            var carAccessType = await _context.CarAccessTypes
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var carAccessType = await _uow.CarAccessTypes
+                .FirstOrDefaultAsync((Guid) id);
             if (carAccessType == null)
             {
                 return NotFound();
@@ -59,8 +56,8 @@ namespace WebApplication.Controllers
             if (ModelState.IsValid)
             {
                 carAccessType.Id = Guid.NewGuid();
-                _context.Add(carAccessType);
-                await _context.SaveChangesAsync();
+                _uow.CarAccessTypes.Add(carAccessType);
+                await _uow.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(carAccessType);
@@ -74,7 +71,7 @@ namespace WebApplication.Controllers
                 return NotFound();
             }
 
-            var carAccessType = await _context.CarAccessTypes.FindAsync(id);
+            var carAccessType = await _uow.CarAccessTypes.FirstOrDefaultAsync((Guid) id);
             if (carAccessType == null)
             {
                 return NotFound();
@@ -98,12 +95,12 @@ namespace WebApplication.Controllers
             {
                 try
                 {
-                    _context.Update(carAccessType);
-                    await _context.SaveChangesAsync();
+                    _uow.CarAccessTypes.Update(carAccessType);
+                    await _uow.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CarAccessTypeExists(carAccessType.Id))
+                    if (! await CarAccessTypeExists(carAccessType.Id))
                     {
                         return NotFound();
                     }
@@ -125,8 +122,8 @@ namespace WebApplication.Controllers
                 return NotFound();
             }
 
-            var carAccessType = await _context.CarAccessTypes
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var carAccessType = await _uow.CarAccessTypes
+                .FirstOrDefaultAsync((Guid) id);
             if (carAccessType == null)
             {
                 return NotFound();
@@ -140,15 +137,18 @@ namespace WebApplication.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var carAccessType = await _context.CarAccessTypes.FindAsync(id);
-            _context.CarAccessTypes.Remove(carAccessType);
-            await _context.SaveChangesAsync();
+            var carAccessType = await _uow.CarAccessTypes.FirstOrDefaultAsync(id);
+            if (carAccessType != null)
+            {
+                _uow.CarAccessTypes.Remove(carAccessType);
+                await _uow.SaveChangesAsync();
+            }
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CarAccessTypeExists(Guid id)
+        private async Task<bool> CarAccessTypeExists(Guid id)
         {
-            return _context.CarAccessTypes.Any(e => e.Id == id);
+            return await _uow.CarAccessTypes.ExistsAsync(id);
         }
     }
 }
