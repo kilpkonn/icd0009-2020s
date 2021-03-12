@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using CarApp.DAL.App;
 using CarApp.DAL.App.Repositories;
 using DAL.Base.EF;
@@ -9,27 +11,19 @@ namespace DAL.EF
     {
         public AppUnitOfWork(AppDbContext uowDbContext) : base(uowDbContext)
         {
-            CarAccesses = new CarAccessRepository(uowDbContext);
-            CarAccessTypes = new CarAccessTypeRepository(uowDbContext);
-            CarErrorCodes = new CarErrorCodeRepository(uowDbContext);
-            CarMarks = new CarMarkRepository(uowDbContext);
-            CarModels = new CarModelRepository(uowDbContext);
-            Cars = new CarRepository(uowDbContext);
-            CarTypes = new CarTypeRepository(uowDbContext);
-            GasRefills = new GasRefillRepository(uowDbContext);
-            TrackLocations = new TrackLocationRepository(uowDbContext);
-            Tracks = new TrackRepository(uowDbContext);
         }
 
-        public ICarAccessRepository CarAccesses { get; }
-        public ICarAccessTypeRepository CarAccessTypes { get; }
-        public ICarErrorCodeRepository CarErrorCodes { get; }
-        public ICarMarkRepository CarMarks { get; }
-        public ICarModelRepository CarModels { get; }
-        public ICarRepository Cars { get; }
-        public ICarTypeRepository CarTypes { get; }
-        public IGasRefillRepository GasRefills { get; }
-        public ITrackLocationRepository TrackLocations { get; }
-        public ITrackRepository Tracks { get; }
+        public ICarAccessRepository CarAccesses => GetRepository(() => new CarAccessRepository(UowDbContext));
+
+        public ICarAccessTypeRepository CarAccessTypes => GetRepository(() => new CarAccessTypeRepository(UowDbContext));
+        public ICarErrorCodeRepository CarErrorCodes => GetRepository(() => new CarErrorCodeRepository(UowDbContext));
+        public ICarMarkRepository CarMarks => GetRepository(() => new CarMarkRepository(UowDbContext));
+        public ICarModelRepository CarModels => GetRepository(() => new CarModelRepository(UowDbContext));
+        public ICarRepository Cars => GetRepository(() => new CarRepository(UowDbContext));
+        public ICarTypeRepository CarTypes => GetRepository(() => new CarTypeRepository(UowDbContext));
+        public IGasRefillRepository GasRefills => GetRepository(() => new GasRefillRepository(UowDbContext));
+        public ITrackLocationRepository TrackLocations => GetRepository(() => new TrackLocationRepository(UowDbContext));
+
+        public ITrackRepository Tracks => GetRepository(() => new TrackRepository(UowDbContext));
     }
 }
