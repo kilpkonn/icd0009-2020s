@@ -8,9 +8,12 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DAL.EF;
 using Domain.App;
+using Microsoft.AspNetCore.Authorization;
+using WebApplication.Helpers;
 
 namespace WebApplication.Controllers
 {
+    [Authorize]
     public class CarErrorCodeController : Controller
     {
         private readonly IAppUnitOfWork _uow;
@@ -23,7 +26,7 @@ namespace WebApplication.Controllers
         // GET: CarErrorCode
         public async Task<IActionResult> Index()
         {
-            return View(await _uow.CarErrorCodes.GetAllAsync());
+            return View(await _uow.CarErrorCodes.GetAllAsync(User.GetUserId()));
         }
 
         // GET: CarErrorCode/Details/5
@@ -35,7 +38,7 @@ namespace WebApplication.Controllers
             }
 
             var carErrorCode = await _uow.CarErrorCodes
-                .FirstOrDefaultAsync((Guid) id);
+                .FirstOrDefaultAsync((Guid) id, User.GetUserId());
             if (carErrorCode == null)
             {
                 return NotFound();
@@ -55,11 +58,10 @@ namespace WebApplication.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,CanId,CanData,DetectedAt")] CarErrorCode carErrorCode)
+        public async Task<IActionResult> Create(CarErrorCode carErrorCode)
         {
             if (ModelState.IsValid)
             {
-                carErrorCode.Id = Guid.NewGuid();
                 _uow.CarErrorCodes.Add(carErrorCode);
                 await _uow.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -76,7 +78,7 @@ namespace WebApplication.Controllers
                 return NotFound();
             }
 
-            var carErrorCode = await _uow.CarErrorCodes.FirstOrDefaultAsync((Guid) id);
+            var carErrorCode = await _uow.CarErrorCodes.FirstOrDefaultAsync((Guid) id, null);
             if (carErrorCode == null)
             {
                 return NotFound();
@@ -90,7 +92,7 @@ namespace WebApplication.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,CanId,CanData,DetectedAt")] CarErrorCode carErrorCode)
+        public async Task<IActionResult> Edit(Guid id, CarErrorCode carErrorCode)
         {
             if (id != carErrorCode.Id)
             {
@@ -101,7 +103,7 @@ namespace WebApplication.Controllers
             {
                 try
                 {
-                    _uow.CarErrorCodes.Update(carErrorCode);
+                    _uow.CarErrorCodes.Update(carErrorCode, null);
                     await _uow.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -131,7 +133,7 @@ namespace WebApplication.Controllers
             }
 
             var carErrorCode = await _uow.CarErrorCodes
-                .FirstOrDefaultAsync((Guid) id);
+                .FirstOrDefaultAsync((Guid) id, User.GetUserId());
             if (carErrorCode == null)
             {
                 return NotFound();
@@ -145,10 +147,10 @@ namespace WebApplication.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var carErrorCode = await _uow.CarErrorCodes.FirstOrDefaultAsync(id);
+            var carErrorCode = await _uow.CarErrorCodes.FirstOrDefaultAsync(id, User.GetUserId());
             if (carErrorCode != null)
             {
-                _uow.CarErrorCodes.Remove(carErrorCode);
+                _uow.CarErrorCodes.Remove(carErrorCode, User.GetUserId());
                 await _uow.SaveChangesAsync();
             }
 
@@ -157,7 +159,7 @@ namespace WebApplication.Controllers
 
         private async Task<bool> CarErrorCodeExists(Guid id)
         {
-            return await _uow.CarErrorCodes.ExistsAsync(id);
+            return await _uow.CarErrorCodes.ExistsAsync(id, User.GetUserId());
         }
     }
 }

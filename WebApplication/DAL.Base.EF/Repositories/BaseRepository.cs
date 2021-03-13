@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Security.Authentication;
 using System.Threading.Tasks;
 using Car.DAL.Base.Repositories;
 using Car.Domain.Base;
@@ -18,7 +20,7 @@ namespace DAL.Base.EF.Repositories
 
     public class BaseRepository<TKey, TEntity, TDbContext> : IBaseRepository<TKey, TEntity>
         where TEntity : class, IDomainEntityId<TKey>
-        where TKey : IEquatable<TKey>
+        where TKey : struct, IEquatable<TKey>
         where TDbContext : DbContext
 
     {
@@ -31,53 +33,73 @@ namespace DAL.Base.EF.Repositories
             DbSet = DbContext.Set<TEntity>();
         }
 
-        public async Task<IEnumerable<TEntity>> GetAllAsync(bool tracking = false)
+        public virtual async Task<IEnumerable<TEntity>> GetAllAsync(TKey? userId, bool tracking = false)
         {
-            var query = DbSet.AsQueryable();
-            if (!tracking)
-            {
-                query = query.AsNoTracking();
-            }
-
+            var query = CreateQuery(userId, tracking);
             return await query.ToListAsync();
         }
 
-        public async Task<TEntity?> FirstOrDefaultAsync(TKey id, bool tracking = false)
+        public virtual async Task<TEntity?> FirstOrDefaultAsync(TKey id, TKey? userId, bool tracking = false)
         {
-            var query = DbSet.AsQueryable();
-            if (!tracking)
-            {
-                query = query.AsNoTracking();
-            }
-
+            var query = CreateQuery(userId, tracking);
             return await query.FirstOrDefaultAsync(e => e.Id.Equals(id));
         }
 
-        public TEntity Add(TEntity entity)
+        public virtual TEntity Add(TEntity entity)
         {
             return DbSet.Add(entity).Entity;
         }
 
-        public TEntity Update(TEntity entity)
+        public virtual TEntity Update(TEntity entity, TKey? userId)
         {
+            if (userId != null && !((IDomainAppUserId<TKey>) entity).AppUserId.Equals(userId))
+            {
+                throw new AuthenticationException("Bad user id inside entity to be deleted.");
+                // TODO: load entity from the db, check that userId inside entity is correct.
+            }
+            
             return DbSet.Update(entity).Entity;
         }
 
-        public TEntity Remove(TEntity entity)
+        public virtual TEntity Remove(TEntity entity, TKey? userId)
         {
+            if (userId != null && !((IDomainAppUserId<TKey>) entity).AppUserId.Equals(userId))
+            {
+                throw new AuthenticationException("Bad user id inside entity to be deleted.");
+                // TODO: load entity from the db, check that userId inside entity is correct.
+            }
+
             return DbSet.Remove(entity).Entity;
         }
 
-        public async Task<TEntity> RemoveAsync(TKey id)
+        public virtual async Task<TEntity> RemoveAsync(TKey id, TKey? userId)
         {
-            var entity = await FirstOrDefaultAsync(id);
-            return DbSet.Remove(entity!).Entity;
+            var entity = await FirstOrDefaultAsync(id, userId);
+            if (entity != null) throw new NullReferenceException($"Entity with id {id} not found.");
+            return Remove(entity!, userId);
         }
 
-        public async Task<bool> ExistsAsync(TKey id)
+        public virtual async Task<bool> ExistsAsync(TKey id, TKey? userId)
         {
-            return await DbSet.AnyAsync(e => e.Id.Equals(id));
+            return await DbSet.AnyAsync(e =>
+                e.Id.Equals(id) && ((IDomainAppUserId<TKey>) e).AppUserId.Equals(userId));
         }
-        
+
+        protected IQueryable<TEntity> CreateQuery(TKey? userId, bool tracking = false)
+        {
+            var query = DbSet.AsQueryable();
+
+            if (userId != null && typeof(TEntity).IsAssignableFrom(typeof(IDomainAppUserId<TKey>)))
+            {
+                query = query.Where(e => ((IDomainAppUserId<TKey>) e).AppUserId.Equals(userId));
+            }
+
+            if (!tracking)
+            {
+                query = query.AsNoTracking();
+            }
+
+            return query;
+        }
     }
 }

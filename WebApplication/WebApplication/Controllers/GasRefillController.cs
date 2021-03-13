@@ -2,12 +2,15 @@ using System;
 using System.Threading.Tasks;
 using CarApp.DAL.App;
 using Domain.App;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using WebApplication.Helpers;
 
 namespace WebApplication.Controllers
 {
+    [Authorize]
     public class GasRefillController : Controller
     {
         private readonly IAppUnitOfWork _uow;
@@ -20,7 +23,7 @@ namespace WebApplication.Controllers
         // GET: GasRefill
         public async Task<IActionResult> Index()
         {
-            return View(await _uow.GasRefills.GetAllAsync());
+            return View(await _uow.GasRefills.GetAllAsync(User.GetUserId()));
         }
 
         // GET: GasRefill/Details/5
@@ -32,7 +35,7 @@ namespace WebApplication.Controllers
             }
 
             var gasRefill = await _uow.GasRefills
-                .FirstOrDefaultAsync((Guid) id);
+                .FirstOrDefaultAsync((Guid) id, User.GetUserId());
             if (gasRefill == null)
             {
                 return NotFound();
@@ -44,7 +47,7 @@ namespace WebApplication.Controllers
         // GET: GasRefill/Create
         public async Task<IActionResult> Create()
         {
-            ViewData["CarId"] = new SelectList(await _uow.Cars.GetAllAsync(), "Id", "Id");
+            ViewData["CarId"] = new SelectList(await _uow.Cars.GetAccessibleCarsForUser((Guid) User.GetUserId()!), "Id", "Id");
             return View();
         }
 
@@ -53,16 +56,15 @@ namespace WebApplication.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,AmountRefilled,Timestamp,Cost,CarId")] GasRefill gasRefill)
+        public async Task<IActionResult> Create(GasRefill gasRefill)
         {
             if (ModelState.IsValid)
             {
-                gasRefill.Id = Guid.NewGuid();
                 _uow.GasRefills.Add(gasRefill);
                 await _uow.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CarId"] = new SelectList(await _uow.Cars.GetAllAsync(), "Id", "Id", gasRefill.CarId);
+            ViewData["CarId"] = new SelectList(await _uow.Cars.GetAccessibleCarsForUser((Guid) User.GetUserId()!), "Id", "Id", gasRefill.CarId);
             return View(gasRefill);
         }
 
@@ -74,12 +76,12 @@ namespace WebApplication.Controllers
                 return NotFound();
             }
 
-            var gasRefill = await _uow.GasRefills.FirstOrDefaultAsync((Guid) id);
+            var gasRefill = await _uow.GasRefills.FirstOrDefaultAsync((Guid) id, User.GetUserId());
             if (gasRefill == null)
             {
                 return NotFound();
             }
-            ViewData["CarId"] = new SelectList(await _uow.Cars.GetAllAsync(), "Id", "Id", gasRefill.CarId);
+            ViewData["CarId"] = new SelectList(await _uow.Cars.GetAccessibleCarsForUser((Guid) User.GetUserId()!), "Id", "Id", gasRefill.CarId);
             return View(gasRefill);
         }
 
@@ -88,7 +90,7 @@ namespace WebApplication.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,AmountRefilled,Timestamp,Cost,CarId")] GasRefill gasRefill)
+        public async Task<IActionResult> Edit(Guid id, GasRefill gasRefill)
         {
             if (id != gasRefill.Id)
             {
@@ -99,7 +101,7 @@ namespace WebApplication.Controllers
             {
                 try
                 {
-                    _uow.GasRefills.Update(gasRefill);
+                    _uow.GasRefills.Update(gasRefill, User.GetUserId());
                     await _uow.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -115,7 +117,7 @@ namespace WebApplication.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CarId"] = new SelectList(await _uow.Cars.GetAllAsync(), "Id", "Id", gasRefill.CarId);
+            ViewData["CarId"] = new SelectList(await _uow.Cars.GetAccessibleCarsForUser((Guid) User.GetUserId()!), "Id", "Id", gasRefill.CarId);
             return View(gasRefill);
         }
 
@@ -128,7 +130,7 @@ namespace WebApplication.Controllers
             }
 
             var gasRefill = await _uow.GasRefills
-                .FirstOrDefaultAsync((Guid) id);
+                .FirstOrDefaultAsync((Guid) id, User.GetUserId());
             if (gasRefill == null)
             {
                 return NotFound();
@@ -142,10 +144,10 @@ namespace WebApplication.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var gasRefill = await _uow.GasRefills.FirstOrDefaultAsync(id);
+            var gasRefill = await _uow.GasRefills.FirstOrDefaultAsync(id, User.GetUserId());
             if (gasRefill != null)
             {
-                _uow.GasRefills.Remove(gasRefill);
+                _uow.GasRefills.Remove(gasRefill, User.GetUserId());
                 await _uow.SaveChangesAsync();
             }
             return RedirectToAction(nameof(Index));
@@ -153,7 +155,7 @@ namespace WebApplication.Controllers
 
         private async Task<bool> GasRefillExists(Guid id)
         {
-            return await _uow.GasRefills.ExistsAsync(id);
+            return await _uow.GasRefills.ExistsAsync(id, User.GetUserId());
         }
     }
 }

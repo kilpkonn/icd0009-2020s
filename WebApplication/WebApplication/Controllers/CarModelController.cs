@@ -2,12 +2,14 @@ using System;
 using System.Threading.Tasks;
 using CarApp.DAL.App;
 using Domain.App;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace WebApplication.Controllers
 {
+    [Authorize]
     public class CarModelController : Controller
     {
         private readonly IAppUnitOfWork _uow;
@@ -18,12 +20,14 @@ namespace WebApplication.Controllers
         }
 
         // GET: CarModel
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
-            return View(await _uow.CarModels.GetAllAsync());
+            return View(await _uow.CarModels.GetAllAsync(null));
         }
 
         // GET: CarModel/Details/5
+        [AllowAnonymous]
         public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null)
@@ -32,7 +36,7 @@ namespace WebApplication.Controllers
             }
 
             var carModel = await _uow.CarModels
-                .FirstOrDefaultAsync((Guid) id);
+                .FirstOrDefaultAsync((Guid) id, null);
             if (carModel == null)
             {
                 return NotFound();
@@ -44,7 +48,7 @@ namespace WebApplication.Controllers
         // GET: CarModel/Create
         public async Task<IActionResult> Create()
         {
-            ViewData["CarTypeId"] = new SelectList(await _uow.CarTypes.GetAllAsync(), "Id", "Name");
+            ViewData["CarTypeId"] = new SelectList(await _uow.CarTypes.GetAllAsync(null), "Id", "Name");
             return View();
         }
 
@@ -53,18 +57,16 @@ namespace WebApplication.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,ReleaseDate,CarTypeId")]
-            CarModel carModel)
+        public async Task<IActionResult> Create(CarModel carModel)
         {
             if (ModelState.IsValid)
             {
-                carModel.Id = Guid.NewGuid();
                 _uow.CarModels.Add(carModel);
                 await _uow.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
 
-            ViewData["CarTypeId"] = new SelectList(await _uow.CarTypes.GetAllAsync(), "Id", "Name", carModel.CarTypeId);
+            ViewData["CarTypeId"] = new SelectList(await _uow.CarTypes.GetAllAsync(null), "Id", "Name", carModel.CarTypeId);
             return View(carModel);
         }
 
@@ -76,13 +78,13 @@ namespace WebApplication.Controllers
                 return NotFound();
             }
 
-            var carModel = await _uow.CarModels.FirstOrDefaultAsync((Guid) id);
+            var carModel = await _uow.CarModels.FirstOrDefaultAsync((Guid) id, null);
             if (carModel == null)
             {
                 return NotFound();
             }
 
-            ViewData["CarTypeId"] = new SelectList(await _uow.CarTypes.GetAllAsync(), "Id", "Name", carModel.CarTypeId);
+            ViewData["CarTypeId"] = new SelectList(await _uow.CarTypes.GetAllAsync(null), "Id", "Name", carModel.CarTypeId);
             return View(carModel);
         }
 
@@ -91,8 +93,7 @@ namespace WebApplication.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Name,ReleaseDate,CarTypeId")]
-            CarModel carModel)
+        public async Task<IActionResult> Edit(Guid id, CarModel carModel)
         {
             if (id != carModel.Id)
             {
@@ -103,7 +104,7 @@ namespace WebApplication.Controllers
             {
                 try
                 {
-                    _uow.CarModels.Update(carModel);
+                    _uow.CarModels.Update(carModel, null);
                     await _uow.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -121,7 +122,7 @@ namespace WebApplication.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            ViewData["CarTypeId"] = new SelectList(await _uow.CarTypes.GetAllAsync(), "Id", "Name", carModel.CarTypeId);
+            ViewData["CarTypeId"] = new SelectList(await _uow.CarTypes.GetAllAsync(null), "Id", "Name", carModel.CarTypeId);
             return View(carModel);
         }
 
@@ -134,7 +135,7 @@ namespace WebApplication.Controllers
             }
 
             var carModel = await _uow.CarModels
-                .FirstOrDefaultAsync((Guid) id);
+                .FirstOrDefaultAsync((Guid) id, null);
             if (carModel == null)
             {
                 return NotFound();
@@ -148,10 +149,10 @@ namespace WebApplication.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var carModel = await _uow.CarModels.FirstOrDefaultAsync(id);
+            var carModel = await _uow.CarModels.FirstOrDefaultAsync(id, null);
             if (carModel != null)
             {
-                _uow.CarModels.Remove(carModel);
+                _uow.CarModels.Remove(carModel, null);
                 await _uow.SaveChangesAsync();
             }
 
@@ -160,7 +161,7 @@ namespace WebApplication.Controllers
 
         private async Task<bool> CarModelExists(Guid id)
         {
-            return await _uow.CarModels.ExistsAsync(id);
+            return await _uow.CarModels.ExistsAsync(id, null);
         }
     }
 }

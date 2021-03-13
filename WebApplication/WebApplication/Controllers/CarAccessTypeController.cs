@@ -19,7 +19,7 @@ namespace WebApplication.Controllers
         // GET: CarAccessType
         public async Task<IActionResult> Index()
         {
-            return View(await _uow.CarAccessTypes.GetAllAsync());
+            return View(await _uow.CarAccessTypes.GetAllAsync(null));
         }
 
         // GET: CarAccessType/Details/5
@@ -31,7 +31,7 @@ namespace WebApplication.Controllers
             }
 
             var carAccessType = await _uow.CarAccessTypes
-                .FirstOrDefaultAsync((Guid) id);
+                .FirstOrDefaultAsync((Guid) id, null);
             if (carAccessType == null)
             {
                 return NotFound();
@@ -51,11 +51,10 @@ namespace WebApplication.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,AccessLevel")] CarAccessType carAccessType)
+        public async Task<IActionResult> Create(CarAccessType carAccessType)
         {
             if (ModelState.IsValid)
             {
-                carAccessType.Id = Guid.NewGuid();
                 _uow.CarAccessTypes.Add(carAccessType);
                 await _uow.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -71,7 +70,7 @@ namespace WebApplication.Controllers
                 return NotFound();
             }
 
-            var carAccessType = await _uow.CarAccessTypes.FirstOrDefaultAsync((Guid) id);
+            var carAccessType = await _uow.CarAccessTypes.FirstOrDefaultAsync((Guid) id, null);
             if (carAccessType == null)
             {
                 return NotFound();
@@ -84,7 +83,7 @@ namespace WebApplication.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Name,AccessLevel")] CarAccessType carAccessType)
+        public async Task<IActionResult> Edit(Guid id, CarAccessType carAccessType)
         {
             if (id != carAccessType.Id)
             {
@@ -95,7 +94,7 @@ namespace WebApplication.Controllers
             {
                 try
                 {
-                    _uow.CarAccessTypes.Update(carAccessType);
+                    _uow.CarAccessTypes.Update(carAccessType, null);
                     await _uow.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -123,7 +122,7 @@ namespace WebApplication.Controllers
             }
 
             var carAccessType = await _uow.CarAccessTypes
-                .FirstOrDefaultAsync((Guid) id);
+                .FirstOrDefaultAsync((Guid) id, null);
             if (carAccessType == null)
             {
                 return NotFound();
@@ -137,10 +136,10 @@ namespace WebApplication.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var carAccessType = await _uow.CarAccessTypes.FirstOrDefaultAsync(id);
+            var carAccessType = await _uow.CarAccessTypes.FirstOrDefaultAsync(id, null);
             if (carAccessType != null)
             {
-                _uow.CarAccessTypes.Remove(carAccessType);
+                _uow.CarAccessTypes.Remove(carAccessType, null);
                 await _uow.SaveChangesAsync();
             }
             return RedirectToAction(nameof(Index));
@@ -148,7 +147,7 @@ namespace WebApplication.Controllers
 
         private async Task<bool> CarAccessTypeExists(Guid id)
         {
-            return await _uow.CarAccessTypes.ExistsAsync(id);
+            return await _uow.CarAccessTypes.ExistsAsync(id, null);
         }
     }
 }

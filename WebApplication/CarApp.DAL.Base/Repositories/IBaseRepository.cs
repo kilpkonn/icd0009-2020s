@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Car.Domain.Base;
 
 namespace Car.DAL.Base.Repositories
@@ -12,7 +10,7 @@ namespace Car.DAL.Base.Repositories
 
     public interface IBaseRepository<TKey, TEntity> : IBaseRepositoryCommon<TKey, TEntity>,
         IBaseRepositoryAsync<TKey, TEntity>
-        where TKey : IEquatable<TKey>
+        where TKey : struct,  IEquatable<TKey>
         where TEntity : class, IDomainEntityId<TKey>
     {
     }

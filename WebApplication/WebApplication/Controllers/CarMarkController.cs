@@ -8,9 +8,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DAL.EF;
 using Domain.App;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebApplication.Controllers
 {
+    [Authorize]
     public class CarMarkController : Controller
     {
         private readonly IAppUnitOfWork _uow;
@@ -21,12 +23,14 @@ namespace WebApplication.Controllers
         }
 
         // GET: CarMark
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
-            return View(await _uow.CarMarks.GetAllAsync());
+            return View(await _uow.CarMarks.GetAllAsync(null));
         }
 
         // GET: CarMark/Details/5
+        [AllowAnonymous]
         public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null)
@@ -35,7 +39,7 @@ namespace WebApplication.Controllers
             }
 
             var carMark = await _uow.CarMarks
-                .FirstOrDefaultAsync((Guid) id);
+                .FirstOrDefaultAsync((Guid) id, null);
             if (carMark == null)
             {
                 return NotFound();
@@ -55,11 +59,10 @@ namespace WebApplication.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name")] CarMark carMark)
+        public async Task<IActionResult> Create(CarMark carMark)
         {
             if (ModelState.IsValid)
             {
-                carMark.Id = Guid.NewGuid();
                 _uow.CarMarks.Add(carMark);
                 await _uow.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -76,7 +79,7 @@ namespace WebApplication.Controllers
                 return NotFound();
             }
 
-            var carMark = await _uow.CarMarks.FirstOrDefaultAsync((Guid) id);
+            var carMark = await _uow.CarMarks.FirstOrDefaultAsync((Guid) id, null);
             if (carMark == null)
             {
                 return NotFound();
@@ -90,7 +93,7 @@ namespace WebApplication.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Name")] CarMark carMark)
+        public async Task<IActionResult> Edit(Guid id, CarMark carMark)
         {
             if (id != carMark.Id)
             {
@@ -101,7 +104,7 @@ namespace WebApplication.Controllers
             {
                 try
                 {
-                    _uow.CarMarks.Update(carMark);
+                    _uow.CarMarks.Update(carMark, null);
                     await _uow.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -131,7 +134,7 @@ namespace WebApplication.Controllers
             }
 
             var carMark = await _uow.CarMarks
-                .FirstOrDefaultAsync((Guid) id);
+                .FirstOrDefaultAsync((Guid) id, null);
             if (carMark == null)
             {
                 return NotFound();
@@ -145,10 +148,10 @@ namespace WebApplication.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var carMark = await _uow.CarMarks.FirstOrDefaultAsync(id);
+            var carMark = await _uow.CarMarks.FirstOrDefaultAsync(id, null);
             if (carMark != null)
             {
-                _uow.CarMarks.Remove(carMark);
+                _uow.CarMarks.Remove(carMark, null);
                 await _uow.SaveChangesAsync();
             }
 
@@ -157,7 +160,7 @@ namespace WebApplication.Controllers
 
         private async Task<bool> CarMarkExists(Guid id)
         {
-            return await _uow.CarMarks.ExistsAsync(id);
+            return await _uow.CarMarks.ExistsAsync(id, null);
         }
     }
 }
