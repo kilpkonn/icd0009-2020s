@@ -9,7 +9,7 @@ namespace Domain.App
         public string Name { get; set; } = null!;
         public DateTime ReleaseDate { get; set; }
         
-        public Guid? CarTypeId { get; set; }
+        public Guid CarTypeId { get; set; }
         public CarType? CarType { get; set; }
     }
 }

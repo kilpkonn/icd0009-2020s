@@ -1,10 +1,13 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Domain.App;
+using Domain.App.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace DAL.EF
 {
-    public class AppDbContext: DbContext
+    public class AppDbContext: IdentityDbContext<AppUser, AppRole, Guid>
     {
         public DbSet<Domain.App.Car> Cars { get; set; } = null!;
 
@@ -39,37 +42,6 @@ namespace DAL.EF
             {
                 relationship.DeleteBehavior = DeleteBehavior.Restrict;
             }
-
-
-            // modelBuilder.Entity<Player>()
-            //     .HasMany<GameSession>()
-            //     .WithOne(x => x.PlayerWhite)
-            //     .HasForeignKey(x => x.PlayerWhiteId)
-            //     .OnDelete(DeleteBehavior.Restrict);
-            //
-            // modelBuilder.Entity<Player>()
-            //     .HasMany<GameSession>()
-            //     .WithOne(x => x.PlayerBlack)
-            //     .HasForeignKey(x => x.PlayerBlackId)
-            //     .OnDelete(DeleteBehavior.Restrict);
-            //
-            // modelBuilder.Entity<GameSession>()
-            //     .HasMany<BoardState>()
-            //     .WithOne(x => x.GameSession)
-            //     .HasForeignKey(x => x.GameSessionId)
-            //     .OnDelete(DeleteBehavior.Cascade);
-            //
-            // modelBuilder.Entity<BoardState>()
-            //     .HasMany<BoardTile>()
-            //     .WithOne(x => x.BoardState)
-            //     .HasForeignKey(x => x.BoardStateId)
-            //     .OnDelete(DeleteBehavior.Cascade);
-            //
-            // modelBuilder.Entity<BoardTile>()
-            //     .HasIndex(x => x.CoordX);
-            //
-            // modelBuilder.Entity<BoardTile>()
-            //     .HasIndex(x => x.CoordY);
 
         }
     }
