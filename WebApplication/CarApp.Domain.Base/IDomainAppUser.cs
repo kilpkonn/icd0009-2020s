@@ -12,6 +12,6 @@ namespace Car.Domain.Base
         where TKey : IEquatable<TKey>
         where TAppUser : IdentityUser<TKey>
     {
-        TAppUser AppUser { get; set; }
+        TAppUser? AppUser { get; set; }
     }
 }

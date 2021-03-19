@@ -14,7 +14,7 @@ Running from IDE works just fine or `./path/to/executable`
 
 ### Create migrations
 ```bash
-dotnet ef migrations add InitialMigration --project DAL.EF --startup-project WebApplication
+dotnet ef migrations add InitialMigration --project DAL.App.EF --startup-project WebApplication
 ```
 
 ### Create MVC Controllers

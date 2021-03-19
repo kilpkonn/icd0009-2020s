@@ -10,9 +10,9 @@ namespace Domain.Base
     public class DomainEntity<TKey> : DomainEntityId<TKey>, IDomainEntity<TKey>
         where TKey : IEquatable<TKey>
     {
-        public string CreatedBy { get; set; } = default!;
-        public DateTime CreatedAt { get; set; }
-        public string UpdatedBy { get; set; } = default!;
-        public DateTime UpdatedAt { get; set; }
+        public Guid CreatedBy { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
+        public Guid UpdatedBy { get; set; }
+        public DateTime UpdatedAt { get; set; } = DateTime.Now;
     }
 }

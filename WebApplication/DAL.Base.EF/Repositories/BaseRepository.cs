@@ -75,7 +75,7 @@ namespace DAL.Base.EF.Repositories
         public virtual async Task<TEntity> RemoveAsync(TKey id, TKey? userId)
         {
             var entity = await FirstOrDefaultAsync(id, userId);
-            if (entity != null) throw new NullReferenceException($"Entity with id {id} not found.");
+            if (entity == null) throw new NullReferenceException($"Entity with id {id} not found.");
             return Remove(entity!, userId);
         }
 
@@ -89,7 +89,7 @@ namespace DAL.Base.EF.Repositories
         {
             var query = DbSet.AsQueryable();
 
-            if (userId != null && typeof(TEntity).IsAssignableFrom(typeof(IDomainAppUserId<TKey>)))
+            if (userId != null && typeof(IDomainAppUserId<TKey>).IsAssignableFrom(typeof(TEntity)))
             {
                 query = query.Where(e => ((IDomainAppUserId<TKey>) e).AppUserId.Equals(userId));
             }
