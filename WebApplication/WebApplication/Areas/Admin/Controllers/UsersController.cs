@@ -191,7 +191,7 @@ namespace WebApplication.Areas.Admin.Controllers
             {
                 User = appUser,
                 Roles = await _roleManager.Roles.ToListAsync(),
-                SelectedRoles = await _userManager.GetRolesAsync(appUser),
+                SelectedRoles = await _userManager.GetRolesAsync(appUser!),
             };
 
             return View(vm);
