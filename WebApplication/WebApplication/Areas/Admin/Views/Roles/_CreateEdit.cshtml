@@ -1,7 +1,7 @@
 @model Domain.App.Identity.AppRole
 
 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-<input type="hidden" asp-for="Id" />
+<input type="hidden" asp-for="Id" value="@(Guid.NewGuid())" />
 <div class="form-group">
     <label asp-for="Name" class="control-label"></label>
     <input asp-for="Name" class="form-control" />
@@ -12,8 +12,8 @@
     <input asp-for="NormalizedName" class="form-control" />
     <span asp-validation-for="NormalizedName" class="text-danger"></span>
 </div>
-<div class="form-group">
-    <label asp-for="ConcurrencyStamp" class="control-label"></label>
-    <input asp-for="ConcurrencyStamp" class="form-control" />
-    <span asp-validation-for="ConcurrencyStamp" class="text-danger"></span>
-</div>
+@* <div class="form-group"> *@
+@*     <label asp-for="ConcurrencyStamp" class="control-label"></label> *@
+@*     <input asp-for="ConcurrencyStamp" class="form-control" /> *@
+@*     <span asp-validation-for="ConcurrencyStamp" class="text-danger"></span> *@
+@* </div> *@

@@ -55,10 +55,11 @@ namespace WebApplication.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,NormalizedName,ConcurrencyStamp")] AppRole appRole)
+        public async Task<IActionResult> Create(AppRole appRole)
         {
             if (ModelState.IsValid)
             {
+                appRole.ConcurrencyStamp = Guid.NewGuid().ToString();
                 _context.Add(appRole);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -98,6 +99,7 @@ namespace WebApplication.Areas.Admin.Controllers
             {
                 try
                 {
+                    appRole.ConcurrencyStamp = Guid.NewGuid().ToString();
                     _context.Update(appRole);
                     await _context.SaveChangesAsync();
                 }
