@@ -1,7 +1,7 @@
 using System;
 using CarApp.DAL.App;
-using DAL.EF;
-using DAL.EF.DataInit;
+using DAL.App.EF;
+using DAL.App.EF.DataInit;
 using Domain.App.Identity;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;

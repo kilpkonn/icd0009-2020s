@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
-        <RootNamespace>DAL.EF</RootNamespace>
+        <RootNamespace>DAL.App.EF</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>

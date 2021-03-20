@@ -1,11 +1,9 @@
-using System;
-using System.Collections.Generic;
 using CarApp.DAL.App;
 using CarApp.DAL.App.Repositories;
 using DAL.Base.EF;
-using DAL.EF.Repositories;
+using DAL.App.EF.Repositories;
 
-namespace DAL.EF
+namespace DAL.App.EF
 {
     public class AppUnitOfWork : BaseUnitOfWork<AppDbContext>, IAppUnitOfWork
     {

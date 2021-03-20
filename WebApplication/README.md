@@ -22,6 +22,8 @@ dotnet ef migrations add InitialMigration --project DAL.App.EF --startup-project
 dotnet aspnet-codegenerator controller -name CarController        -actions -m  Car        -dc AppDbContext -outDir Controllers --useDefaultLayout --useAsyncActions --referenceScriptLibraries -f
 
 dotnet aspnet-codegenerator controller -name RolesController        -actions -m  AppRole        -dc AppDbContext -outDir Areas/Admin/Controllers --useDefaultLayout --useAsyncActions --referenceScriptLibraries -f
+
+dotnet aspnet-codegenerator identity -dc DAL.App.EF.AppDbContext -f
 ```
 
 ### Create ApiControllers

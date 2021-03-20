@@ -5,7 +5,7 @@ using Domain.App.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
-namespace DAL.EF.DataInit
+namespace DAL.App.EF.DataInit
 {
     public static class DataInit
     {

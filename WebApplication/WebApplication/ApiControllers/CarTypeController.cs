@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using DAL.EF;
+using DAL.App.EF;
 using Domain.App;
 
 namespace WebApplication.ApiControllers

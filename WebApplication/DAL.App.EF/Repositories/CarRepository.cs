@@ -5,9 +5,8 @@ using System.Threading.Tasks;
 using CarApp.DAL.App.Repositories;
 using DAL.Base.EF.Repositories;
 using Microsoft.EntityFrameworkCore;
-using Car = Domain.App.Car;
 
-namespace DAL.EF.Repositories
+namespace DAL.App.EF.Repositories
 {
     public class CarRepository : BaseRepository<Domain.App.Car, AppDbContext>, ICarRepository
     {

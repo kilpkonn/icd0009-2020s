@@ -7,7 +7,7 @@ using DAL.Base.EF.Repositories;
 using Domain.App;
 using Microsoft.EntityFrameworkCore;
 
-namespace DAL.EF.Repositories
+namespace DAL.App.EF.Repositories
 {
     public class CarErrorCodeRepository: BaseRepository<CarErrorCode, AppDbContext>, ICarErrorCodeRepository
     {
