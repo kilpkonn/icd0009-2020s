@@ -71,7 +71,7 @@ namespace WebApplication
             {
                 endpoints.MapControllerRoute(
                     name: "areas",
-                    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{area:exists}/{controller=Users}/{action=Index}/{id?}");
 
                 endpoints.MapControllerRoute(
                     name: "default",

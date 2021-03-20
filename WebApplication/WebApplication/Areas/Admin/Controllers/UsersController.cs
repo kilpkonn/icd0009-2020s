@@ -1,9 +1,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using DAL.App.EF;
 using Domain.App.Identity;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -11,22 +9,24 @@ using Microsoft.EntityFrameworkCore;
 namespace WebApplication.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize(Roles = "Admin")]
-    public class RolesController : Controller
+    public class UsersController : Controller
     {
+        private readonly UserManager<AppUser> _userManager;
         private readonly RoleManager<AppRole> _roleManager;
-        public RolesController(RoleManager<AppRole> roleManager)
+
+        public UsersController(UserManager<AppUser> userManager, RoleManager<AppRole> roleManager)
         {
+            _userManager = userManager;
             _roleManager = roleManager;
         }
 
-        // GET: Admin/Roles
+        // GET: Admin/Users
         public async Task<IActionResult> Index()
         {
-            return View(await _roleManager.Roles.ToListAsync());
+            return View(await _userManager.Users.ToListAsync());
         }
 
-        // GET: Admin/Roles/Details/5
+        // GET: Admin/Users/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null)
@@ -34,38 +34,38 @@ namespace WebApplication.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var appRole = await _roleManager.FindByIdAsync(id.ToString());
-            if (appRole == null)
+            var appUser = await _userManager.FindByIdAsync(id.ToString());
+            if (appUser == null)
             {
                 return NotFound();
             }
 
-            return View(appRole);
+            return View(appUser);
         }
 
-        // GET: Admin/Roles/Create
+        // GET: Admin/Users/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Admin/Roles/Create
+        // POST: Admin/Users/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(AppRole appRole)
+        public async Task<IActionResult> Create(AppUser appUser)
         {
             if (ModelState.IsValid)
             {
-                appRole.ConcurrencyStamp = Guid.NewGuid().ToString();
-                await _roleManager.CreateAsync(appRole);
+                appUser.Id = Guid.NewGuid();
+                await _userManager.CreateAsync(appUser);
                 return RedirectToAction(nameof(Index));
             }
-            return View(appRole);
+            return View(appUser);
         }
 
-        // GET: Admin/Roles/Edit/5
+        // GET: Admin/Users/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null)
@@ -73,22 +73,22 @@ namespace WebApplication.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var appRole = await _roleManager.FindByIdAsync(id.ToString());
-            if (appRole == null)
+            var appUser = await _userManager.FindByIdAsync(id.ToString());
+            if (appUser == null)
             {
                 return NotFound();
             }
-            return View(appRole);
+            return View(appUser);
         }
 
-        // POST: Admin/Roles/Edit/5
+        // POST: Admin/Users/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, AppRole appRole)
+        public async Task<IActionResult> Edit(Guid id, AppUser appUser)
         {
-            if (id != appRole.Id)
+            if (id != appUser.Id)
             {
                 return NotFound();
             }
@@ -97,15 +97,23 @@ namespace WebApplication.Areas.Admin.Controllers
             {
                 try
                 {
-                    var role = await _roleManager.FindByIdAsync(id.ToString());
-                    role!.Name = appRole.Name;
-                    role.NormalizedName = appRole.NormalizedName;
-                    role.ConcurrencyStamp = Guid.NewGuid().ToString();
-                    await _roleManager.UpdateAsync(role);
+                    var user = await _userManager.FindByIdAsync(appUser.Id.ToString());
+                    user!.Email = appUser.Email;
+                    user.UserName = appUser.UserName;
+                    user.DisplayName = appUser.DisplayName;
+                    user.LockoutEnabled = appUser.LockoutEnabled;
+                    user.LockoutEnd = appUser.LockoutEnd;
+                    user.NormalizedEmail = appUser.NormalizedEmail;
+                    user.PasswordHash = appUser.PasswordHash;
+                    user.PhoneNumber = appUser.PhoneNumber;
+                    user.PhoneNumberConfirmed = appUser.PhoneNumberConfirmed;
+                    user.NormalizedUserName = appUser.NormalizedUserName;
+                    user.TwoFactorEnabled = appUser.TwoFactorEnabled;
+                    await _userManager.UpdateAsync(user);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!AppRoleExists(appRole.Id))
+                    if (!AppUserExists(appUser.Id))
                     {
                         return NotFound();
                     }
@@ -116,10 +124,10 @@ namespace WebApplication.Areas.Admin.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(appRole);
+            return View(appUser);
         }
 
-        // GET: Admin/Roles/Delete/5
+        // GET: Admin/Users/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null)
@@ -127,28 +135,28 @@ namespace WebApplication.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var appRole = await _roleManager.FindByIdAsync(id.ToString());
-            if (appRole == null)
+            var appUser = await _userManager.FindByIdAsync(id.ToString());
+            if (appUser == null)
             {
                 return NotFound();
             }
 
-            return View(appRole);
+            return View(appUser);
         }
 
-        // POST: Admin/Roles/Delete/5
+        // POST: Admin/Users/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var appRole = await _roleManager.FindByIdAsync(id.ToString());
-            await _roleManager.DeleteAsync(appRole);
+            var appUser = await _userManager.FindByIdAsync(id.ToString());
+            await _userManager.DeleteAsync(appUser);
             return RedirectToAction(nameof(Index));
         }
 
-        private bool AppRoleExists(Guid id)
+        private bool AppUserExists(Guid id)
         {
-            return _roleManager.Roles.AsNoTracking().Any(e => e.Id == id);
+            return _userManager.Users.AsNoTracking().Any(m => m.Id == id);
         }
     }
 }
