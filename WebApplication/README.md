@@ -20,6 +20,8 @@ dotnet ef migrations add InitialMigration --project DAL.App.EF --startup-project
 ### Create MVC Controllers
 ```bash
 dotnet aspnet-codegenerator controller -name CarController        -actions -m  Car        -dc AppDbContext -outDir Controllers --useDefaultLayout --useAsyncActions --referenceScriptLibraries -f
+
+dotnet aspnet-codegenerator controller -name RolesController        -actions -m  AppRole        -dc AppDbContext -outDir Areas/Admin/Controllers --useDefaultLayout --useAsyncActions --referenceScriptLibraries -f
 ```
 
 ### Create ApiControllers
