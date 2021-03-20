@@ -1,7 +1,7 @@
 @model Domain.App.Identity.AppRole
 
 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-<input type="hidden" asp-for="Id"/>
+<input type="hidden" asp-for="Id" value="@(Model.Id != Guid.Empty ? Model.Id : Guid.NewGuid())"/>
 <div class="form-group">
     <label asp-for="Name" class="control-label"></label>
     <input asp-for="Name" class="form-control" />

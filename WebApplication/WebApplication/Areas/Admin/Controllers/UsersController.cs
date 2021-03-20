@@ -1,10 +1,13 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Domain.App.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using WebApplication.Areas.Admin.Models;
 
 namespace WebApplication.Areas.Admin.Controllers
 {
@@ -40,13 +43,25 @@ namespace WebApplication.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            return View(appUser);
+            UserViewModel vm = new()
+            {
+                User = appUser,
+                Roles = await _roleManager.Roles.ToListAsync(),
+                SelectedRoles = await _userManager.GetRolesAsync(appUser),
+            };
+
+            return View(vm);
         }
 
         // GET: Admin/Users/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            return View();
+            UserViewModel vm = new()
+            {
+                Roles = await _roleManager.Roles.ToListAsync(),
+                SelectedRoles = new List<string>(),
+            };
+            return View(vm);
         }
 
         // POST: Admin/Users/Create
@@ -54,15 +69,35 @@ namespace WebApplication.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(AppUser appUser)
+        public async Task<IActionResult> Create(UserViewModel postVm)
         {
+            var appUser = postVm.User;
             if (ModelState.IsValid)
             {
-                appUser.Id = Guid.NewGuid();
+                appUser!.Id = Guid.NewGuid();
+                appUser.SecurityStamp = Guid.NewGuid().ToString();
+                appUser.ConcurrencyStamp = Guid.NewGuid().ToString();
                 await _userManager.CreateAsync(appUser);
+                
+                foreach (var role in postVm.SelectedRoles)
+                {
+                    if (!await _userManager.IsInRoleAsync(appUser, role))
+                    {
+                        await _userManager.AddToRoleAsync(appUser, role);
+                    }
+                }
+                
                 return RedirectToAction(nameof(Index));
             }
-            return View(appUser);
+            
+            UserViewModel vm = new()
+            {
+                User = appUser,
+                Roles = await _roleManager.Roles.ToListAsync(),
+                SelectedRoles = await _userManager.GetRolesAsync(appUser!),
+            };
+
+            return View(vm);
         }
 
         // GET: Admin/Users/Edit/5
@@ -78,7 +113,15 @@ namespace WebApplication.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            return View(appUser);
+
+            UserViewModel vm = new()
+            {
+                User = appUser,
+                Roles = await _roleManager.Roles.ToListAsync(),
+                SelectedRoles = await _userManager.GetRolesAsync(appUser),
+            };
+
+            return View(vm);
         }
 
         // POST: Admin/Users/Edit/5
@@ -86,9 +129,10 @@ namespace WebApplication.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, AppUser appUser)
+        public async Task<IActionResult> Edit(Guid id, UserViewModel postVm)
         {
-            if (id != appUser.Id)
+            var appUser = postVm.User;
+            if (id != (appUser?.Id ?? null))
             {
                 return NotFound();
             }
@@ -97,7 +141,7 @@ namespace WebApplication.Areas.Admin.Controllers
             {
                 try
                 {
-                    var user = await _userManager.FindByIdAsync(appUser.Id.ToString());
+                    var user = await _userManager.FindByIdAsync(appUser!.Id.ToString());
                     user!.Email = appUser.Email;
                     user.UserName = appUser.UserName;
                     user.DisplayName = appUser.DisplayName;
@@ -109,11 +153,28 @@ namespace WebApplication.Areas.Admin.Controllers
                     user.PhoneNumberConfirmed = appUser.PhoneNumberConfirmed;
                     user.NormalizedUserName = appUser.NormalizedUserName;
                     user.TwoFactorEnabled = appUser.TwoFactorEnabled;
+                    
+                    foreach (var role in postVm.SelectedRoles)
+                    {
+                        if (!await _userManager.IsInRoleAsync(appUser, role))
+                        {
+                            await _userManager.AddToRoleAsync(appUser, role);
+                        }
+                    }
+
+                    foreach (var role in await _userManager.GetRolesAsync(appUser))
+                    {
+                        if (!postVm.SelectedRoles.Contains(role))
+                        {
+                            await _userManager.RemoveFromRoleAsync(appUser, role);
+                        }
+                    }
+                    
                     await _userManager.UpdateAsync(user);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!AppUserExists(appUser.Id))
+                    if (!AppUserExists(appUser!.Id))
                     {
                         return NotFound();
                     }
@@ -122,9 +183,18 @@ namespace WebApplication.Areas.Admin.Controllers
                         throw;
                     }
                 }
+
                 return RedirectToAction(nameof(Index));
             }
-            return View(appUser);
+            
+            UserViewModel vm = new()
+            {
+                User = appUser,
+                Roles = await _roleManager.Roles.ToListAsync(),
+                SelectedRoles = await _userManager.GetRolesAsync(appUser),
+            };
+
+            return View(vm);
         }
 
         // GET: Admin/Users/Delete/5
