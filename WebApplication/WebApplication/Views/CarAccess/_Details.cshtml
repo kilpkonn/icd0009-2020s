@@ -1,0 +1,21 @@
+
+<dl class="row">
+    <dt class = "col-sm-2">
+        @Html.DisplayNameFor(model => model.AppUserId)
+    </dt>
+    <dd class = "col-sm-10">
+        @Html.DisplayFor(model => model.AppUserId)
+    </dd>
+    <dt class = "col-sm-2">
+        @Html.DisplayNameFor(model => model.Car)
+    </dt>
+    <dd class = "col-sm-10">
+        @Html.DisplayFor(model => model.Car!.Id)
+    </dd>
+    <dt class = "col-sm-2">
+        @Html.DisplayNameFor(model => model.CarAccessType)
+    </dt>
+    <dd class = "col-sm-10">
+        @Html.DisplayFor(model => model.CarAccessType!.Name)
+    </dd>
+</dl>

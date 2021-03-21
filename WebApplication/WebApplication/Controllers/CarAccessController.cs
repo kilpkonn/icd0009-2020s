@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WebApplication.Helpers;
+using WebApplication.Models.CarAccess;
 
 namespace WebApplication.Controllers
 {
@@ -46,9 +47,12 @@ namespace WebApplication.Controllers
         public async Task<IActionResult> Create()
         {
             var userId = User.GetUserId();
-            ViewData["CarId"] = new SelectList(await _uow.Cars.GetAllAsync(userId), "Id", "Id");
-            ViewData["CarAccessTypeId"] = new SelectList(await _uow.CarAccessTypes.GetAllAsync(userId), "Id", "Name");
-            return View();
+            var vm = new CreateEditViewModel()
+            {
+                CarOptions = new SelectList(await _uow.Cars.GetAllAsync(userId), "Id", "Id"),
+                CarAccessTypeOptions = new SelectList(await _uow.CarAccessTypes.GetAllAsync(userId), "Id", "Name")
+            };
+            return View(vm);
         }
 
         // POST: CarAccess/Create
@@ -56,21 +60,27 @@ namespace WebApplication.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(CarAccess carAccess)
+        public async Task<IActionResult> Create(CreateEditViewModel ceVm)
         {
             if (ModelState.IsValid)
             {
+                var carAccess = new CarAccess();
                 carAccess.Id = Guid.NewGuid();
                 carAccess.AppUserId = (Guid) User.GetUserId()!;
+                carAccess.CarId = ceVm.CarAccess!.CarId!;
+                carAccess.CarAccessTypeId = ceVm.CarAccess!.CarAccessTypeId!;
                 _uow.CarAccesses.Add(carAccess);
                 await _uow.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            
             var userId = (Guid) User!.GetUserId()!;
-            ViewData["CarId"] = new SelectList(await _uow.Cars.GetAllAsync(userId), "Id", "Id", carAccess.CarId);
-            ViewData["CarAccessTypeId"] =
-                new SelectList(await _uow.CarAccessTypes.GetAllAsync(userId), "Id", "Name", carAccess.CarAccessTypeId);
-            return View(carAccess);
+            var vm = new CreateEditViewModel()
+            {
+                CarOptions = new SelectList(await _uow.Cars.GetAllAsync(userId), "Id", "Id"),
+                CarAccessTypeOptions = new SelectList(await _uow.CarAccessTypes.GetAllAsync(userId), "Id", "Name")
+            };
+            return View(vm);
         }
 
         // GET: CarAccess/Edit/5
@@ -87,10 +97,13 @@ namespace WebApplication.Controllers
                 return NotFound();
             }
 
-            ViewData["CarId"] = new SelectList(await _uow.Cars.GetAllAsync(userId), "Id", "Id", carAccess.CarId);
-            ViewData["CarAccessTypeId"] =
-                new SelectList(await _uow.CarAccessTypes.GetAllAsync(userId), "Id", "Name", carAccess.CarAccessTypeId);
-            return View(carAccess);
+            var vm = new CreateEditViewModel()
+            {
+                CarAccess = carAccess,
+                CarOptions = new SelectList(await _uow.Cars.GetAllAsync(userId), "Id", "Id"),
+                CarAccessTypeOptions = new SelectList(await _uow.CarAccessTypes.GetAllAsync(userId), "Id", "Name")
+            };
+            return View(vm);
         }
 
         // POST: CarAccess/Edit/5
@@ -127,10 +140,12 @@ namespace WebApplication.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            ViewData["CarId"] = new SelectList(await _uow.Cars.GetAllAsync(userId), "Id", "Id", carAccess.CarId);
-            ViewData["CarAccessTypeId"] =
-                new SelectList(await _uow.CarAccessTypes.GetAllAsync(userId), "Id", "Name", carAccess.CarAccessTypeId);
-            return View(carAccess);
+            var vm = new CreateEditViewModel()
+            {
+                CarOptions = new SelectList(await _uow.Cars.GetAllAsync(userId), "Id", "Id"),
+                CarAccessTypeOptions = new SelectList(await _uow.CarAccessTypes.GetAllAsync(userId), "Id", "Name")
+            };
+            return View(vm);
         }
 
         // GET: CarAccess/Delete/5
