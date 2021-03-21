@@ -122,7 +122,12 @@ namespace WebApplication.Controllers
             {
                 try
                 {
-                    _uow.CarAccesses.Update(carAccess, userId);
+                    var toUpdateAccess = await _uow.CarAccesses.FirstOrDefaultAsync(id, userId);
+                    toUpdateAccess!.UpdatedAt = DateTime.Now;
+                    toUpdateAccess.UpdatedBy = (Guid) userId!;
+                    toUpdateAccess.CarAccessTypeId = carAccess.CarAccessTypeId;
+                    toUpdateAccess.CarId = carAccess.CarId;
+                    _uow.CarAccesses.Update(toUpdateAccess, userId);
                     await _uow.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
