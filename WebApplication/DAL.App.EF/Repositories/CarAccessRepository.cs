@@ -8,6 +8,7 @@ namespace DAL.App.EF.Repositories
     {
         public CarAccessRepository(AppDbContext dbContext) : base(dbContext)
         {
+            
         }
     }
 }

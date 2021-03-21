@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using Domain.App;
 using Domain.App.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -37,11 +36,11 @@ namespace DAL.App.EF
         {
             base.OnModelCreating(modelBuilder);
             
-            foreach (var relationship in modelBuilder.Model.GetEntityTypes()
-                .SelectMany(e => e.GetForeignKeys()))
-            {
-                relationship.DeleteBehavior = DeleteBehavior.Restrict;
-            }
+            // foreach (var relationship in modelBuilder.Model.GetEntityTypes()
+            //     .SelectMany(e => e.GetForeignKeys()))
+            // {
+            //     relationship.DeleteBehavior = DeleteBehavior.Restrict;
+            // }
 
         }
     }

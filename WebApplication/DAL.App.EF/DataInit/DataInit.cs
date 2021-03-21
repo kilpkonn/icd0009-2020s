@@ -57,6 +57,24 @@ namespace DAL.App.EF.DataInit
             CreateTypesForModel(accord, ctx);
             CreateTypesForModel(yaris, ctx);
             CreateTypesForModel(auris, ctx);
+
+            var accessLvlQuest = new CarAccessType()
+            {
+                Name = "Quest",
+                AccessLevel = 10
+            }; var accessLvlBasic = new CarAccessType()
+            {
+                Name = "Basic",
+                AccessLevel = 50
+            }; var accessLvlOwner = new CarAccessType()
+            {
+                Name = "Owner",
+                AccessLevel = 100
+            };
+
+            ctx.CarAccessTypes.Add(accessLvlQuest);
+            ctx.CarAccessTypes.Add(accessLvlBasic);
+            ctx.CarAccessTypes.Add(accessLvlOwner);
             
             ctx.SaveChanges();
         }

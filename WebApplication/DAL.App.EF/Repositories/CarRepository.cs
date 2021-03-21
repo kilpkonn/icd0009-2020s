@@ -18,10 +18,10 @@ namespace DAL.App.EF.Repositories
         {
             return (await DbContext.CarAccesses
                 .Include(x => x.Car)
+                .ThenInclude(x => x!.CarType)
                 .Where(x => x.AppUserId == userId)
                 .Select(x => x.Car)
                 .ToListAsync())!;
-
         }
     }
 }

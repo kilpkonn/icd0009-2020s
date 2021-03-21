@@ -10,20 +10,7 @@
 <div>
     <h4>Car</h4>
     <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CreatedAt)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CreatedAt)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CarType)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CarType!.Name)
-        </dd>
-    </dl>
+    <partial name="_Details" model="Model"/>
     
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
