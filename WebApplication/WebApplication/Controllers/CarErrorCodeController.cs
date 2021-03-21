@@ -1,15 +1,12 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using CarApp.DAL.App;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using DAL.App.EF;
-using Domain.App;
-using Microsoft.AspNetCore.Authorization;
 using WebApplication.Helpers;
+using WebApplication.Models.CarErrorCode;
 
 namespace WebApplication.Controllers
 {
@@ -48,9 +45,15 @@ namespace WebApplication.Controllers
         }
 
         // GET: CarErrorCode/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            return View();
+            var vm = new CreateEditViewModel()
+            {
+                CarOptions = new SelectList(await _uow.Cars.GetAccessibleCarsForUser((Guid) User.GetUserId()!), "Id",
+                    "CarType.Name")
+            };
+
+            return View(vm);
         }
 
         // POST: CarErrorCode/Create
@@ -58,16 +61,26 @@ namespace WebApplication.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(CarErrorCode carErrorCode)
+        public async Task<IActionResult> Create(CreateEditViewModel ceVm)
         {
+            var carErrorCode = ceVm.CarErrorCode;
             if (ModelState.IsValid)
             {
+                carErrorCode!.CreatedBy = (Guid) User.GetUserId()!;
+                carErrorCode!.UpdatedBy = (Guid) User.GetUserId()!;
                 _uow.CarErrorCodes.Add(carErrorCode);
                 await _uow.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
 
-            return View(carErrorCode);
+            var vm = new CreateEditViewModel()
+            {
+                CarErrorCode = carErrorCode,
+                CarOptions = new SelectList(await _uow.Cars.GetAccessibleCarsForUser((Guid) User.GetUserId()!), "Id",
+                    "CarType.Name")
+            };
+
+            return View(vm);
         }
 
         // GET: CarErrorCode/Edit/5
@@ -84,7 +97,14 @@ namespace WebApplication.Controllers
                 return NotFound();
             }
 
-            return View(carErrorCode);
+            var vm = new CreateEditViewModel()
+            {
+                CarErrorCode = carErrorCode,
+                CarOptions = new SelectList(await _uow.Cars.GetAccessibleCarsForUser((Guid) User.GetUserId()!), "Id",
+                    "CarType.Name")
+            };
+
+            return View(vm);
         }
 
         // POST: CarErrorCode/Edit/5
@@ -92,9 +112,10 @@ namespace WebApplication.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, CarErrorCode carErrorCode)
+        public async Task<IActionResult> Edit(Guid id, CreateEditViewModel ceVm)
         {
-            if (id != carErrorCode.Id)
+            var carErrorCode = ceVm.CarErrorCode;
+            if (id != (carErrorCode?.Id ?? null))
             {
                 return NotFound();
             }
@@ -103,12 +124,17 @@ namespace WebApplication.Controllers
             {
                 try
                 {
-                    _uow.CarErrorCodes.Update(carErrorCode, null);
+                    var toUpdate = await _uow.CarErrorCodes.FirstOrDefaultAsync(id, User.GetUserId());
+                    toUpdate!.CarId = carErrorCode!.CarId;
+                    toUpdate.CanData = carErrorCode.CanData;
+                    toUpdate.UpdatedAt = DateTime.Now;
+                    toUpdate.UpdatedBy = (Guid) User.GetUserId()!;
+                    _uow.CarErrorCodes.Update(toUpdate, null);
                     await _uow.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!await CarErrorCodeExists(carErrorCode.Id))
+                    if (!await CarErrorCodeExists(carErrorCode!.Id))
                     {
                         return NotFound();
                     }
@@ -121,7 +147,14 @@ namespace WebApplication.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            return View(carErrorCode);
+            var vm = new CreateEditViewModel()
+            {
+                CarErrorCode = carErrorCode,
+                CarOptions = new SelectList(await _uow.Cars.GetAccessibleCarsForUser((Guid) User.GetUserId()!), "Id",
+                    "CarType.Name")
+            };
+
+            return View(vm);
         }
 
         // GET: CarErrorCode/Delete/5
