@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.App.EF.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20210320085344_InitialMigration")]
+    [Migration("20210321084801_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -30,7 +30,7 @@ namespace DAL.App.EF.Migrations
                     b.Property<Guid>("AppUserId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("CarModelId")
+                    b.Property<Guid>("CarTypeId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAt")
@@ -49,7 +49,7 @@ namespace DAL.App.EF.Migrations
 
                     b.HasIndex("AppUserId");
 
-                    b.HasIndex("CarModelId");
+                    b.HasIndex("CarTypeId");
 
                     b.ToTable("Cars");
                 });
@@ -555,15 +555,15 @@ namespace DAL.App.EF.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Domain.App.CarModel", "CarModel")
+                    b.HasOne("Domain.App.CarType", "CarType")
                         .WithMany()
-                        .HasForeignKey("CarModelId")
+                        .HasForeignKey("CarTypeId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("AppUser");
 
-                    b.Navigation("CarModel");
+                    b.Navigation("CarType");
                 });
 
             modelBuilder.Entity("Domain.App.CarAccess", b =>
