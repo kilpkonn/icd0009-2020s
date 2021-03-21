@@ -8,4 +8,8 @@
       <ProjectReference Include="..\CarApp.Domain.Base\CarApp.Domain.Base.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="5.0.0-alpha.2" />
+    </ItemGroup>
+
 </Project>

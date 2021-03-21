@@ -8,8 +8,8 @@ namespace Domain.App
 {
     public class Car : DomainEntity, IDomainAppUserId
     {
-        public Guid CarModelId { get; set; }
-        public CarModel? CarModel { get; set; }
+        public Guid CarTypeId { get; set; }
+        public CarType? CarType { get; set; }
         
         public Guid AppUserId { get; set; }
         public AppUser? AppUser { get; set; }

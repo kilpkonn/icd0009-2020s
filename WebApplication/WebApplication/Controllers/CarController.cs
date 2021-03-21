@@ -68,7 +68,7 @@ namespace WebApplication.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            ViewData["CarModelId"] = new SelectList(await _uow.CarModels.GetAllAsync(User.GetUserId()), "Id", "Name", car.CarModelId);
+            ViewData["CarModelId"] = new SelectList(await _uow.CarTypes.GetAllAsync(User.GetUserId()), "Id", "Name", car.CarTypeId);
             return View(car);
         }
 
@@ -86,7 +86,7 @@ namespace WebApplication.Controllers
                 return NotFound();
             }
 
-            ViewData["CarModelId"] = new SelectList(await _uow.CarModels.GetAllAsync(User.GetUserId()), "Id", "Name", car.CarModelId);
+            ViewData["CarModelId"] = new SelectList(await _uow.CarTypes.GetAllAsync(User.GetUserId()), "Id", "Name", car.CarTypeId);
             return View(car);
         }
 
@@ -124,7 +124,7 @@ namespace WebApplication.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            ViewData["CarModelId"] = new SelectList(await _uow.CarModels.GetAllAsync(User.GetUserId()), "Id", "Name", car.CarModelId);
+            ViewData["CarModelId"] = new SelectList(await _uow.CarTypes.GetAllAsync(User.GetUserId()), "Id", "Name", car.CarTypeId);
             return View(car);
         }
 
