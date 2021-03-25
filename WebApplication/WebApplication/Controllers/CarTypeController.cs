@@ -1,18 +1,17 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using CarApp.DAL.App;
+using Domain.App;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using DAL.App.EF;
-using Domain.App;
-using Microsoft.AspNetCore.Authorization;
+using WebApplication.Helpers;
+using WebApplication.Models.CarType;
 
 namespace WebApplication.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public class CarTypeController : Controller
     {
         private readonly IAppUnitOfWork _uow;
@@ -51,8 +50,11 @@ namespace WebApplication.Controllers
         // GET: CarType/Create
         public async Task<IActionResult> Create()
         {
-            ViewData["CarMarkId"] = new SelectList(await _uow.CarMarks.GetAllAsync(null), "Id", "Name");
-            return View();
+            var vm = new CreateEditViewModel()
+            {
+                CarModels = new SelectList(await _uow.CarModels.GetAllAsync(null), "Id", "Name")
+            };
+            return View(vm);
         }
 
         // POST: CarType/Create
@@ -60,17 +62,22 @@ namespace WebApplication.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(CarType carType)
+        public async Task<IActionResult> Create(CreateEditViewModel ceVm)
         {
+            var carType = ceVm.CarType;
             if (ModelState.IsValid)
             {
-                _uow.CarTypes.Add(carType);
+                _uow.CarTypes.Add(carType!);
                 await _uow.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
 
-            ViewData["CarMarkId"] = new SelectList(await _uow.CarMarks.GetAllAsync(null), "Id", "Name", carType.CarModelId);
-            return View(carType);
+            var vm = new CreateEditViewModel()
+            {
+                CarType = carType,
+                CarModels = new SelectList(await _uow.CarModels.GetAllAsync(null), "Id", "Name")
+            };
+            return View(vm);
         }
 
         // GET: CarType/Edit/5
@@ -87,8 +94,12 @@ namespace WebApplication.Controllers
                 return NotFound();
             }
 
-            ViewData["CarMarkId"] = new SelectList(await _uow.CarMarks.GetAllAsync(null), "Id", "Name", carType.CarModelId);
-            return View(carType);
+            var vm = new CreateEditViewModel()
+            {
+                CarType = carType,
+                CarModels = new SelectList(await _uow.CarModels.GetAllAsync(null), "Id", "Name")
+            };
+            return View(vm);
         }
 
         // POST: CarType/Edit/5
@@ -96,9 +107,10 @@ namespace WebApplication.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, CarType carType)
+        public async Task<IActionResult> Edit(Guid id, CreateEditViewModel ceVm)
         {
-            if (id != carType.Id)
+            var carType = ceVm.CarType;
+            if (id != (carType?.Id ?? null))
             {
                 return NotFound();
             }
@@ -107,12 +119,17 @@ namespace WebApplication.Controllers
             {
                 try
                 {
-                    _uow.CarTypes.Update(carType, null);
+                    var toUpdate = await _uow.CarTypes.FirstOrDefaultAsync(id, null);
+                    toUpdate!.Name = carType!.Name;
+                    toUpdate.CarModelId = carType.CarModelId;
+                    toUpdate.UpdatedAt = DateTime.Now;
+                    toUpdate.UpdatedBy = (Guid) User.GetUserId()!;
+                    _uow.CarTypes.Update(toUpdate, null);
                     await _uow.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!await CarTypeExists(carType.Id))
+                    if (!await CarTypeExists(carType!.Id))
                     {
                         return NotFound();
                     }
@@ -125,8 +142,12 @@ namespace WebApplication.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            ViewData["CarMarkId"] = new SelectList(await _uow.CarMarks.GetAllAsync(null), "Id", "Name", carType.CarModelId);
-            return View(carType);
+            var vm = new CreateEditViewModel()
+            {
+                CarType = carType,
+                CarModels = new SelectList(await _uow.CarModels.GetAllAsync(null), "Id", "Name")
+            };
+            return View(vm);
         }
 
         // GET: CarType/Delete/5
