@@ -10,6 +10,7 @@ using DAL.App.EF;
 using Domain.App;
 using Microsoft.AspNetCore.Authorization;
 using WebApplication.Helpers;
+using WebApplication.Models.Track;
 
 namespace WebApplication.Controllers
 {
@@ -50,8 +51,11 @@ namespace WebApplication.Controllers
         // GET: Track/Create
         public async Task<IActionResult> Create()
         {
-            ViewData["CarId"] = new SelectList(await _uow.Cars.GetAccessibleCarsForUser((Guid) User.GetUserId()!), "Id", "Id");
-            return View();
+            var vm = new CreateEditViewModel()
+            {
+                Cars = new SelectList(await _uow.Cars.GetAccessibleCarsForUser((Guid) User.GetUserId()!), "Id", "Id")
+            };
+            return View(vm);
         }
 
         // POST: Track/Create
@@ -59,17 +63,22 @@ namespace WebApplication.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Track track)
+        public async Task<IActionResult> Create(CreateEditViewModel ceVm)
         {
+            var track = ceVm.Track;
             if (ModelState.IsValid)
             {
-                track.AppUserId = (Guid) User.GetUserId()!;
+                track!.AppUserId = (Guid) User.GetUserId()!;
                 _uow.Tracks.Add(track);
                 await _uow.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CarId"] = new SelectList(await _uow.Cars.GetAccessibleCarsForUser((Guid) User.GetUserId()!), "Id", "Id", track.CarId);
-            return View(track);
+            var vm = new CreateEditViewModel()
+            {
+                Track = track,
+                Cars = new SelectList(await _uow.Cars.GetAccessibleCarsForUser((Guid) User.GetUserId()!), "Id", "Id")
+            };
+            return View(vm);
         }
 
         // GET: Track/Edit/5
@@ -85,8 +94,12 @@ namespace WebApplication.Controllers
             {
                 return NotFound();
             }
-            ViewData["CarId"] = new SelectList(await _uow.Cars.GetAccessibleCarsForUser((Guid) User.GetUserId()!), "Id", "Id", track.CarId);
-            return View(track);
+            var vm = new CreateEditViewModel()
+            {
+                Track = track,
+                Cars = new SelectList(await _uow.Cars.GetAccessibleCarsForUser((Guid) User.GetUserId()!), "Id", "Id")
+            };
+            return View(vm);
         }
 
         // POST: Track/Edit/5
@@ -94,9 +107,10 @@ namespace WebApplication.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, Track track)
+        public async Task<IActionResult> Edit(Guid id, CreateEditViewModel ceVm)
         {
-            if (id != track.Id)
+            var track = ceVm.Track;
+            if (id != (track?.Id ?? null))
             {
                 return NotFound();
             }
@@ -105,12 +119,18 @@ namespace WebApplication.Controllers
             {
                 try
                 {
-                    _uow.Tracks.Update(track, User.GetUserId());
+                    var toUpdate = await _uow.Tracks.FirstOrDefaultAsync(id, User.GetUserId());
+                    toUpdate!.CarId = track!.CarId;
+                    toUpdate.Distance = track.Distance;
+                    toUpdate.StartTimestamp = track.StartTimestamp;
+                    toUpdate.EndTimestamp = track.EndTimestamp;
+                    toUpdate.AppUserId = (Guid) User.GetUserId()!;
+                    _uow.Tracks.Update(toUpdate, User.GetUserId());
                     await _uow.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!await TrackExists(track.Id))
+                    if (!await TrackExists(track!.Id))
                     {
                         return NotFound();
                     }
@@ -121,8 +141,12 @@ namespace WebApplication.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CarId"] = new SelectList(await _uow.Cars.GetAccessibleCarsForUser((Guid) User.GetUserId()!), "Id", "Id", track.CarId);
-            return View(track);
+            var vm = new CreateEditViewModel()
+            {
+                Track = track,
+                Cars = new SelectList(await _uow.Cars.GetAccessibleCarsForUser((Guid) User.GetUserId()!), "Id", "Id")
+            };
+            return View(vm);
         }
 
         // GET: Track/Delete/5
