@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WebApplication.Helpers;
+using WebApplication.Models.TrackLocation;
 
 namespace WebApplication.Controllers
 {
@@ -47,8 +48,11 @@ namespace WebApplication.Controllers
         // GET: TrackLocation/Create
         public async Task<IActionResult> Create()
         {
-            ViewData["TrackId"] = new SelectList(await _uow.Tracks.GetAllAsync(User.GetUserId()), "Id", "Id");
-            return View();
+            var vm = new CreateEditViewModel()
+            {
+                Tracks = new SelectList(await _uow.Tracks.GetAllAsync(User.GetUserId()), "Id", "Id")
+            };
+            return View(vm);
         }
 
         // POST: TrackLocation/Create
@@ -56,17 +60,22 @@ namespace WebApplication.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(TrackLocation trackLocation)
+        public async Task<IActionResult> Create(CreateEditViewModel ceVm)
         {
+            var trackLocation = ceVm.TrackLocation;
             if (ModelState.IsValid)
             {
-                _uow.TrackLocations.Add(trackLocation);
+                _uow.TrackLocations.Add(trackLocation!);
                 await _uow.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
 
-            ViewData["TrackId"] = new SelectList(await _uow.Tracks.GetAllAsync(User.GetUserId()), "Id", "Id", trackLocation.TrackId);
-            return View(trackLocation);
+            var vm = new CreateEditViewModel()
+            {
+                TrackLocation = trackLocation,
+                Tracks = new SelectList(await _uow.Tracks.GetAllAsync(User.GetUserId()), "Id", "Id")
+            };
+            return View(vm);
         }
 
         // GET: TrackLocation/Edit/5
@@ -83,8 +92,12 @@ namespace WebApplication.Controllers
                 return NotFound();
             }
 
-            ViewData["TrackId"] = new SelectList(await _uow.Tracks.GetAllAsync(User.GetUserId()), "Id", "Id", trackLocation.TrackId);
-            return View(trackLocation);
+            var vm = new CreateEditViewModel()
+            {
+                TrackLocation = trackLocation,
+                Tracks = new SelectList(await _uow.Tracks.GetAllAsync(User.GetUserId()), "Id", "Id")
+            };
+            return View(vm);
         }
 
         // POST: TrackLocation/Edit/5
@@ -92,9 +105,10 @@ namespace WebApplication.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, TrackLocation trackLocation)
+        public async Task<IActionResult> Edit(Guid id, CreateEditViewModel ceVm)
         {
-            if (id != trackLocation.Id)
+            var trackLocation = ceVm.TrackLocation;
+            if (id != (trackLocation?.Id ?? null))
             {
                 return NotFound();
             }
@@ -103,12 +117,21 @@ namespace WebApplication.Controllers
             {
                 try
                 {
-                    _uow.TrackLocations.Update(trackLocation, User.GetUserId());
+                    var toUpdate = await _uow.TrackLocations.FirstOrDefaultAsync(id, User.GetUserId());
+                    toUpdate!.Accuracy = trackLocation!.Accuracy;
+                    toUpdate.Elevation = trackLocation.Elevation;
+                    toUpdate.Lat = trackLocation.Lat;
+                    toUpdate.Lng = trackLocation.Lng;
+                    toUpdate.Rpm = trackLocation.Rpm;
+                    toUpdate.Speed = trackLocation.Speed;
+                    toUpdate.ElevationAccuracy = trackLocation.ElevationAccuracy;
+                    toUpdate.TrackId = trackLocation.TrackId;
+                    _uow.TrackLocations.Update(toUpdate, User.GetUserId());
                     await _uow.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!await TrackLocationExists(trackLocation.Id))
+                    if (!await TrackLocationExists(trackLocation!.Id))
                     {
                         return NotFound();
                     }
@@ -121,8 +144,12 @@ namespace WebApplication.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            ViewData["TrackId"] = new SelectList(await _uow.Tracks.GetAllAsync(User.GetUserId()), "Id", "Id", trackLocation.TrackId);
-            return View(trackLocation);
+            var vm = new CreateEditViewModel()
+            {
+                TrackLocation = trackLocation,
+                Tracks = new SelectList(await _uow.Tracks.GetAllAsync(User.GetUserId()), "Id", "Id")
+            };
+            return View(vm);
         }
 
         // GET: TrackLocation/Delete/5

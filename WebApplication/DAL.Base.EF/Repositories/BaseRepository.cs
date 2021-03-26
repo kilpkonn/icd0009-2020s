@@ -52,7 +52,9 @@ namespace DAL.Base.EF.Repositories
 
         public virtual TEntity Update(TEntity entity, TKey? userId)
         {
-            if (userId != null && !((IDomainAppUserId<TKey>) entity).AppUserId.Equals(userId))
+            if (userId != null && !userId.Equals(default) &&
+                typeof(IDomainAppUserId<TKey>).IsAssignableFrom(typeof(TEntity))
+            )
             {
                 throw new AuthenticationException("Bad user id inside entity to be deleted.");
                 // TODO: load entity from the db, check that userId inside entity is correct.

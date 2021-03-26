@@ -1,0 +1,44 @@
+@model WebApplication.Models.TrackLocation.CreateEditViewModel;
+
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="TrackLocation.Id" value="@(Model?.TrackLocation?.Id ?? Guid.NewGuid())"/>
+            <div class="form-group">
+                <label asp-for="TrackLocation!.Lat" class="control-label"></label>
+                <input asp-for="TrackLocation!.Lat" class="form-control" />
+                <span asp-validation-for="TrackLocation!.Lat" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TrackLocation!.Lng" class="control-label"></label>
+                <input asp-for="TrackLocation!.Lng" class="form-control" />
+                <span asp-validation-for="TrackLocation!.Lng" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TrackLocation!.Elevation" class="control-label"></label>
+                <input asp-for="TrackLocation!.Elevation" class="form-control" />
+                <span asp-validation-for="TrackLocation!.Elevation" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TrackLocation!.Accuracy" class="control-label"></label>
+                <input asp-for="TrackLocation!.Accuracy" class="form-control" />
+                <span asp-validation-for="TrackLocation!.Accuracy" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TrackLocation!.ElevationAccuracy" class="control-label"></label>
+                <input asp-for="TrackLocation!.ElevationAccuracy" class="form-control" />
+                <span asp-validation-for="TrackLocation!.ElevationAccuracy" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TrackLocation!.Speed" class="control-label"></label>
+                <input asp-for="TrackLocation!.Speed" class="form-control" />
+                <span asp-validation-for="TrackLocation!.Speed" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TrackLocation!.Rpm" class="control-label"></label>
+                <input asp-for="TrackLocation!.Rpm" class="form-control" />
+                <span asp-validation-for="TrackLocation!.Rpm" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TrackLocation!.TrackId" class="control-label"></label>
+                <select asp-for="TrackLocation!.TrackId" class="form-control" asp-items="Model?.Tracks"></select>
+                <span asp-validation-for="TrackLocation!.TrackId" class="text-danger"></span>
+            </div>
