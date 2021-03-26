@@ -1,0 +1,24 @@
+@model WebApplication.Models.GasRefill.CreateEditViewModel;
+
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<input type="hidden" asp-for="GasRefill!.Id" value="@(Model?.GasRefill?.Id ?? Guid.NewGuid())"/>
+<div class="form-group">
+    <label asp-for="GasRefill!.AmountRefilled" class="control-label"></label>
+    <input asp-for="GasRefill!.AmountRefilled" class="form-control" />
+    <span asp-validation-for="GasRefill!.AmountRefilled" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="GasRefill!.Timestamp" class="control-label"></label>
+    <input asp-for="GasRefill!.Timestamp" class="form-control" />
+    <span asp-validation-for="GasRefill!.Timestamp" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="GasRefill!.Cost" class="control-label"></label>
+    <input asp-for="GasRefill!.Cost" class="form-control" />
+    <span asp-validation-for="GasRefill!.Cost" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="GasRefill!.CarId" class="control-label"></label>
+    <select asp-for="GasRefill!.CarId" class="form-control" asp-items="ViewBag.CarId"></select>
+    <span asp-validation-for="GasRefill!.CarId" class="text-danger"></span>
+</div>

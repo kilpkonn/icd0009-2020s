@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WebApplication.Helpers;
+using WebApplication.Models.GasRefill;
 
 namespace WebApplication.Controllers
 {
@@ -47,8 +48,11 @@ namespace WebApplication.Controllers
         // GET: GasRefill/Create
         public async Task<IActionResult> Create()
         {
-            ViewData["CarId"] = new SelectList(await _uow.Cars.GetAccessibleCarsForUser((Guid) User.GetUserId()!), "Id", "Id");
-            return View();
+            var vm = new CreateEditViewModel()
+            {
+                Cars = new SelectList(await _uow.Cars.GetAccessibleCarsForUser((Guid) User.GetUserId()!), "Id", "Id")
+            };
+            return View(vm);
         }
 
         // POST: GasRefill/Create
@@ -56,16 +60,21 @@ namespace WebApplication.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(GasRefill gasRefill)
+        public async Task<IActionResult> Create(CreateEditViewModel ceVm)
         {
+            var gasRefill = ceVm.GasRefill;
             if (ModelState.IsValid)
             {
-                _uow.GasRefills.Add(gasRefill);
+                _uow.GasRefills.Add(gasRefill!);
                 await _uow.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CarId"] = new SelectList(await _uow.Cars.GetAccessibleCarsForUser((Guid) User.GetUserId()!), "Id", "Id", gasRefill.CarId);
-            return View(gasRefill);
+            var vm = new CreateEditViewModel()
+            {
+                GasRefill = gasRefill,
+                Cars = new SelectList(await _uow.Cars.GetAccessibleCarsForUser((Guid) User.GetUserId()!), "Id", "Id")
+            };
+            return View(vm);
         }
 
         // GET: GasRefill/Edit/5
@@ -81,8 +90,13 @@ namespace WebApplication.Controllers
             {
                 return NotFound();
             }
-            ViewData["CarId"] = new SelectList(await _uow.Cars.GetAccessibleCarsForUser((Guid) User.GetUserId()!), "Id", "Id", gasRefill.CarId);
-            return View(gasRefill);
+            
+            var vm = new CreateEditViewModel()
+            {
+                GasRefill = gasRefill,
+                Cars = new SelectList(await _uow.Cars.GetAccessibleCarsForUser((Guid) User.GetUserId()!), "Id", "Id")
+            };
+            return View(vm);
         }
 
         // POST: GasRefill/Edit/5
@@ -90,9 +104,10 @@ namespace WebApplication.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, GasRefill gasRefill)
+        public async Task<IActionResult> Edit(Guid id, CreateEditViewModel ceVm)
         {
-            if (id != gasRefill.Id)
+            var gasRefill = ceVm.GasRefill;
+            if (id != (gasRefill?.Id ?? null))
             {
                 return NotFound();
             }
@@ -101,12 +116,17 @@ namespace WebApplication.Controllers
             {
                 try
                 {
-                    _uow.GasRefills.Update(gasRefill, User.GetUserId());
+                    var toUpdate = await _uow.GasRefills.FirstOrDefaultAsync(id, User.GetUserId());
+                    toUpdate!.Cost = gasRefill!.Cost;
+                    toUpdate.Timestamp = gasRefill.Timestamp;
+                    toUpdate.AmountRefilled = gasRefill.AmountRefilled;
+                    toUpdate.AppUserId = (Guid) User.GetUserId()!;
+                    _uow.GasRefills.Update(toUpdate, User.GetUserId());
                     await _uow.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!await GasRefillExists(gasRefill.Id))
+                    if (!await GasRefillExists(gasRefill!.Id))
                     {
                         return NotFound();
                     }
@@ -117,8 +137,13 @@ namespace WebApplication.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CarId"] = new SelectList(await _uow.Cars.GetAccessibleCarsForUser((Guid) User.GetUserId()!), "Id", "Id", gasRefill.CarId);
-            return View(gasRefill);
+            
+            var vm = new CreateEditViewModel()
+            {
+                GasRefill = gasRefill,
+                Cars = new SelectList(await _uow.Cars.GetAccessibleCarsForUser((Guid) User.GetUserId()!), "Id", "Id")
+            };
+            return View(vm);
         }
 
         // GET: GasRefill/Delete/5
