@@ -2,30 +2,32 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using CarApp.DAL.App.Repositories;
+using DAL.App.DTO;
+using DAL.App.EF.Mappers;
 using DAL.Base.EF.Repositories;
-using Domain.App;
 using Microsoft.EntityFrameworkCore;
 
 namespace DAL.App.EF.Repositories
 {
-    public class TrackLocationRepository : BaseRepository<TrackLocation, AppDbContext>, ITrackLocationRepository
+    public class TrackLocationRepository : BaseRepository<DTO.TrackLocation, Domain.App.TrackLocation, AppDbContext>, ITrackLocationRepository
     {
-        public TrackLocationRepository(AppDbContext dbContext) : base(dbContext)
+        public TrackLocationRepository(AppDbContext dbContext, IMapper mapper) : base(dbContext, new TrackLocationMapper(mapper))
         {
             
         }
 
         public override async Task<IEnumerable<TrackLocation>> GetAllAsync(Guid? userId, bool tracking = false)
         {
-            return await CreateLocalQuery(userId, tracking).ToListAsync();
+            return await CreateLocalQuery(userId, tracking).Select(e => Mapper.Map(e)!).ToListAsync();
         }
 
         public override async Task<TrackLocation?> FirstOrDefaultAsync(Guid id, Guid? userId, bool tracking = false)
         {
-            return await CreateLocalQuery(userId, tracking)
+            return Mapper.Map(await CreateLocalQuery(userId, tracking)
                 .Where(l => l.Id == id)
-                .FirstOrDefaultAsync();
+                .FirstOrDefaultAsync());
         }
 
         public override TrackLocation Update(TrackLocation entity, Guid? userId)
@@ -51,7 +53,7 @@ namespace DAL.App.EF.Repositories
             return await CreateLocalQuery(id).AnyAsync(l => l.Id == id);
         }
         
-        protected IQueryable<TrackLocation> CreateLocalQuery(Guid? userId, bool tracking = false)
+        protected IQueryable<Domain.App.TrackLocation> CreateLocalQuery(Guid? userId, bool tracking = false)
         {
             var query = CreateQuery(null, tracking);
 

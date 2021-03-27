@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 using Car.DAL.Base.Repositories;
-using Domain.App;
+using DAL.App.DTO;
 
 namespace CarApp.DAL.App.Repositories
 {

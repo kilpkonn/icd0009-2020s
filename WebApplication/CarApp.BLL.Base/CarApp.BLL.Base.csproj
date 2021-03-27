@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\CarApp.DAL.Base\CarApp.DAL.Base.csproj" />
+      <ProjectReference Include="..\CarApp.Domain.Base\CarApp.Domain.Base.csproj" />
+    </ItemGroup>
+
+</Project>

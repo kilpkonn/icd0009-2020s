@@ -1,4 +1,6 @@
 using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Text;
 using CarApp.DAL.App;
 using DAL.App.EF;
 using DAL.App.EF.DataInit;
@@ -10,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 
 namespace WebApplication
 {
@@ -28,18 +31,57 @@ namespace WebApplication
             services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
+            
+            services.AddScoped<IAppUnitOfWork, AppUnitOfWork>();
+
             services.AddDatabaseDeveloperPageExceptionFilter();
+            
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+            services
+                .AddAuthentication()
+                .AddCookie(options => { options.SlidingExpiration = true; }
+                )
+                .AddJwtBearer(options =>
+                    {
+                        options.RequireHttpsMetadata = false;
+                        options.SaveToken = true;
+                        options.TokenValidationParameters = new TokenValidationParameters()
+                        {
+                            ValidIssuer = Configuration["JWT:Issuer"],
+                            ValidAudience = Configuration["JWT:Issuer"],
+
+                            IssuerSigningKey =
+                                new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JWT:Key"])),
+                            ClockSkew = TimeSpan.Zero
+                        };
+                    }
+                );
+
             
             services
                 .AddIdentity<AppUser, AppRole>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddDefaultUI()
                 .AddEntityFrameworkStores<AppDbContext>()
                 .AddDefaultTokenProviders();
-
-
-            services.AddScoped<IAppUnitOfWork, AppUnitOfWork>();
-
+            
+            services.AddCors(options =>
+                {
+                    options.AddPolicy("CorsAllowAll", builder =>
+                    {
+                        builder.AllowAnyHeader();
+                        builder.AllowAnyMethod();
+                        builder.AllowAnyOrigin();
+                    });
+                }
+            );
+            
             services.AddRazorPages();
+            
+            services.AddAutoMapper(
+                typeof(DAL.App.DTO.MappingProfiles.AutoMapperProfile),
+                typeof(BLL.App.DTO.MappingProfiles.AutoMapperProfile)
+            );
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -61,6 +103,8 @@ namespace WebApplication
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            
+            app.UseCors("CorsAllowAll");
 
             app.UseRouting();
 

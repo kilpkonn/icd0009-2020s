@@ -5,8 +5,8 @@ using Car.DAL.Base.Repositories;
 
 namespace CarApp.DAL.App.Repositories
 {
-    public interface ICarRepository: IBaseRepository<Domain.App.Car>
+    public interface ICarRepository: IBaseRepository<global::DAL.App.DTO.Car>
     {
-        public Task<IEnumerable<Domain.App.Car>> GetAccessibleCarsForUser(Guid userId);
+        public Task<IEnumerable<global::DAL.App.DTO.Car>> GetAccessibleCarsForUser(Guid userId);
     }
 }

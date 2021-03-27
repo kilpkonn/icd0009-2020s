@@ -1,14 +1,15 @@
+using AutoMapper;
 using CarApp.DAL.App.Repositories;
+using DAL.App.EF.Mappers;
 using DAL.Base.EF.Repositories;
-using Domain.App;
 
 namespace DAL.App.EF.Repositories
 {
-    public class CarAccessRepository: BaseRepository<CarAccess, AppDbContext>, ICarAccessRepository
+    public class CarAccessRepository : BaseRepository<DTO.CarAccess, Domain.App.CarAccess, AppDbContext>,
+        ICarAccessRepository
     {
-        public CarAccessRepository(AppDbContext dbContext) : base(dbContext)
+        public CarAccessRepository(AppDbContext dbContext, IMapper mapper) : base(dbContext, new CarAccessMapper(mapper))
         {
-            
         }
     }
 }

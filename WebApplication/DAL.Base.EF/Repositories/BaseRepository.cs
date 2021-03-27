@@ -3,67 +3,72 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Authentication;
 using System.Threading.Tasks;
+using Car.DAL.Base.Mappers;
 using Car.DAL.Base.Repositories;
 using Car.Domain.Base;
 using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Base.EF.Repositories
 {
-    public class BaseRepository<TEntity, TDbContext> : BaseRepository<Guid, TEntity, TDbContext>
-        where TEntity : class, IDomainEntityId<Guid>
+    public class BaseRepository<TDalEntity, TDomainEntity, TDbContext> : BaseRepository<Guid, TDalEntity, TDomainEntity, TDbContext>
+        where TDalEntity : class, IDomainEntityId<Guid>
+        where TDomainEntity : class, IDomainEntityId<Guid>
         where TDbContext : DbContext
     {
-        public BaseRepository(TDbContext dbContext) : base(dbContext)
+        public BaseRepository(TDbContext dbContext, IBaseMapper<TDalEntity, TDomainEntity> mapper) : base(dbContext, mapper)
         {
         }
     }
 
-    public class BaseRepository<TKey, TEntity, TDbContext> : IBaseRepository<TKey, TEntity>
-        where TEntity : class, IDomainEntityId<TKey>
+    public class BaseRepository<TKey, TDalEntity, TDomainEntity, TDbContext> : IBaseRepository<TKey, TDalEntity>
+        where TDalEntity : class, IDomainEntityId<TKey>
+        where TDomainEntity : class, IDomainEntityId<TKey>
         where TKey : struct, IEquatable<TKey>
         where TDbContext : DbContext
 
     {
         protected readonly TDbContext DbContext;
-        protected readonly DbSet<TEntity> DbSet;
+        protected readonly DbSet<TDomainEntity> DbSet;
+        protected readonly IBaseMapper<TDalEntity, TDomainEntity> Mapper;
 
-        public BaseRepository(TDbContext dbContext)
+        public BaseRepository(TDbContext dbContext, IBaseMapper<TDalEntity, TDomainEntity> mapper)
         {
             DbContext = dbContext;
-            DbSet = DbContext.Set<TEntity>();
+            DbSet = DbContext.Set<TDomainEntity>();
+            Mapper = mapper;
         }
 
-        public virtual async Task<IEnumerable<TEntity>> GetAllAsync(TKey? userId, bool tracking = false)
+        public virtual async Task<IEnumerable<TDalEntity>> GetAllAsync(TKey? userId, bool tracking = false)
         {
             var query = CreateQuery(userId, tracking);
-            return await query.ToListAsync();
+            return await query.Select(e => Mapper.Map(e)!).ToListAsync();
         }
 
-        public virtual async Task<TEntity?> FirstOrDefaultAsync(TKey id, TKey? userId, bool tracking = false)
+        public virtual async Task<TDalEntity?> FirstOrDefaultAsync(TKey id, TKey? userId, bool tracking = false)
         {
             var query = CreateQuery(userId, tracking);
-            return await query.FirstOrDefaultAsync(e => e.Id.Equals(id));
+            return await query.Select(e => Mapper.Map(e)!).FirstOrDefaultAsync(e => e.Id.Equals(id));
         }
 
-        public virtual TEntity Add(TEntity entity)
+        public virtual TDalEntity Add(TDalEntity entity)
         {
-            return DbSet.Add(entity).Entity;
+            return Mapper.Map(DbSet.Add(Mapper.Map(entity)!).Entity)!;
         }
 
-        public virtual TEntity Update(TEntity entity, TKey? userId)
+        public virtual TDalEntity Update(TDalEntity entity, TKey? userId)
         {
             if (userId != null && !userId.Equals(default) &&
-                typeof(IDomainAppUserId<TKey>).IsAssignableFrom(typeof(TEntity))
+                typeof(IDomainAppUserId<TKey>).IsAssignableFrom(typeof(TDalEntity))
             )
             {
                 throw new AuthenticationException("Bad user id inside entity to be deleted.");
                 // TODO: load entity from the db, check that userId inside entity is correct.
             }
             
-            return DbSet.Update(entity).Entity;
+            return Mapper.Map(DbSet.Update(Mapper.Map(entity)!).Entity)!;
         }
 
-        public virtual TEntity Remove(TEntity entity, TKey? userId)
+        public virtual TDalEntity Remove(TDalEntity entity, TKey? userId)
         {
             if (userId != null && !((IDomainAppUserId<TKey>) entity).AppUserId.Equals(userId))
             {
@@ -71,10 +76,10 @@ namespace DAL.Base.EF.Repositories
                 // TODO: load entity from the db, check that userId inside entity is correct.
             }
 
-            return DbSet.Remove(entity).Entity;
+            return Mapper.Map(DbSet.Remove(Mapper.Map(entity)!).Entity)!;
         }
 
-        public virtual async Task<TEntity> RemoveAsync(TKey id, TKey? userId)
+        public virtual async Task<TDalEntity> RemoveAsync(TKey id, TKey? userId)
         {
             var entity = await FirstOrDefaultAsync(id, userId);
             if (entity == null) throw new NullReferenceException($"Entity with id {id} not found.");
@@ -87,11 +92,11 @@ namespace DAL.Base.EF.Repositories
                 e.Id.Equals(id) && ((IDomainAppUserId<TKey>) e).AppUserId.Equals(userId));
         }
 
-        protected IQueryable<TEntity> CreateQuery(TKey? userId, bool tracking = false)
+        protected IQueryable<TDomainEntity> CreateQuery(TKey? userId, bool tracking = false)
         {
             var query = DbSet.AsQueryable();
-
-            if (userId != null && typeof(IDomainAppUserId<TKey>).IsAssignableFrom(typeof(TEntity)))
+            // TODO: Also validate input entity
+            if (userId != null && typeof(IDomainAppUserId<TKey>).IsAssignableFrom(typeof(TDomainEntity)))
             {
                 query = query.Where(e => ((IDomainAppUserId<TKey>) e).AppUserId.Equals(userId));
             }

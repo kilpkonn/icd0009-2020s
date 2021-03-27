@@ -4,7 +4,7 @@ using Car.Domain.Base;
 
 namespace Car.DAL.Base.Repositories
 {
-    public interface IBaseRepositorySync<TKey, TEntity>
+    public interface IBaseRepositorySync<TKey, out TEntity>
         where TKey : IEquatable<TKey>
         where TEntity : class, IDomainEntityId<TKey>
     {

@@ -1,16 +1,19 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using CarApp.DAL.App.Repositories;
+using DAL.App.DTO;
+using DAL.App.EF.Mappers;
 using DAL.Base.EF.Repositories;
-using Domain.App;
 using Microsoft.EntityFrameworkCore;
 
 namespace DAL.App.EF.Repositories
 {
-    public class CarModelRepository : BaseRepository<CarModel, AppDbContext>, ICarModelRepository
+    public class CarModelRepository : BaseRepository<DTO.CarModel, Domain.App.CarModel, AppDbContext>, ICarModelRepository
     {
-        public CarModelRepository(AppDbContext dbContext) : base(dbContext)
+        public CarModelRepository(AppDbContext dbContext, IMapper mapper) : base(dbContext, new CarModelMapper(mapper))
         {
             
         }
@@ -19,6 +22,7 @@ namespace DAL.App.EF.Repositories
         {
             return await CreateQuery(userId, tracking)
                 .Include(x => x.CarMark)
+                .Select(e => Mapper.Map(e)!)
                 .ToListAsync();
         }
     }

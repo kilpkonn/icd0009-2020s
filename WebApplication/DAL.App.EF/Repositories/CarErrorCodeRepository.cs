@@ -2,16 +2,18 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using CarApp.DAL.App.Repositories;
+using DAL.App.DTO;
+using DAL.App.EF.Mappers;
 using DAL.Base.EF.Repositories;
-using Domain.App;
 using Microsoft.EntityFrameworkCore;
 
 namespace DAL.App.EF.Repositories
 {
-    public class CarErrorCodeRepository: BaseRepository<CarErrorCode, AppDbContext>, ICarErrorCodeRepository
+    public class CarErrorCodeRepository: BaseRepository<DTO.CarErrorCode, Domain.App.CarErrorCode, AppDbContext>, ICarErrorCodeRepository
     {
-        public CarErrorCodeRepository(AppDbContext dbContext) : base(dbContext)
+        public CarErrorCodeRepository(AppDbContext dbContext, IMapper mapper) : base(dbContext, new CarErrorCodeMapper(mapper))
         {
             
         }
@@ -34,6 +36,7 @@ namespace DAL.App.EF.Repositories
             return await CreateQuery(null, true)
                 .Include(e => e.Car)
                 .Where(e => e.Car!.AppUserId == userId)
+                .Select(e => Mapper.Map(e)!)
                 .ToListAsync();
         }
 
@@ -42,6 +45,7 @@ namespace DAL.App.EF.Repositories
             return await CreateQuery(null)
                 .Include(e => e.Car)
                 .Where(e => e.Car!.AppUserId == userId)
+                .Select(e => Mapper.Map(e)!)
                 .FirstOrDefaultAsync(e => e.Id == id);
         }
 
