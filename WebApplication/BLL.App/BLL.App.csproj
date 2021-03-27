@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\BLL.App.DTO\BLL.App.DTO.csproj" />
+      <ProjectReference Include="..\BLL.Base\BLL.Base.csproj" />
+      <ProjectReference Include="..\CarApp.BLL.App\CarApp.BLL.App.csproj" />
+      <ProjectReference Include="..\CarApp.BLL.Base\CarApp.BLL.Base.csproj" />
+      <ProjectReference Include="..\CarApp.DAL.App\CarApp.DAL.App.csproj" />
+      <ProjectReference Include="..\DAL.App.DTO\DAL.App.DTO.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="AutoMapper" Version="10.1.1" />
+    </ItemGroup>
+
+</Project>
