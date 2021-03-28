@@ -1,3 +1,7 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using AutoMapper;
 using BLL.App.Mappers;
 using BLL.Base.Services;
@@ -13,6 +17,11 @@ namespace BLL.App.Services
         public CarService(IAppUnitOfWork serviceUow, ICarRepository serviceRepository,
             IMapper mapper) : base(serviceUow, serviceRepository, new CarMapper(mapper))
         {
+        }
+        
+        public async Task<IEnumerable<DTO.Car>> GetAccessibleCarsForUser(Guid userId)
+        {
+            return (await ServiceRepository.GetAccessibleCarsForUser(userId)).Select(e => Mapper.Map(e)!)!;
         }
     }
 }

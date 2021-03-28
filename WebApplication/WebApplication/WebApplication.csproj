@@ -23,9 +23,11 @@
 
     <ItemGroup>
       <ProjectReference Include="..\BLL.App.DTO\BLL.App.DTO.csproj" />
+      <ProjectReference Include="..\BLL.App\BLL.App.csproj" />
       <ProjectReference Include="..\CarApp.BLL.App\CarApp.BLL.App.csproj" />
       <ProjectReference Include="..\DAL.App.DTO\DAL.App.DTO.csproj" />
       <ProjectReference Include="..\DAL.App.EF\DAL.App.EF.csproj" />
+      <ProjectReference Include="..\PublicApi.DTO.v1\PublicApi.DTO.v1.csproj" />
     </ItemGroup>
 
     <ItemGroup>

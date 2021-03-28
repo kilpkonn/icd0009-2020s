@@ -1,8 +1,7 @@
 using System;
 using System.Threading.Tasks;
+using BLL.App.DTO;
 using CarApp.BLL.App;
-using CarApp.DAL.App;
-using Domain.App;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 

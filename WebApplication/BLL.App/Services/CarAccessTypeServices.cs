@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using AutoMapper;
 using BLL.App.DTO;
 using BLL.App.Mappers;
@@ -14,6 +15,11 @@ namespace BLL.App.Services
         public CarAccessTypeServices(IAppUnitOfWork serviceUow, ICarAccessTypeRepository serviceRepository,
             IMapper mapper) : base(serviceUow, serviceRepository, new CarAccessTypeMapper(mapper))
         {
+        }
+        
+        public async Task<CarAccessType> FindByNameAsync(string name)
+        {
+            return Mapper.Map(await ServiceRepository.FindByNameAsync(name))!;
         }
     }
 }

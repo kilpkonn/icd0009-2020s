@@ -10,7 +10,7 @@ namespace BLL.App.DTO
         public AppUser? AppUser { get; set; }
         
         public Guid CarId { get; set; }
-        public Domain.App.Car? Car { get; set; }
+        public Car? Car { get; set; }
         
         public Guid CarAccessTypeId { get; set; }
         public CarAccessType? CarAccessType { get; set; }

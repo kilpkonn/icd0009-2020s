@@ -1,6 +1,8 @@
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
+using BLL.App;
+using CarApp.BLL.App;
 using CarApp.DAL.App;
 using DAL.App.EF;
 using DAL.App.EF.DataInit;
@@ -33,6 +35,7 @@ namespace WebApplication
                     Configuration.GetConnectionString("DefaultConnection")));
             
             services.AddScoped<IAppUnitOfWork, AppUnitOfWork>();
+            services.AddScoped<IAppBll, AppBll>();
 
             services.AddDatabaseDeveloperPageExceptionFilter();
             
@@ -79,7 +82,8 @@ namespace WebApplication
             
             services.AddAutoMapper(
                 typeof(DAL.App.DTO.MappingProfiles.AutoMapperProfile),
-                typeof(BLL.App.DTO.MappingProfiles.AutoMapperProfile)
+                typeof(BLL.App.DTO.MappingProfiles.AutoMapperProfile),
+                typeof(PublicApi.DTO.v1.MappingProfiles.AutoMapperProfile)
             );
 
         }
