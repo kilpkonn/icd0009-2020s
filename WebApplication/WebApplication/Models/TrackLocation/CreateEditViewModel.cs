@@ -4,7 +4,7 @@ namespace WebApplication.Models.TrackLocation
 {
     public class CreateEditViewModel
     {
-        public Domain.App.TrackLocation? TrackLocation { get; set; }
+        public BLL.App.DTO.TrackLocation? TrackLocation { get; set; }
         
         public SelectList? Tracks { get; set; } 
     }

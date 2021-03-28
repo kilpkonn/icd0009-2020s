@@ -1,8 +1,8 @@
-using Domain.Base;
+using BLL.Base;
 
 namespace BLL.App.DTO
 {
-    public class CarAccessType : DomainEntityId
+    public class CarAccessType : BllEntityId
     {
         public string Name { get; set; } = null!;
         public int AccessLevel { get; set; }

@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
-using Domain.Base;
+using DAL.Base;
 
 namespace DAL.App.DTO
 {
-    public class CarModel : DomainEntityId
+    public class CarModel : DalEntityId
     {
         public string Name { get; set; } = null!;
         public DateTime ReleaseDate { get; set; }

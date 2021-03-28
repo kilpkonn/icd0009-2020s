@@ -1,9 +1,9 @@
 using System;
-using Domain.Base;
+using DAL.Base;
 
 namespace DAL.App.DTO
 {
-    public class TrackLocation : DomainEntityId
+    public class TrackLocation : DalEntityId
     {
         public double Lat { get; set; }
         public double Lng { get; set; }

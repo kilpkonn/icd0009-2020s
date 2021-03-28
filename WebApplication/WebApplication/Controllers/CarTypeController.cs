@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using CarApp.BLL.App;
 using CarApp.DAL.App;
 using Domain.App;
 using Microsoft.AspNetCore.Authorization;
@@ -14,18 +15,18 @@ namespace WebApplication.Controllers
     [Authorize(Roles = "Admin")]
     public class CarTypeController : Controller
     {
-        private readonly IAppUnitOfWork _uow;
+        private readonly IAppBll _bll;
 
-        public CarTypeController(IAppUnitOfWork uow)
+        public CarTypeController(IAppBll bll)
         {
-            _uow = uow;
+            _bll = bll;
         }
 
         // GET: CarType
         [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
-            return View(await _uow.CarTypes.GetAllAsync(null));
+            return View(await _bll.CarTypes.GetAllAsync(null));
         }
 
         // GET: CarType/Details/5
@@ -37,7 +38,7 @@ namespace WebApplication.Controllers
                 return NotFound();
             }
 
-            var carType = await _uow.CarTypes
+            var carType = await _bll.CarTypes
                 .FirstOrDefaultAsync((Guid) id, null);
             if (carType == null)
             {
@@ -52,7 +53,7 @@ namespace WebApplication.Controllers
         {
             var vm = new CreateEditViewModel()
             {
-                CarModels = new SelectList(await _uow.CarModels.GetAllAsync(null), "Id", "Name")
+                CarModels = new SelectList(await _bll.CarModels.GetAllAsync(null), "Id", "Name")
             };
             return View(vm);
         }
@@ -67,15 +68,15 @@ namespace WebApplication.Controllers
             var carType = ceVm.CarType;
             if (ModelState.IsValid)
             {
-                _uow.CarTypes.Add(carType!);
-                await _uow.SaveChangesAsync();
+                _bll.CarTypes.Add(carType!);
+                await _bll.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
 
             var vm = new CreateEditViewModel()
             {
                 CarType = carType,
-                CarModels = new SelectList(await _uow.CarModels.GetAllAsync(null), "Id", "Name")
+                CarModels = new SelectList(await _bll.CarModels.GetAllAsync(null), "Id", "Name")
             };
             return View(vm);
         }
@@ -88,7 +89,7 @@ namespace WebApplication.Controllers
                 return NotFound();
             }
 
-            var carType = await _uow.CarTypes.FirstOrDefaultAsync((Guid) id, null);
+            var carType = await _bll.CarTypes.FirstOrDefaultAsync((Guid) id, null);
             if (carType == null)
             {
                 return NotFound();
@@ -97,7 +98,7 @@ namespace WebApplication.Controllers
             var vm = new CreateEditViewModel()
             {
                 CarType = carType,
-                CarModels = new SelectList(await _uow.CarModels.GetAllAsync(null), "Id", "Name")
+                CarModels = new SelectList(await _bll.CarModels.GetAllAsync(null), "Id", "Name")
             };
             return View(vm);
         }
@@ -119,13 +120,13 @@ namespace WebApplication.Controllers
             {
                 try
                 {
-                    var toUpdate = await _uow.CarTypes.FirstOrDefaultAsync(id, null);
+                    var toUpdate = await _bll.CarTypes.FirstOrDefaultAsync(id, null);
                     toUpdate!.Name = carType!.Name;
                     toUpdate.CarModelId = carType.CarModelId;
                     toUpdate.UpdatedAt = DateTime.Now;
                     toUpdate.UpdatedBy = (Guid) User.GetUserId()!;
-                    _uow.CarTypes.Update(toUpdate, null);
-                    await _uow.SaveChangesAsync();
+                    _bll.CarTypes.Update(toUpdate, null);
+                    await _bll.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -145,7 +146,7 @@ namespace WebApplication.Controllers
             var vm = new CreateEditViewModel()
             {
                 CarType = carType,
-                CarModels = new SelectList(await _uow.CarModels.GetAllAsync(null), "Id", "Name")
+                CarModels = new SelectList(await _bll.CarModels.GetAllAsync(null), "Id", "Name")
             };
             return View(vm);
         }
@@ -158,7 +159,7 @@ namespace WebApplication.Controllers
                 return NotFound();
             }
 
-            var carType = await _uow.CarTypes
+            var carType = await _bll.CarTypes
                 .FirstOrDefaultAsync((Guid) id, null);
             if (carType == null)
             {
@@ -173,11 +174,11 @@ namespace WebApplication.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var carType = await _uow.CarTypes.FirstOrDefaultAsync(id, null);
+            var carType = await _bll.CarTypes.FirstOrDefaultAsync(id, null);
             if (carType != null)
             {
-                _uow.CarTypes.Remove(carType, null);
-                await _uow.SaveChangesAsync();
+                _bll.CarTypes.Remove(carType, null);
+                await _bll.SaveChangesAsync();
             }
 
             return RedirectToAction(nameof(Index));
@@ -185,7 +186,7 @@ namespace WebApplication.Controllers
 
         private async Task<bool> CarTypeExists(Guid id)
         {
-            return await _uow.CarTypes.ExistsAsync(id, null);
+            return await _bll.CarTypes.ExistsAsync(id, null);
         }
     }
 }

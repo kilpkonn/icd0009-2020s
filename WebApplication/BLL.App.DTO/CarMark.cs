@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
-using Domain.App;
-using Domain.Base;
+using BLL.Base;
 
 namespace BLL.App.DTO
 {
-    public class CarMark : DomainEntity
+    public class CarMark : BllEntity
     {
         public string Name { get; set; } = null!;
 

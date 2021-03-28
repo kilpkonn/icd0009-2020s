@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Car.DAL.Base;
+using Car.DAL.Base.Models;
 using Car.DAL.Base.Repositories;
 using Car.Domain.Base;
 using CarApp.BLL.Base.Mappers;
+using CarApp.BLL.Base.Models;
 using CarApp.BLL.Base.Services;
 
 namespace BLL.Base.Services
@@ -13,8 +15,8 @@ namespace BLL.Base.Services
     public class BaseEntityService<TUnitOfWork, TRepository, TBllEntity, TDalentity>
         : BaseEntityService<Guid, TUnitOfWork, TRepository, TBllEntity, TDalentity>,
             IBaseEntityService<TBllEntity, TDalentity>
-        where TBllEntity : class, IDomainEntityId<Guid>
-        where TDalentity : class, IDomainEntityId<Guid>
+        where TBllEntity : class, IBllEntityId<Guid>
+        where TDalentity : class, IDalEntityId<Guid>
         where TUnitOfWork : IBaseUnitOfWork
         where TRepository : IBaseRepository<TDalentity>
     {
@@ -27,8 +29,8 @@ namespace BLL.Base.Services
 
     public class BaseEntityService<TKey, TUnitOfWork, TRepository, TBllEntity, TDalEntity> 
         : IBaseEntityService<TKey, TBllEntity, TDalEntity>
-        where TBllEntity : class, IDomainEntityId<TKey>
-        where TDalEntity : class, IDomainEntityId<TKey>
+        where TBllEntity : class, IBllEntityId<TKey>
+        where TDalEntity : class, IDalEntityId<TKey>
         where TKey : struct, IEquatable<TKey>
         where TUnitOfWork : IBaseUnitOfWork
         where TRepository : IBaseRepository<TKey, TDalEntity>

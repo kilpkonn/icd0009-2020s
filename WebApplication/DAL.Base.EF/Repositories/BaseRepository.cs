@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Authentication;
 using System.Threading.Tasks;
 using Car.DAL.Base.Mappers;
+using Car.DAL.Base.Models;
 using Car.DAL.Base.Repositories;
 using Car.Domain.Base;
 using Microsoft.EntityFrameworkCore;
@@ -11,7 +12,7 @@ using Microsoft.EntityFrameworkCore;
 namespace DAL.Base.EF.Repositories
 {
     public class BaseRepository<TDalEntity, TDomainEntity, TDbContext> : BaseRepository<Guid, TDalEntity, TDomainEntity, TDbContext>
-        where TDalEntity : class, IDomainEntityId<Guid>
+        where TDalEntity : class, IDalEntityId<Guid>
         where TDomainEntity : class, IDomainEntityId<Guid>
         where TDbContext : DbContext
     {
@@ -21,7 +22,7 @@ namespace DAL.Base.EF.Repositories
     }
 
     public class BaseRepository<TKey, TDalEntity, TDomainEntity, TDbContext> : IBaseRepository<TKey, TDalEntity>
-        where TDalEntity : class, IDomainEntityId<TKey>
+        where TDalEntity : class, IDalEntityId<TKey>
         where TDomainEntity : class, IDomainEntityId<TKey>
         where TKey : struct, IEquatable<TKey>
         where TDbContext : DbContext

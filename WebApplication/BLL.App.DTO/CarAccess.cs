@@ -1,12 +1,10 @@
 using System;
-using Domain.App;
-using Domain.App.Identity;
-using Domain.Base;
-using AppUser = BLL.App.DTO.Identity.AppUser;
+using BLL.App.DTO.Identity;
+using BLL.Base;
 
 namespace BLL.App.DTO
 {
-    public class CarAccess : DomainEntityId
+    public class CarAccess : BllEntity
     {
         public Guid AppUserId { get; set; }
         public AppUser? AppUser { get; set; }

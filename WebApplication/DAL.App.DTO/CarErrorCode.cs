@@ -1,9 +1,10 @@
 using System;
+using DAL.Base;
 using Domain.Base;
 
 namespace DAL.App.DTO
 {
-    public class CarErrorCode : DomainEntity
+    public class CarErrorCode : DalEntity
     {
         public int CanId { get; set; }
         public long CanData { get; set; }

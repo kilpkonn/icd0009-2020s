@@ -1,9 +1,9 @@
 using System;
-using Domain.Base;
+using DAL.Base;
 
 namespace DAL.App.DTO
 {
-    public class CarType : DomainEntityId
+    public class CarType : DalEntityId
     {
         public string Name { get; set; } = null!;
         

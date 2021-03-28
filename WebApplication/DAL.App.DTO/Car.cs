@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
-using Car.Domain.Base;
+using Car.DAL.Base.Models;
 using DAL.App.DTO.Identity;
-using Domain.Base;
+using DAL.Base;
 
 namespace DAL.App.DTO
 {
-    public class Car : DomainEntityId, IDomainAppUserId
+    public class Car : DalEntityId, IDalAppUserId
     {
         public Guid CarTypeId { get; set; }
         public CarType? CarType { get; set; }

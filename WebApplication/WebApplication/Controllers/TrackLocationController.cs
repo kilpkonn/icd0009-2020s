@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using CarApp.BLL.App;
 using CarApp.DAL.App;
 using Domain.App;
 using Microsoft.AspNetCore.Authorization;
@@ -14,17 +15,17 @@ namespace WebApplication.Controllers
     [Authorize]
     public class TrackLocationController : Controller
     {
-        private readonly IAppUnitOfWork _uow;
+        private readonly IAppBll _bll;
 
-        public TrackLocationController(IAppUnitOfWork uow)
+        public TrackLocationController(IAppBll bll)
         {
-            _uow = uow;
+            _bll = bll;
         }
 
         // GET: TrackLocation
         public async Task<IActionResult> Index()
         {
-            return View(await _uow.TrackLocations.GetAllAsync(User.GetUserId()));
+            return View(await _bll.TrackLocations.GetAllAsync(User.GetUserId()));
         }
 
         // GET: TrackLocation/Details/5
@@ -35,7 +36,7 @@ namespace WebApplication.Controllers
                 return NotFound();
             }
 
-            var trackLocation = await _uow.TrackLocations
+            var trackLocation = await _bll.TrackLocations
                 .FirstOrDefaultAsync((Guid) id, User.GetUserId());
             if (trackLocation == null)
             {
@@ -50,7 +51,7 @@ namespace WebApplication.Controllers
         {
             var vm = new CreateEditViewModel()
             {
-                Tracks = new SelectList(await _uow.Tracks.GetAllAsync(User.GetUserId()), "Id", "Id")
+                Tracks = new SelectList(await _bll.Tracks.GetAllAsync(User.GetUserId()), "Id", "Id")
             };
             return View(vm);
         }
@@ -65,15 +66,15 @@ namespace WebApplication.Controllers
             var trackLocation = ceVm.TrackLocation;
             if (ModelState.IsValid)
             {
-                _uow.TrackLocations.Add(trackLocation!);
-                await _uow.SaveChangesAsync();
+                _bll.TrackLocations.Add(trackLocation!);
+                await _bll.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
 
             var vm = new CreateEditViewModel()
             {
                 TrackLocation = trackLocation,
-                Tracks = new SelectList(await _uow.Tracks.GetAllAsync(User.GetUserId()), "Id", "Id")
+                Tracks = new SelectList(await _bll.Tracks.GetAllAsync(User.GetUserId()), "Id", "Id")
             };
             return View(vm);
         }
@@ -86,7 +87,7 @@ namespace WebApplication.Controllers
                 return NotFound();
             }
 
-            var trackLocation = await _uow.TrackLocations.FirstOrDefaultAsync((Guid) id, User.GetUserId());
+            var trackLocation = await _bll.TrackLocations.FirstOrDefaultAsync((Guid) id, User.GetUserId());
             if (trackLocation == null)
             {
                 return NotFound();
@@ -95,7 +96,7 @@ namespace WebApplication.Controllers
             var vm = new CreateEditViewModel()
             {
                 TrackLocation = trackLocation,
-                Tracks = new SelectList(await _uow.Tracks.GetAllAsync(User.GetUserId()), "Id", "Id")
+                Tracks = new SelectList(await _bll.Tracks.GetAllAsync(User.GetUserId()), "Id", "Id")
             };
             return View(vm);
         }
@@ -117,7 +118,7 @@ namespace WebApplication.Controllers
             {
                 try
                 {
-                    var toUpdate = await _uow.TrackLocations.FirstOrDefaultAsync(id, User.GetUserId());
+                    var toUpdate = await _bll.TrackLocations.FirstOrDefaultAsync(id, User.GetUserId());
                     toUpdate!.Accuracy = trackLocation!.Accuracy;
                     toUpdate.Elevation = trackLocation.Elevation;
                     toUpdate.Lat = trackLocation.Lat;
@@ -126,8 +127,8 @@ namespace WebApplication.Controllers
                     toUpdate.Speed = trackLocation.Speed;
                     toUpdate.ElevationAccuracy = trackLocation.ElevationAccuracy;
                     toUpdate.TrackId = trackLocation.TrackId;
-                    _uow.TrackLocations.Update(toUpdate, User.GetUserId());
-                    await _uow.SaveChangesAsync();
+                    _bll.TrackLocations.Update(toUpdate, User.GetUserId());
+                    await _bll.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -147,7 +148,7 @@ namespace WebApplication.Controllers
             var vm = new CreateEditViewModel()
             {
                 TrackLocation = trackLocation,
-                Tracks = new SelectList(await _uow.Tracks.GetAllAsync(User.GetUserId()), "Id", "Id")
+                Tracks = new SelectList(await _bll.Tracks.GetAllAsync(User.GetUserId()), "Id", "Id")
             };
             return View(vm);
         }
@@ -160,7 +161,7 @@ namespace WebApplication.Controllers
                 return NotFound();
             }
 
-            var trackLocation = await _uow.TrackLocations
+            var trackLocation = await _bll.TrackLocations
                 .FirstOrDefaultAsync((Guid) id, User.GetUserId());
             if (trackLocation == null)
             {
@@ -175,11 +176,11 @@ namespace WebApplication.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var trackLocation = await _uow.TrackLocations.FirstOrDefaultAsync(id, User.GetUserId());
+            var trackLocation = await _bll.TrackLocations.FirstOrDefaultAsync(id, User.GetUserId());
             if (trackLocation != null)
             {
-                _uow.TrackLocations.Remove(trackLocation, User.GetUserId());
-                await _uow.SaveChangesAsync();
+                _bll.TrackLocations.Remove(trackLocation, User.GetUserId());
+                await _bll.SaveChangesAsync();
             }
 
             return RedirectToAction(nameof(Index));
@@ -187,7 +188,7 @@ namespace WebApplication.Controllers
 
         private async Task<bool> TrackLocationExists(Guid id)
         {
-            return await _uow.TrackLocations.ExistsAsync(id, User.GetUserId());
+            return await _bll.TrackLocations.ExistsAsync(id, User.GetUserId());
         }
     }
 }

@@ -1,9 +1,10 @@
 using System;
+using BLL.Base;
 using Domain.Base;
 
 namespace BLL.App.DTO
 {
-    public class CarErrorCode : DomainEntity
+    public class CarErrorCode : BllEntity
     {
         public int CanId { get; set; }
         public long CanData { get; set; }

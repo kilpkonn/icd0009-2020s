@@ -1,9 +1,10 @@
 using System;
+using BLL.Base;
 using Domain.Base;
 
 namespace BLL.App.DTO
 {
-    public class TrackLocation : DomainEntityId
+    public class TrackLocation : BllEntityId
     {
         public double Lat { get; set; }
         public double Lng { get; set; }

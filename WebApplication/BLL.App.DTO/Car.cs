@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using BLL.App.DTO.Identity;
-using Domain.Base;
+using BLL.Base;
 
 namespace BLL.App.DTO
 {
-    public class Car : DomainEntityId
+    public class Car : BllEntity
     {
         public Guid CarTypeId { get; set; }
         public CarType? CarType { get; set; }

@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using CarApp.BLL.App;
 using CarApp.DAL.App;
 using Domain.App;
 using Microsoft.AspNetCore.Authorization;
@@ -14,17 +15,17 @@ namespace WebApplication.Controllers
     [Authorize]
     public class GasRefillController : Controller
     {
-        private readonly IAppUnitOfWork _uow;
+        private readonly IAppBll _bll;
 
-        public GasRefillController(IAppUnitOfWork uow)
+        public GasRefillController(IAppBll bll)
         {
-            _uow = uow;
+            _bll = bll;
         }
 
         // GET: GasRefill
         public async Task<IActionResult> Index()
         {
-            return View(await _uow.GasRefills.GetAllAsync(User.GetUserId()));
+            return View(await _bll.GasRefills.GetAllAsync(User.GetUserId()));
         }
 
         // GET: GasRefill/Details/5
@@ -35,7 +36,7 @@ namespace WebApplication.Controllers
                 return NotFound();
             }
 
-            var gasRefill = await _uow.GasRefills
+            var gasRefill = await _bll.GasRefills
                 .FirstOrDefaultAsync((Guid) id, User.GetUserId());
             if (gasRefill == null)
             {
@@ -50,7 +51,7 @@ namespace WebApplication.Controllers
         {
             var vm = new CreateEditViewModel()
             {
-                Cars = new SelectList(await _uow.Cars.GetAccessibleCarsForUser((Guid) User.GetUserId()!), "Id", "Id")
+                Cars = new SelectList(await _bll.Cars.GetAccessibleCarsForUser((Guid) User.GetUserId()!), "Id", "Id")
             };
             return View(vm);
         }
@@ -65,14 +66,14 @@ namespace WebApplication.Controllers
             var gasRefill = ceVm.GasRefill;
             if (ModelState.IsValid)
             {
-                _uow.GasRefills.Add(gasRefill!);
-                await _uow.SaveChangesAsync();
+                _bll.GasRefills.Add(gasRefill!);
+                await _bll.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             var vm = new CreateEditViewModel()
             {
                 GasRefill = gasRefill,
-                Cars = new SelectList(await _uow.Cars.GetAccessibleCarsForUser((Guid) User.GetUserId()!), "Id", "Id")
+                Cars = new SelectList(await _bll.Cars.GetAccessibleCarsForUser((Guid) User.GetUserId()!), "Id", "Id")
             };
             return View(vm);
         }
@@ -85,7 +86,7 @@ namespace WebApplication.Controllers
                 return NotFound();
             }
 
-            var gasRefill = await _uow.GasRefills.FirstOrDefaultAsync((Guid) id, User.GetUserId());
+            var gasRefill = await _bll.GasRefills.FirstOrDefaultAsync((Guid) id, User.GetUserId());
             if (gasRefill == null)
             {
                 return NotFound();
@@ -94,7 +95,7 @@ namespace WebApplication.Controllers
             var vm = new CreateEditViewModel()
             {
                 GasRefill = gasRefill,
-                Cars = new SelectList(await _uow.Cars.GetAccessibleCarsForUser((Guid) User.GetUserId()!), "Id", "Id")
+                Cars = new SelectList(await _bll.Cars.GetAccessibleCarsForUser((Guid) User.GetUserId()!), "Id", "Id")
             };
             return View(vm);
         }
@@ -116,13 +117,13 @@ namespace WebApplication.Controllers
             {
                 try
                 {
-                    var toUpdate = await _uow.GasRefills.FirstOrDefaultAsync(id, User.GetUserId());
+                    var toUpdate = await _bll.GasRefills.FirstOrDefaultAsync(id, User.GetUserId());
                     toUpdate!.Cost = gasRefill!.Cost;
                     toUpdate.Timestamp = gasRefill.Timestamp;
                     toUpdate.AmountRefilled = gasRefill.AmountRefilled;
                     toUpdate.AppUserId = (Guid) User.GetUserId()!;
-                    _uow.GasRefills.Update(toUpdate, User.GetUserId());
-                    await _uow.SaveChangesAsync();
+                    _bll.GasRefills.Update(toUpdate, User.GetUserId());
+                    await _bll.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -141,7 +142,7 @@ namespace WebApplication.Controllers
             var vm = new CreateEditViewModel()
             {
                 GasRefill = gasRefill,
-                Cars = new SelectList(await _uow.Cars.GetAccessibleCarsForUser((Guid) User.GetUserId()!), "Id", "Id")
+                Cars = new SelectList(await _bll.Cars.GetAccessibleCarsForUser((Guid) User.GetUserId()!), "Id", "Id")
             };
             return View(vm);
         }
@@ -154,7 +155,7 @@ namespace WebApplication.Controllers
                 return NotFound();
             }
 
-            var gasRefill = await _uow.GasRefills
+            var gasRefill = await _bll.GasRefills
                 .FirstOrDefaultAsync((Guid) id, User.GetUserId());
             if (gasRefill == null)
             {
@@ -169,18 +170,18 @@ namespace WebApplication.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var gasRefill = await _uow.GasRefills.FirstOrDefaultAsync(id, User.GetUserId());
+            var gasRefill = await _bll.GasRefills.FirstOrDefaultAsync(id, User.GetUserId());
             if (gasRefill != null)
             {
-                _uow.GasRefills.Remove(gasRefill, User.GetUserId());
-                await _uow.SaveChangesAsync();
+                _bll.GasRefills.Remove(gasRefill, User.GetUserId());
+                await _bll.SaveChangesAsync();
             }
             return RedirectToAction(nameof(Index));
         }
 
         private async Task<bool> GasRefillExists(Guid id)
         {
-            return await _uow.GasRefills.ExistsAsync(id, User.GetUserId());
+            return await _bll.GasRefills.ExistsAsync(id, User.GetUserId());
         }
     }
 }

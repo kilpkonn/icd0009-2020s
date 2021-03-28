@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using CarApp.BLL.App;
 using CarApp.DAL.App;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -13,17 +14,17 @@ namespace WebApplication.Controllers
     [Authorize]
     public class CarErrorCodeController : Controller
     {
-        private readonly IAppUnitOfWork _uow;
+        private readonly IAppBll _bll;
 
-        public CarErrorCodeController(IAppUnitOfWork uow)
+        public CarErrorCodeController(IAppBll bll)
         {
-            _uow = uow;
+            _bll = bll;
         }
 
         // GET: CarErrorCode
         public async Task<IActionResult> Index()
         {
-            return View(await _uow.CarErrorCodes.GetAllAsync(User.GetUserId()));
+            return View(await _bll.CarErrorCodes.GetAllAsync(User.GetUserId()));
         }
 
         // GET: CarErrorCode/Details/5
@@ -34,7 +35,7 @@ namespace WebApplication.Controllers
                 return NotFound();
             }
 
-            var carErrorCode = await _uow.CarErrorCodes
+            var carErrorCode = await _bll.CarErrorCodes
                 .FirstOrDefaultAsync((Guid) id, User.GetUserId());
             if (carErrorCode == null)
             {
@@ -49,7 +50,7 @@ namespace WebApplication.Controllers
         {
             var vm = new CreateEditViewModel()
             {
-                CarOptions = new SelectList(await _uow.Cars.GetAccessibleCarsForUser((Guid) User.GetUserId()!), "Id",
+                CarOptions = new SelectList(await _bll.Cars.GetAccessibleCarsForUser((Guid) User.GetUserId()!), "Id",
                     "CarType.Name")
             };
 
@@ -68,15 +69,15 @@ namespace WebApplication.Controllers
             {
                 carErrorCode!.CreatedBy = (Guid) User.GetUserId()!;
                 carErrorCode!.UpdatedBy = (Guid) User.GetUserId()!;
-                _uow.CarErrorCodes.Add(carErrorCode);
-                await _uow.SaveChangesAsync();
+                _bll.CarErrorCodes.Add(carErrorCode);
+                await _bll.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
 
             var vm = new CreateEditViewModel()
             {
                 CarErrorCode = carErrorCode,
-                CarOptions = new SelectList(await _uow.Cars.GetAccessibleCarsForUser((Guid) User.GetUserId()!), "Id",
+                CarOptions = new SelectList(await _bll.Cars.GetAccessibleCarsForUser((Guid) User.GetUserId()!), "Id",
                     "CarType.Name")
             };
 
@@ -91,7 +92,7 @@ namespace WebApplication.Controllers
                 return NotFound();
             }
 
-            var carErrorCode = await _uow.CarErrorCodes.FirstOrDefaultAsync((Guid) id, null);
+            var carErrorCode = await _bll.CarErrorCodes.FirstOrDefaultAsync((Guid) id, null);
             if (carErrorCode == null)
             {
                 return NotFound();
@@ -100,7 +101,7 @@ namespace WebApplication.Controllers
             var vm = new CreateEditViewModel()
             {
                 CarErrorCode = carErrorCode,
-                CarOptions = new SelectList(await _uow.Cars.GetAccessibleCarsForUser((Guid) User.GetUserId()!), "Id",
+                CarOptions = new SelectList(await _bll.Cars.GetAccessibleCarsForUser((Guid) User.GetUserId()!), "Id",
                     "CarType.Name")
             };
 
@@ -124,13 +125,13 @@ namespace WebApplication.Controllers
             {
                 try
                 {
-                    var toUpdate = await _uow.CarErrorCodes.FirstOrDefaultAsync(id, User.GetUserId());
+                    var toUpdate = await _bll.CarErrorCodes.FirstOrDefaultAsync(id, User.GetUserId());
                     toUpdate!.CarId = carErrorCode!.CarId;
                     toUpdate.CanData = carErrorCode.CanData;
                     toUpdate.UpdatedAt = DateTime.Now;
                     toUpdate.UpdatedBy = (Guid) User.GetUserId()!;
-                    _uow.CarErrorCodes.Update(toUpdate, null);
-                    await _uow.SaveChangesAsync();
+                    _bll.CarErrorCodes.Update(toUpdate, null);
+                    await _bll.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -150,7 +151,7 @@ namespace WebApplication.Controllers
             var vm = new CreateEditViewModel()
             {
                 CarErrorCode = carErrorCode,
-                CarOptions = new SelectList(await _uow.Cars.GetAccessibleCarsForUser((Guid) User.GetUserId()!), "Id",
+                CarOptions = new SelectList(await _bll.Cars.GetAccessibleCarsForUser((Guid) User.GetUserId()!), "Id",
                     "CarType.Name")
             };
 
@@ -165,7 +166,7 @@ namespace WebApplication.Controllers
                 return NotFound();
             }
 
-            var carErrorCode = await _uow.CarErrorCodes
+            var carErrorCode = await _bll.CarErrorCodes
                 .FirstOrDefaultAsync((Guid) id, User.GetUserId());
             if (carErrorCode == null)
             {
@@ -180,11 +181,11 @@ namespace WebApplication.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var carErrorCode = await _uow.CarErrorCodes.FirstOrDefaultAsync(id, User.GetUserId());
+            var carErrorCode = await _bll.CarErrorCodes.FirstOrDefaultAsync(id, User.GetUserId());
             if (carErrorCode != null)
             {
-                _uow.CarErrorCodes.Remove(carErrorCode, User.GetUserId());
-                await _uow.SaveChangesAsync();
+                _bll.CarErrorCodes.Remove(carErrorCode, User.GetUserId());
+                await _bll.SaveChangesAsync();
             }
 
             return RedirectToAction(nameof(Index));
@@ -192,7 +193,7 @@ namespace WebApplication.Controllers
 
         private async Task<bool> CarErrorCodeExists(Guid id)
         {
-            return await _uow.CarErrorCodes.ExistsAsync(id, User.GetUserId());
+            return await _bll.CarErrorCodes.ExistsAsync(id, User.GetUserId());
         }
     }
 }

@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
-using CarApp.DAL.App;
-using Domain.App;
+using CarApp.BLL.App;
+using BLL.App.DTO;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -14,17 +14,17 @@ namespace WebApplication.Controllers
     [Authorize]
     public class CarAccessController : Controller
     {
-        private readonly IAppUnitOfWork _uow;
+        private readonly IAppBll _bll;
 
-        public CarAccessController(IAppUnitOfWork uow)
+        public CarAccessController(IAppBll bll)
         {
-            _uow = uow;
+            _bll = bll;
         }
 
         // GET: CarAccess
         public async Task<IActionResult> Index()
         {
-            return View(await _uow.CarAccesses.GetAllAsync(User.GetUserId()));
+            return View(await _bll.CarAccesses.GetAllAsync(User.GetUserId()));
         }
 
         // GET: CarAccess/Details/5
@@ -34,7 +34,7 @@ namespace WebApplication.Controllers
             {
                 return NotFound();
             }
-            var carAccess = await _uow.CarAccesses.FirstOrDefaultAsync((Guid) id!, User.GetUserId());
+            var carAccess = await _bll.CarAccesses.FirstOrDefaultAsync((Guid) id!, User.GetUserId());
             if (carAccess == null)
             {
                 return NotFound();
@@ -49,8 +49,8 @@ namespace WebApplication.Controllers
             var userId = User.GetUserId();
             var vm = new CreateEditViewModel()
             {
-                CarOptions = new SelectList(await _uow.Cars.GetAllAsync(userId), "Id", "Id"),
-                CarAccessTypeOptions = new SelectList(await _uow.CarAccessTypes.GetAllAsync(userId), "Id", "Name")
+                CarOptions = new SelectList(await _bll.Cars.GetAllAsync(userId), "Id", "Id"),
+                CarAccessTypeOptions = new SelectList(await _bll.CarAccessTypes.GetAllAsync(userId), "Id", "Name")
             };
             return View(vm);
         }
@@ -69,16 +69,16 @@ namespace WebApplication.Controllers
                 carAccess.AppUserId = (Guid) User.GetUserId()!;
                 carAccess.CarId = ceVm.CarAccess!.CarId!;
                 carAccess.CarAccessTypeId = ceVm.CarAccess!.CarAccessTypeId!;
-                _uow.CarAccesses.Add(carAccess);
-                await _uow.SaveChangesAsync();
+                _bll.CarAccesses.Add(carAccess);
+                await _bll.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             
             var userId = (Guid) User!.GetUserId()!;
             var vm = new CreateEditViewModel()
             {
-                CarOptions = new SelectList(await _uow.Cars.GetAllAsync(userId), "Id", "Id"),
-                CarAccessTypeOptions = new SelectList(await _uow.CarAccessTypes.GetAllAsync(userId), "Id", "Name")
+                CarOptions = new SelectList(await _bll.Cars.GetAllAsync(userId), "Id", "Id"),
+                CarAccessTypeOptions = new SelectList(await _bll.CarAccessTypes.GetAllAsync(userId), "Id", "Name")
             };
             return View(vm);
         }
@@ -91,7 +91,7 @@ namespace WebApplication.Controllers
                 return NotFound();
             }
             var userId = (Guid) User!.GetUserId()!;
-            var carAccess = await _uow.CarAccesses.FirstOrDefaultAsync((Guid) id, userId);
+            var carAccess = await _bll.CarAccesses.FirstOrDefaultAsync((Guid) id, userId);
             if (carAccess == null)
             {
                 return NotFound();
@@ -100,8 +100,8 @@ namespace WebApplication.Controllers
             var vm = new CreateEditViewModel()
             {
                 CarAccess = carAccess,
-                CarOptions = new SelectList(await _uow.Cars.GetAllAsync(userId), "Id", "Id"),
-                CarAccessTypeOptions = new SelectList(await _uow.CarAccessTypes.GetAllAsync(userId), "Id", "Name")
+                CarOptions = new SelectList(await _bll.Cars.GetAllAsync(userId), "Id", "Id"),
+                CarAccessTypeOptions = new SelectList(await _bll.CarAccessTypes.GetAllAsync(userId), "Id", "Name")
             };
             return View(vm);
         }
@@ -122,13 +122,13 @@ namespace WebApplication.Controllers
             {
                 try
                 {
-                    var toUpdateAccess = await _uow.CarAccesses.FirstOrDefaultAsync(id, userId);
+                    var toUpdateAccess = await _bll.CarAccesses.FirstOrDefaultAsync(id, userId);
                     toUpdateAccess!.UpdatedAt = DateTime.Now;
                     toUpdateAccess.UpdatedBy = (Guid) userId!;
                     toUpdateAccess.CarAccessTypeId = carAccess.CarAccessTypeId;
                     toUpdateAccess.CarId = carAccess.CarId;
-                    _uow.CarAccesses.Update(toUpdateAccess, userId);
-                    await _uow.SaveChangesAsync();
+                    _bll.CarAccesses.Update(toUpdateAccess, userId);
+                    await _bll.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -147,8 +147,8 @@ namespace WebApplication.Controllers
 
             var vm = new CreateEditViewModel()
             {
-                CarOptions = new SelectList(await _uow.Cars.GetAllAsync(userId), "Id", "Id"),
-                CarAccessTypeOptions = new SelectList(await _uow.CarAccessTypes.GetAllAsync(userId), "Id", "Name")
+                CarOptions = new SelectList(await _bll.Cars.GetAllAsync(userId), "Id", "Id"),
+                CarAccessTypeOptions = new SelectList(await _bll.CarAccessTypes.GetAllAsync(userId), "Id", "Name")
             };
             return View(vm);
         }
@@ -161,7 +161,7 @@ namespace WebApplication.Controllers
                 return NotFound();
             }
 
-            var carAccess = await _uow.CarAccesses.FirstOrDefaultAsync((Guid) id, User.GetUserId());
+            var carAccess = await _bll.CarAccesses.FirstOrDefaultAsync((Guid) id, User.GetUserId());
             if (carAccess == null)
             {
                 return NotFound();
@@ -176,11 +176,11 @@ namespace WebApplication.Controllers
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
             var userId = User.GetUserId();
-            var carAccess = await _uow.CarAccesses.FirstOrDefaultAsync(id, userId);
+            var carAccess = await _bll.CarAccesses.FirstOrDefaultAsync(id, userId);
             if (carAccess != null)
             {
-                _uow.CarAccesses.Remove(carAccess, User.GetUserId());
-                await _uow.SaveChangesAsync();
+                _bll.CarAccesses.Remove(carAccess, User.GetUserId());
+                await _bll.SaveChangesAsync();
             }
 
             return RedirectToAction(nameof(Index));
@@ -188,7 +188,7 @@ namespace WebApplication.Controllers
 
         private async Task<bool> CarAccessExists(Guid id)
         {
-            return await _uow.CarAccesses.ExistsAsync(id, User.GetUserId());
+            return await _bll.CarAccesses.ExistsAsync(id, User.GetUserId());
         }
     }
 }

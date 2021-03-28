@@ -1,11 +1,11 @@
 using System;
-using Car.Domain.Base;
+using Car.DAL.Base.Models;
 using DAL.App.DTO.Identity;
-using Domain.Base;
+using DAL.Base;
 
 namespace DAL.App.DTO
 {
-    public class Track : DomainEntity, IDomainAppUser<AppUser>
+    public class Track : DalEntity, IDalAppUser<AppUser>
     {
         public DateTime StartTimestamp { get; set; }
         public DateTime EndTimestamp { get; set; }

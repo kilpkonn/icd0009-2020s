@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Car.DAL.Base.Repositories;
+using Model = DAL.App.DTO;
 
 namespace CarApp.DAL.App.Repositories
 {
-    public interface ICarRepository: IBaseRepository<global::DAL.App.DTO.Car>
+    public interface ICarRepository: IBaseRepository<Model.Car>
     {
-        public Task<IEnumerable<global::DAL.App.DTO.Car>> GetAccessibleCarsForUser(Guid userId);
+        public Task<IEnumerable<Model.Car>> GetAccessibleCarsForUser(Guid userId);
     }
 }

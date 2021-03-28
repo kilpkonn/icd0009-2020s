@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using Domain.Base;
+using DAL.Base;
 
 namespace DAL.App.DTO
 {
-    public class CarMark : DomainEntityId
+    public class CarMark : DalEntityId
     {
         public string Name { get; set; } = null!;
 

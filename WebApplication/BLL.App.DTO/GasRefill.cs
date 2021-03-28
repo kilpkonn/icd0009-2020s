@@ -1,12 +1,11 @@
 using System;
-using Car.Domain.Base;
-using Domain.App.Identity;
-using Domain.Base;
-using AppUser = BLL.App.DTO.Identity.AppUser;
+using BLL.App.DTO.Identity;
+using BLL.Base;
+using CarApp.BLL.Base.Models;
 
 namespace BLL.App.DTO
 {
-    public class GasRefill : DomainEntityId, IDomainAppUser<AppUser>
+    public class GasRefill : BllEntityId, IBllAppUser<AppUser>
     {
         public float AmountRefilled { get; set; }
         public DateTime Timestamp { get; set; }

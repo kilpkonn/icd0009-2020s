@@ -10,8 +10,8 @@ namespace BLL.App.DTO.Identity
         [StringLength(64), MinLength(1)]
         public string DisplayName { get; set; } = default!;
 
-        public ICollection<Domain.App.CarAccess>? CarAccesses { get; set; }
-        public ICollection<Domain.App.GasRefill>? GasRefills { get; set; }
-        public ICollection<Domain.App.Track>? Tracks { get; set; }
+        public ICollection<CarAccess>? CarAccesses { get; set; }
+        public ICollection<GasRefill>? GasRefills { get; set; }
+        public ICollection<Track>? Tracks { get; set; }
     }
 }

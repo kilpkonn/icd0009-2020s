@@ -1,9 +1,10 @@
 using System;
+using BLL.Base;
 using Domain.Base;
 
 namespace BLL.App.DTO
 {
-    public class CarType : DomainEntity
+    public class CarType : BllEntity
     {
         public string Name { get; set; } = null!;
         

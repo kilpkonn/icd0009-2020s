@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CarApp.BLL.App;
 using CarApp.DAL.App;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -17,17 +18,17 @@ namespace WebApplication.Controllers
     [Authorize]
     public class TrackController : Controller
     {
-        private readonly IAppUnitOfWork _uow;
+        private readonly IAppBll _bll;
 
-        public TrackController(IAppUnitOfWork uow)
+        public TrackController(IAppBll bll)
         {
-            _uow = uow;
+            _bll = bll;
         }
 
         // GET: Track
         public async Task<IActionResult> Index()
         {
-            return View(await _uow.Tracks.GetAllAsync(User.GetUserId()));
+            return View(await _bll.Tracks.GetAllAsync(User.GetUserId()));
         }
 
         // GET: Track/Details/5
@@ -38,7 +39,7 @@ namespace WebApplication.Controllers
                 return NotFound();
             }
 
-            var track = await _uow.Tracks
+            var track = await _bll.Tracks
                 .FirstOrDefaultAsync((Guid) id, User.GetUserId());
             if (track == null)
             {
@@ -53,7 +54,7 @@ namespace WebApplication.Controllers
         {
             var vm = new CreateEditViewModel()
             {
-                Cars = new SelectList(await _uow.Cars.GetAccessibleCarsForUser((Guid) User.GetUserId()!), "Id", "Id")
+                Cars = new SelectList(await _bll.Cars.GetAccessibleCarsForUser((Guid) User.GetUserId()!), "Id", "Id")
             };
             return View(vm);
         }
@@ -69,14 +70,14 @@ namespace WebApplication.Controllers
             if (ModelState.IsValid)
             {
                 track!.AppUserId = (Guid) User.GetUserId()!;
-                _uow.Tracks.Add(track);
-                await _uow.SaveChangesAsync();
+                _bll.Tracks.Add(track);
+                await _bll.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             var vm = new CreateEditViewModel()
             {
                 Track = track,
-                Cars = new SelectList(await _uow.Cars.GetAccessibleCarsForUser((Guid) User.GetUserId()!), "Id", "Id")
+                Cars = new SelectList(await _bll.Cars.GetAccessibleCarsForUser((Guid) User.GetUserId()!), "Id", "Id")
             };
             return View(vm);
         }
@@ -89,7 +90,7 @@ namespace WebApplication.Controllers
                 return NotFound();
             }
 
-            var track = await _uow.Tracks.FirstOrDefaultAsync((Guid) id, User.GetUserId());
+            var track = await _bll.Tracks.FirstOrDefaultAsync((Guid) id, User.GetUserId());
             if (track == null)
             {
                 return NotFound();
@@ -97,7 +98,7 @@ namespace WebApplication.Controllers
             var vm = new CreateEditViewModel()
             {
                 Track = track,
-                Cars = new SelectList(await _uow.Cars.GetAccessibleCarsForUser((Guid) User.GetUserId()!), "Id", "Id")
+                Cars = new SelectList(await _bll.Cars.GetAccessibleCarsForUser((Guid) User.GetUserId()!), "Id", "Id")
             };
             return View(vm);
         }
@@ -119,14 +120,14 @@ namespace WebApplication.Controllers
             {
                 try
                 {
-                    var toUpdate = await _uow.Tracks.FirstOrDefaultAsync(id, User.GetUserId());
+                    var toUpdate = await _bll.Tracks.FirstOrDefaultAsync(id, User.GetUserId());
                     toUpdate!.CarId = track!.CarId;
                     toUpdate.Distance = track.Distance;
                     toUpdate.StartTimestamp = track.StartTimestamp;
                     toUpdate.EndTimestamp = track.EndTimestamp;
                     toUpdate.AppUserId = (Guid) User.GetUserId()!;
-                    _uow.Tracks.Update(toUpdate, User.GetUserId());
-                    await _uow.SaveChangesAsync();
+                    _bll.Tracks.Update(toUpdate, User.GetUserId());
+                    await _bll.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -144,7 +145,7 @@ namespace WebApplication.Controllers
             var vm = new CreateEditViewModel()
             {
                 Track = track,
-                Cars = new SelectList(await _uow.Cars.GetAccessibleCarsForUser((Guid) User.GetUserId()!), "Id", "Id")
+                Cars = new SelectList(await _bll.Cars.GetAccessibleCarsForUser((Guid) User.GetUserId()!), "Id", "Id")
             };
             return View(vm);
         }
@@ -157,7 +158,7 @@ namespace WebApplication.Controllers
                 return NotFound();
             }
 
-            var track = await _uow.Tracks
+            var track = await _bll.Tracks
                 .FirstOrDefaultAsync((Guid) id, User.GetUserId());
             if (track == null)
             {
@@ -172,11 +173,11 @@ namespace WebApplication.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var track = await _uow.Tracks.FirstOrDefaultAsync(id, User.GetUserId());
+            var track = await _bll.Tracks.FirstOrDefaultAsync(id, User.GetUserId());
             if (track != null)
             {
-                _uow.Tracks.Remove(track, User.GetUserId());
-                await _uow.SaveChangesAsync();
+                _bll.Tracks.Remove(track, User.GetUserId());
+                await _bll.SaveChangesAsync();
             }
             
             return RedirectToAction(nameof(Index));
@@ -184,7 +185,7 @@ namespace WebApplication.Controllers
 
         private async Task<bool> TrackExists(Guid id)
         {
-            return await _uow.Tracks.ExistsAsync(id, User.GetUserId());
+            return await _bll.Tracks.ExistsAsync(id, User.GetUserId());
         }
     }
 }

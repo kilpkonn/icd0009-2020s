@@ -1,17 +1,17 @@
 using System;
-using Car.Domain.Base;
+using Car.DAL.Base.Models;
 using DAL.App.DTO.Identity;
-using Domain.Base;
+using DAL.Base;
 
 namespace DAL.App.DTO
 {
-    public class CarAccess : DomainEntityId, IDomainAppUser<AppUser>
+    public class CarAccess : DalEntityId, IDalAppUser<AppUser>
     {
         public Guid AppUserId { get; set; }
         public AppUser? AppUser { get; set; }
         
         public Guid CarId { get; set; }
-        public DAL.App.DTO.Car? Car { get; set; }
+        public Car? Car { get; set; }
         
         public Guid CarAccessTypeId { get; set; }
         public CarAccessType? CarAccessType { get; set; }

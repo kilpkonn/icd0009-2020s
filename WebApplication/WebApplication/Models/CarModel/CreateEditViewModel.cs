@@ -4,7 +4,7 @@ namespace WebApplication.Models.CarModel
 {
     public class CreateEditViewModel
     {
-        public Domain.App.CarModel? CarModel { get; set; }
+        public BLL.App.DTO.CarModel? CarModel { get; set; }
         
         public SelectList? CarMarks { get; set; } 
     }
