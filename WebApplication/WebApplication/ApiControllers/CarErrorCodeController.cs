@@ -2,11 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+using AutoMapper;
+using CarApp.BLL.App;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using DAL.App.EF;
-using Domain.App;
+using PublicApi.DTO.v1;
+using PublicApi.DTO.v1.Mappers;
+using WebApplication.Helpers;
 
 namespace WebApplication.ApiControllers
 {
@@ -14,32 +16,36 @@ namespace WebApplication.ApiControllers
     [ApiController]
     public class CarErrorCodeController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly IAppBll _bll;
+        private readonly CarErrorCodeMapper _mapper;
 
-        public CarErrorCodeController(AppDbContext context)
+        public CarErrorCodeController(IAppBll bll, IMapper mapper)
         {
-            _context = context;
+            _bll = bll;
+            _mapper = new CarErrorCodeMapper(mapper);
         }
 
         // GET: api/CarErrorCode
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CarErrorCode>>> GetCarErrorCodes()
         {
-            return await _context.CarErrorCodes.ToListAsync();
+            return (await _bll.CarErrorCodes.GetAllAsync(User.GetUserId()))
+                .Select(x => _mapper.Map(x))
+                .ToList()!;
         }
 
         // GET: api/CarErrorCode/5
         [HttpGet("{id}")]
         public async Task<ActionResult<CarErrorCode>> GetCarErrorCode(Guid id)
         {
-            var carErrorCode = await _context.CarErrorCodes.FindAsync(id);
+            var carErrorCode = await _bll.CarErrorCodes.FirstOrDefaultAsync(id, User.GetUserId());
 
             if (carErrorCode == null)
             {
                 return NotFound();
             }
 
-            return carErrorCode;
+            return _mapper.Map(carErrorCode)!;
         }
 
         // PUT: api/CarErrorCode/5
@@ -52,15 +58,15 @@ namespace WebApplication.ApiControllers
                 return BadRequest();
             }
 
-            _context.Entry(carErrorCode).State = EntityState.Modified;
+            _bll.CarErrorCodes.Update(_mapper.Map(carErrorCode)!, User.GetUserId());
 
             try
             {
-                await _context.SaveChangesAsync();
+                await _bll.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!CarErrorCodeExists(id))
+                if (!await _bll.CarErrorCodes.ExistsAsync(id, User.GetUserId()))
                 {
                     return NotFound();
                 }
@@ -78,8 +84,8 @@ namespace WebApplication.ApiControllers
         [HttpPost]
         public async Task<ActionResult<CarErrorCode>> PostCarErrorCode(CarErrorCode carErrorCode)
         {
-            _context.CarErrorCodes.Add(carErrorCode);
-            await _context.SaveChangesAsync();
+            carErrorCode = _mapper.Map(_bll.CarErrorCodes.Add(_mapper.Map(carErrorCode)!))!;
+            await _bll.SaveChangesAsync();
 
             return CreatedAtAction("GetCarErrorCode", new { id = carErrorCode.Id }, carErrorCode);
         }
@@ -88,21 +94,16 @@ namespace WebApplication.ApiControllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCarErrorCode(Guid id)
         {
-            var carErrorCode = await _context.CarErrorCodes.FindAsync(id);
+            var carErrorCode = await _bll.CarErrorCodes.FirstOrDefaultAsync(id, User.GetUserId());
             if (carErrorCode == null)
             {
                 return NotFound();
             }
 
-            _context.CarErrorCodes.Remove(carErrorCode);
-            await _context.SaveChangesAsync();
+            _bll.CarErrorCodes.Remove(carErrorCode, User.GetUserId());
+            await _bll.SaveChangesAsync();
 
             return NoContent();
-        }
-
-        private bool CarErrorCodeExists(Guid id)
-        {
-            return _context.CarErrorCodes.Any(e => e.Id == id);
         }
     }
 }

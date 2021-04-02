@@ -2,11 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+using AutoMapper;
+using CarApp.BLL.App;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using DAL.App.EF;
-using Domain.App;
+using PublicApi.DTO.v1;
+using PublicApi.DTO.v1.Mappers;
+using WebApplication.Helpers;
 
 namespace WebApplication.ApiControllers
 {
@@ -14,32 +16,36 @@ namespace WebApplication.ApiControllers
     [ApiController]
     public class CarAccessController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly IAppBll _bll;
+        private readonly CarAccessMapper _mapper;
 
-        public CarAccessController(AppDbContext context)
+        public CarAccessController(IAppBll bll, IMapper mapper)
         {
-            _context = context;
+            _bll = bll;
+            _mapper = new CarAccessMapper(mapper);
         }
 
         // GET: api/CarAccess
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CarAccess>>> GetCarAccesses()
         {
-            return await _context.CarAccesses.ToListAsync();
+            return (await _bll.CarAccesses.GetAllAsync(User.GetUserId()))
+                .Select(x => _mapper.Map(x))
+                .ToList()!;
         }
 
         // GET: api/CarAccess/5
         [HttpGet("{id}")]
         public async Task<ActionResult<CarAccess>> GetCarAccess(Guid id)
         {
-            var carAccess = await _context.CarAccesses.FindAsync(id);
+            var carAccess = await _bll.CarAccesses.FirstOrDefaultAsync(id, User.GetUserId());
 
             if (carAccess == null)
             {
                 return NotFound();
             }
 
-            return carAccess;
+            return _mapper.Map(carAccess)!;
         }
 
         // PUT: api/CarAccess/5
@@ -52,15 +58,15 @@ namespace WebApplication.ApiControllers
                 return BadRequest();
             }
 
-            _context.Entry(carAccess).State = EntityState.Modified;
+            _bll.CarAccesses.Update(_mapper.Map(carAccess)!, User.GetUserId());
 
             try
             {
-                await _context.SaveChangesAsync();
+                await _bll.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!CarAccessExists(id))
+                if (!await _bll.CarAccesses.ExistsAsync(id, User.GetUserId()))
                 {
                     return NotFound();
                 }
@@ -78,31 +84,26 @@ namespace WebApplication.ApiControllers
         [HttpPost]
         public async Task<ActionResult<CarAccess>> PostCarAccess(CarAccess carAccess)
         {
-            _context.CarAccesses.Add(carAccess);
-            await _context.SaveChangesAsync();
+            _bll.CarAccesses.Add(_mapper.Map(carAccess)!);
+            await _bll.SaveChangesAsync();
 
-            return CreatedAtAction("GetCarAccess", new { id = carAccess.Id }, carAccess);
+            return CreatedAtAction("GetCarAccess", new {id = carAccess.Id}, carAccess);
         }
 
         // DELETE: api/CarAccess/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCarAccess(Guid id)
         {
-            var carAccess = await _context.CarAccesses.FindAsync(id);
+            var carAccess = await _bll.CarAccesses.FirstOrDefaultAsync(id, User.GetUserId());
             if (carAccess == null)
             {
                 return NotFound();
             }
 
-            _context.CarAccesses.Remove(carAccess);
-            await _context.SaveChangesAsync();
+            _bll.CarAccesses.Remove(carAccess, User.GetUserId());
+            await _bll.SaveChangesAsync();
 
             return NoContent();
-        }
-
-        private bool CarAccessExists(Guid id)
-        {
-            return _context.CarAccesses.Any(e => e.Id == id);
         }
     }
 }

@@ -2,11 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+using AutoMapper;
+using CarApp.BLL.App;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using DAL.App.EF;
-using Domain.App;
+using PublicApi.DTO.v1.Mappers;
+using WebApplication.Helpers;
 
 namespace WebApplication.ApiControllers
 {
@@ -14,53 +15,56 @@ namespace WebApplication.ApiControllers
     [ApiController]
     public class CarController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly IAppBll _bll;
+        private readonly CarMapper _mapper;
 
-        public CarController(AppDbContext context)
+        public CarController(IAppBll bll, IMapper mapper)
         {
-            _context = context;
+            _bll = bll;
+            _mapper = new CarMapper(mapper);
         }
 
         // GET: api/Car
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Domain.App.Car>>> GetCars()
+        public async Task<ActionResult<IEnumerable<PublicApi.DTO.v1.Car>>> GetCars()
         {
-            return await _context.Cars.ToListAsync();
+            return (await _bll.Cars.GetAccessibleCarsForUser((Guid) User.GetUserId()!))
+                .Select(x => _mapper.Map(x)).ToList()!;
         }
 
         // GET: api/Car/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Domain.App.Car>> GetCar(Guid id)
+        public async Task<ActionResult<PublicApi.DTO.v1.Car>> GetCar(Guid id)
         {
-            var car = await _context.Cars.FindAsync(id);
+            var car = await _bll.Cars.FirstOrDefaultAsync(id, User.GetUserId());
 
             if (car == null)
             {
                 return NotFound();
             }
 
-            return car;
+            return _mapper.Map(car)!;
         }
 
         // PUT: api/Car/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCar(Guid id, Domain.App.Car car)
+        public async Task<IActionResult> PutCar(Guid id, PublicApi.DTO.v1.Car car)
         {
             if (id != car.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(car).State = EntityState.Modified;
+            _bll.Cars.Update(_mapper.Map(car)!, User.GetUserId());
 
             try
             {
-                await _context.SaveChangesAsync();
+                await _bll.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!CarExists(id))
+                if (!await _bll.Cars.ExistsAsync(id, User.GetUserId()))
                 {
                     return NotFound();
                 }
@@ -76,10 +80,10 @@ namespace WebApplication.ApiControllers
         // POST: api/Car
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Domain.App.Car>> PostCar(Domain.App.Car car)
+        public async Task<ActionResult<PublicApi.DTO.v1.Car>> PostCar(PublicApi.DTO.v1.Car car)
         {
-            _context.Cars.Add(car);
-            await _context.SaveChangesAsync();
+            car = _mapper.Map(_bll.Cars.Add(_mapper.Map(car)!))!;
+            await _bll.SaveChangesAsync();
 
             return CreatedAtAction("GetCar", new { id = car.Id }, car);
         }
@@ -88,21 +92,16 @@ namespace WebApplication.ApiControllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCar(Guid id)
         {
-            var car = await _context.Cars.FindAsync(id);
+            var car = await _bll.Cars.FirstOrDefaultAsync(id, User.GetUserId());
             if (car == null)
             {
                 return NotFound();
             }
 
-            _context.Cars.Remove(car);
-            await _context.SaveChangesAsync();
+            _bll.Cars.Remove(car, User.GetUserId());
+            await _bll.SaveChangesAsync();
 
             return NoContent();
-        }
-
-        private bool CarExists(Guid id)
-        {
-            return _context.Cars.Any(e => e.Id == id);
         }
     }
 }

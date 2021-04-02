@@ -2,11 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+using AutoMapper;
+using CarApp.BLL.App;
+using DAL.App.EF;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using DAL.App.EF;
-using Domain.App;
+using PublicApi.DTO.v1;
+using PublicApi.DTO.v1.Mappers;
+using WebApplication.Helpers;
 
 namespace WebApplication.ApiControllers
 {
@@ -14,32 +17,36 @@ namespace WebApplication.ApiControllers
     [ApiController]
     public class GasRefillController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly IAppBll _bll;
+        private readonly GasRefillMapper _mapper;
 
-        public GasRefillController(AppDbContext context)
+        public GasRefillController(IAppBll bll, IMapper mapper)
         {
-            _context = context;
+            _bll = bll;
+            _mapper = new GasRefillMapper(mapper);
         }
 
         // GET: api/GasRefill
         [HttpGet]
         public async Task<ActionResult<IEnumerable<GasRefill>>> GetGasRefills()
         {
-            return await _context.GasRefills.ToListAsync();
+            return (await _bll.GasRefills.GetAllAsync(User.GetUserId()))
+                .Select(x => _mapper.Map(x))
+                .ToList()!;
         }
 
         // GET: api/GasRefill/5
         [HttpGet("{id}")]
         public async Task<ActionResult<GasRefill>> GetGasRefill(Guid id)
         {
-            var gasRefill = await _context.GasRefills.FindAsync(id);
+            var gasRefill = await _bll.GasRefills.FirstOrDefaultAsync(id, User.GetUserId());
 
             if (gasRefill == null)
             {
                 return NotFound();
             }
 
-            return gasRefill;
+            return _mapper.Map(gasRefill)!;
         }
 
         // PUT: api/GasRefill/5
@@ -52,15 +59,15 @@ namespace WebApplication.ApiControllers
                 return BadRequest();
             }
 
-            _context.Entry(gasRefill).State = EntityState.Modified;
+            _bll.GasRefills.Update(_mapper.Map(gasRefill)!, User.GetUserId());
 
             try
             {
-                await _context.SaveChangesAsync();
+                await _bll.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!GasRefillExists(id))
+                if (!await _bll.GasRefills.ExistsAsync(id, User.GetUserId()))
                 {
                     return NotFound();
                 }
@@ -78,8 +85,8 @@ namespace WebApplication.ApiControllers
         [HttpPost]
         public async Task<ActionResult<GasRefill>> PostGasRefill(GasRefill gasRefill)
         {
-            _context.GasRefills.Add(gasRefill);
-            await _context.SaveChangesAsync();
+            _bll.GasRefills.Add(_mapper.Map(gasRefill)!);
+            await _bll.SaveChangesAsync();
 
             return CreatedAtAction("GetGasRefill", new { id = gasRefill.Id }, gasRefill);
         }
@@ -88,21 +95,16 @@ namespace WebApplication.ApiControllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteGasRefill(Guid id)
         {
-            var gasRefill = await _context.GasRefills.FindAsync(id);
+            var gasRefill = await _bll.GasRefills.FirstOrDefaultAsync(id, User.GetUserId());
             if (gasRefill == null)
             {
                 return NotFound();
             }
 
-            _context.GasRefills.Remove(gasRefill);
-            await _context.SaveChangesAsync();
+            _bll.GasRefills.Remove(gasRefill, User.GetUserId());
+            await _bll.SaveChangesAsync();
 
             return NoContent();
-        }
-
-        private bool GasRefillExists(Guid id)
-        {
-            return _context.GasRefills.Any(e => e.Id == id);
         }
     }
 }

@@ -1,7 +1,7 @@
 @model WebApplication.Models.TrackLocation.CreateEditViewModel;
 
 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="TrackLocation.Id" value="@(Model?.TrackLocation?.Id ?? Guid.NewGuid())"/>
+            <input type="hidden" asp-for="TrackLocation!.Id" value="@(Model?.TrackLocation?.Id ?? Guid.NewGuid())"/>
             <div class="form-group">
                 <label asp-for="TrackLocation!.Lat" class="control-label"></label>
                 <input asp-for="TrackLocation!.Lat" class="form-control" />

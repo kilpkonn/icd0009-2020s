@@ -2,11 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+using AutoMapper;
+using CarApp.BLL.App;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using DAL.App.EF;
-using Domain.App;
+using PublicApi.DTO.v1;
+using PublicApi.DTO.v1.Mappers;
+using WebApplication.Helpers;
 
 namespace WebApplication.ApiControllers
 {
@@ -14,32 +16,36 @@ namespace WebApplication.ApiControllers
     [ApiController]
     public class TrackController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly IAppBll _bll;
+        private readonly TrackMapper _mapper;
 
-        public TrackController(AppDbContext context)
+        public TrackController(IAppBll bll, IMapper mapper)
         {
-            _context = context;
+            _bll = bll;
+            _mapper = new TrackMapper(mapper);
         }
 
         // GET: api/Track
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Track>>> GetTracks()
         {
-            return await _context.Tracks.ToListAsync();
+            return (await _bll.Tracks.GetAllAsync(User.GetUserId()))
+                .Select(x => _mapper.Map(x))
+                .ToList()!;
         }
 
         // GET: api/Track/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Track>> GetTrack(Guid id)
         {
-            var track = await _context.Tracks.FindAsync(id);
+            var track = await _bll.Tracks.FirstOrDefaultAsync(id, User.GetUserId());
 
             if (track == null)
             {
                 return NotFound();
             }
 
-            return track;
+            return _mapper.Map(track)!;
         }
 
         // PUT: api/Track/5
@@ -52,15 +58,15 @@ namespace WebApplication.ApiControllers
                 return BadRequest();
             }
 
-            _context.Entry(track).State = EntityState.Modified;
-
+            _bll.Tracks.Update(_mapper.Map(track)!, User.GetUserId());
+            
             try
             {
-                await _context.SaveChangesAsync();
+                await _bll.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!TrackExists(id))
+                if (!await _bll.Tracks.ExistsAsync(id, User.GetUserId()))
                 {
                     return NotFound();
                 }
@@ -78,8 +84,8 @@ namespace WebApplication.ApiControllers
         [HttpPost]
         public async Task<ActionResult<Track>> PostTrack(Track track)
         {
-            _context.Tracks.Add(track);
-            await _context.SaveChangesAsync();
+            track = _mapper.Map(_bll.Tracks.Add(_mapper.Map(track)!))!;
+            await _bll.SaveChangesAsync();
 
             return CreatedAtAction("GetTrack", new { id = track.Id }, track);
         }
@@ -88,21 +94,16 @@ namespace WebApplication.ApiControllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTrack(Guid id)
         {
-            var track = await _context.Tracks.FindAsync(id);
+            var track = await _bll.Tracks.FirstOrDefaultAsync(id, User.GetUserId());
             if (track == null)
             {
                 return NotFound();
             }
 
-            _context.Tracks.Remove(track);
-            await _context.SaveChangesAsync();
+            _bll.Tracks.Remove(track, User.GetUserId());
+            await _bll.SaveChangesAsync();
 
             return NoContent();
-        }
-
-        private bool TrackExists(Guid id)
-        {
-            return _context.Tracks.Any(e => e.Id == id);
         }
     }
 }
