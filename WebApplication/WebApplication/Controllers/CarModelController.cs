@@ -62,8 +62,9 @@ namespace WebApplication.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(CarModel model)
+        public async Task<IActionResult> Create(CreateEditViewModel ceVm)
         {
+            var model = ceVm.CarModel!;
             if (ModelState.IsValid)
             {
                 await _bll.CarModels.AddAsync(model, User.GetUserId());
@@ -105,9 +106,11 @@ namespace WebApplication.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, CarModel model)
+        public async Task<IActionResult> Edit(Guid id, CreateEditViewModel ceVm)
         {
-            if (id != model.Id)
+            var model = ceVm.CarModel;
+            
+            if (id != model?.Id)
             {
                 return NotFound();
             }
@@ -116,7 +119,7 @@ namespace WebApplication.Controllers
             {
                 try
                 {
-                    await _bll.CarModels.UpdateAsync(model, null);
+                    await _bll.CarModels.UpdateAsync(model, User.GetUserId());
                     await _bll.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)

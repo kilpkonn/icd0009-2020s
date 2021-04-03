@@ -62,8 +62,9 @@ namespace WebApplication.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(CarType type)
+        public async Task<IActionResult> Create(CreateEditViewModel ceVm)
         {
+            var type = ceVm.CarType!;
             if (ModelState.IsValid)
             {
                 await _bll.CarTypes.AddAsync(type, User.GetUserId());
@@ -87,7 +88,7 @@ namespace WebApplication.Controllers
                 return NotFound();
             }
 
-            var carType = await _bll.CarTypes.FirstOrDefaultAsync((Guid) id, null);
+            var carType = await _bll.CarTypes.FirstOrDefaultAsync((Guid) id, User.GetUserId());
             if (carType == null)
             {
                 return NotFound();
@@ -106,9 +107,10 @@ namespace WebApplication.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, CarType type)
+        public async Task<IActionResult> Edit(Guid id, CreateEditViewModel ceVm)
         {
-            if (id != type.Id)
+            var type = ceVm.CarType;
+            if (id != type?.Id)
             {
                 return NotFound();
             }

@@ -21,6 +21,7 @@ namespace BLL.App.Services
 
         public override async Task<Track> AddAsync(Track entity, Guid? userId)
         {
+            entity.AppUserId = (Guid) userId!;
             entity.CreatedBy = (Guid) userId!;
             entity.UpdatedBy = (Guid) userId!;
             return await base.AddAsync(entity, userId);

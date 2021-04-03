@@ -60,8 +60,9 @@ namespace WebApplication.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(GasRefill gasRefill)
+        public async Task<IActionResult> Create(CreateEditViewModel ceVm)
         {
+            var gasRefill = ceVm.GasRefill!;
             if (ModelState.IsValid)
             {
                 await _bll.GasRefills.AddAsync(gasRefill, User.GetUserId());
@@ -104,9 +105,10 @@ namespace WebApplication.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, GasRefill gasRefill)
+        public async Task<IActionResult> Edit(Guid id, CreateEditViewModel ceVm)
         {
-            if (id != gasRefill.Id)
+            var gasRefill = ceVm.GasRefill;
+            if (id != gasRefill?.Id)
             {
                 return NotFound();
             }

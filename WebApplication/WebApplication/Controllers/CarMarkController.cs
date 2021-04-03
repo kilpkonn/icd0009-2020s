@@ -101,7 +101,7 @@ namespace WebApplication.Controllers
             {
                 try
                 {
-                    await _bll.CarMarks.UpdateAsync(carMark, null);
+                    await _bll.CarMarks.UpdateAsync(carMark, User.GetUserId());
                     await _bll.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)

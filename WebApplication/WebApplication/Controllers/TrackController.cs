@@ -60,8 +60,9 @@ namespace WebApplication.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Track track)
+        public async Task<IActionResult> Create(CreateEditViewModel ceVm)
         {
+            var track = ceVm.Track!;
             if (ModelState.IsValid)
             {
                 await _bll.Tracks.AddAsync(track, User.GetUserId());
@@ -104,9 +105,10 @@ namespace WebApplication.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, Track track)
+        public async Task<IActionResult> Edit(Guid id, CreateEditViewModel ceVm)
         {
-            if (id != track.Id)
+            var track = ceVm.Track;
+            if (id != track?.Id)
             {
                 return NotFound();
             }
