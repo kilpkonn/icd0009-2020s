@@ -84,7 +84,7 @@ namespace WebApplication.ApiControllers
         [HttpPost]
         public async Task<ActionResult<CarType>> PostCarType(CarType carType)
         {
-            carType = _mapper.Map(_bll.CarTypes.Add(_mapper.Map(carType)!))!;
+            carType = _mapper.Map(_bll.CarTypes.Add(_mapper.Map(carType)!, User.GetUserId()))!;
             await _bll.SaveChangesAsync();
 
             return CreatedAtAction("GetCarType", new { id = carType.Id }, carType);

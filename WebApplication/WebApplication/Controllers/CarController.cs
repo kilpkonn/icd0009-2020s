@@ -70,7 +70,7 @@ namespace WebApplication.Controllers
                 car!.AppUserId = (Guid) User.GetUserId()!;
                 car!.UpdatedBy = (Guid) User.GetUserId()!;
                 car!.CreatedBy = (Guid) User.GetUserId()!;
-                _bll.Cars.Add(car);
+                _bll.Cars.Add(car, User.GetUserId());
 
                 var carAccess = new CarAccess()
                 {
@@ -78,7 +78,7 @@ namespace WebApplication.Controllers
                     AppUserId = (Guid) User.GetUserId()!,
                     CarAccessType = await _bll.CarAccessTypes.FindByNameAsync("Owner")
                 };
-                _bll.CarAccesses.Add(carAccess);
+                _bll.CarAccesses.Add(carAccess, User.GetUserId());
                 
                 await _bll.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

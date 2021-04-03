@@ -84,7 +84,7 @@ namespace WebApplication.ApiControllers
         [HttpPost]
         public async Task<ActionResult<CarMark>> PostCarMark(CarMark carMark)
         {
-            carMark = _mapper.Map(_bll.CarMarks.Add(_mapper.Map(carMark)!))!;  // TODO: Userid?
+            carMark = _mapper.Map(_bll.CarMarks.Add(_mapper.Map(carMark)!, User.GetUserId()))!;  // TODO: Userid?
             await _bll.SaveChangesAsync();
 
             return CreatedAtAction("GetCarMark", new {id = carMark.Id}, carMark);

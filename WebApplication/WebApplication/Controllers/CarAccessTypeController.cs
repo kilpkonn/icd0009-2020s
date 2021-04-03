@@ -4,6 +4,7 @@ using BLL.App.DTO;
 using CarApp.BLL.App;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using WebApplication.Helpers;
 
 namespace WebApplication.Controllers
 {
@@ -55,7 +56,7 @@ namespace WebApplication.Controllers
         {
             if (ModelState.IsValid)
             {
-                _bll.CarAccessTypes.Add(carAccessType);
+                _bll.CarAccessTypes.Add(carAccessType, User.GetUserId());
                 await _bll.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }

@@ -85,7 +85,7 @@ namespace WebApplication.ApiControllers
         [HttpPost]
         public async Task<ActionResult<CarModel>> PostCarModel(CarModel carModel)
         {
-            carModel = _mapper.Map(_bll.CarModels.Add(_mapper.Map(carModel)!))!;
+            carModel = _mapper.Map(_bll.CarModels.Add(_mapper.Map(carModel)!, User.GetUserId()))!;
             await _bll.SaveChangesAsync();
 
             return CreatedAtAction("GetCarModel", new { id = carModel.Id }, carModel);

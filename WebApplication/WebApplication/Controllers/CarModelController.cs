@@ -68,7 +68,7 @@ namespace WebApplication.Controllers
             var carModel = ceVm.CarModel;
             if (ModelState.IsValid)
             {
-                _bll.CarModels.Add(carModel!);
+                _bll.CarModels.Add(carModel!, User.GetUserId());
                 await _bll.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }

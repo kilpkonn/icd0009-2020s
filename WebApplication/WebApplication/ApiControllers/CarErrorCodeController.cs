@@ -84,7 +84,7 @@ namespace WebApplication.ApiControllers
         [HttpPost]
         public async Task<ActionResult<CarErrorCode>> PostCarErrorCode(CarErrorCode carErrorCode)
         {
-            carErrorCode = _mapper.Map(_bll.CarErrorCodes.Add(_mapper.Map(carErrorCode)!))!;
+            carErrorCode = _mapper.Map(_bll.CarErrorCodes.Add(_mapper.Map(carErrorCode)!, User.GetUserId()))!;
             await _bll.SaveChangesAsync();
 
             return CreatedAtAction("GetCarErrorCode", new { id = carErrorCode.Id }, carErrorCode);

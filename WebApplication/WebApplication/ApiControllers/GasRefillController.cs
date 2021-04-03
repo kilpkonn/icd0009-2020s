@@ -85,7 +85,7 @@ namespace WebApplication.ApiControllers
         [HttpPost]
         public async Task<ActionResult<GasRefill>> PostGasRefill(GasRefill gasRefill)
         {
-            _bll.GasRefills.Add(_mapper.Map(gasRefill)!);
+            _bll.GasRefills.Add(_mapper.Map(gasRefill)!, User.GetUserId());
             await _bll.SaveChangesAsync();
 
             return CreatedAtAction("GetGasRefill", new { id = gasRefill.Id }, gasRefill);

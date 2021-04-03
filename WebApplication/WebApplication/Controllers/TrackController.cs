@@ -70,7 +70,7 @@ namespace WebApplication.Controllers
             if (ModelState.IsValid)
             {
                 track!.AppUserId = (Guid) User.GetUserId()!;
-                _bll.Tracks.Add(track);
+                _bll.Tracks.Add(track, User.GetUserId());
                 await _bll.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }

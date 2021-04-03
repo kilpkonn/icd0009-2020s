@@ -66,7 +66,7 @@ namespace WebApplication.Controllers
             var gasRefill = ceVm.GasRefill;
             if (ModelState.IsValid)
             {
-                _bll.GasRefills.Add(gasRefill!);
+                _bll.GasRefills.Add(gasRefill!, User.GetUserId());
                 await _bll.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }

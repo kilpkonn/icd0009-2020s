@@ -69,7 +69,7 @@ namespace WebApplication.Controllers
             {
                 carErrorCode!.CreatedBy = (Guid) User.GetUserId()!;
                 carErrorCode!.UpdatedBy = (Guid) User.GetUserId()!;
-                _bll.CarErrorCodes.Add(carErrorCode);
+                _bll.CarErrorCodes.Add(carErrorCode, User.GetUserId());
                 await _bll.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }

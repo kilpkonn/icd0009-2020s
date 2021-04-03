@@ -82,7 +82,7 @@ namespace WebApplication.ApiControllers
         [HttpPost]
         public async Task<ActionResult<PublicApi.DTO.v1.Car>> PostCar(PublicApi.DTO.v1.Car car)
         {
-            car = _mapper.Map(_bll.Cars.Add(_mapper.Map(car)!))!;
+            car = _mapper.Map(_bll.Cars.Add(_mapper.Map(car)!, User.GetUserId()))!;
             await _bll.SaveChangesAsync();
 
             return CreatedAtAction("GetCar", new { id = car.Id }, car);

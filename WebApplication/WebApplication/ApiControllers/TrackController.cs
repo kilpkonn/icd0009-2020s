@@ -84,7 +84,7 @@ namespace WebApplication.ApiControllers
         [HttpPost]
         public async Task<ActionResult<Track>> PostTrack(Track track)
         {
-            track = _mapper.Map(_bll.Tracks.Add(_mapper.Map(track)!))!;
+            track = _mapper.Map(_bll.Tracks.Add(_mapper.Map(track)!, User.GetUserId()))!;
             await _bll.SaveChangesAsync();
 
             return CreatedAtAction("GetTrack", new { id = track.Id }, track);

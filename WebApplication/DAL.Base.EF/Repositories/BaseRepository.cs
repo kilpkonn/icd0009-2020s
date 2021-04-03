@@ -48,7 +48,7 @@ namespace DAL.Base.EF.Repositories
         public virtual async Task<TDalEntity?> FirstOrDefaultAsync(TKey id, TKey? userId, bool tracking = false)
         {
             var query = CreateQuery(userId, tracking);
-            return await query.Select(e => Mapper.Map(e)!).FirstOrDefaultAsync(e => e.Id.Equals(id));
+            return Mapper.Map(await query.FirstOrDefaultAsync(e => e.Id.Equals(id)));
         }
 
         public virtual TDalEntity Add(TDalEntity entity)

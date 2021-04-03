@@ -66,7 +66,7 @@ namespace WebApplication.Controllers
             var trackLocation = ceVm.TrackLocation;
             if (ModelState.IsValid)
             {
-                _bll.TrackLocations.Add(trackLocation!);
+                _bll.TrackLocations.Add(trackLocation!, User.GetUserId());
                 await _bll.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }

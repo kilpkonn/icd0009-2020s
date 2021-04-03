@@ -64,12 +64,7 @@ namespace WebApplication.Controllers
         {
             if (ModelState.IsValid)
             {
-                var carAccess = new CarAccess();
-                carAccess.Id = Guid.NewGuid();
-                carAccess.AppUserId = (Guid) User.GetUserId()!;
-                carAccess.CarId = ceVm.CarAccess!.CarId!;
-                carAccess.CarAccessTypeId = ceVm.CarAccess!.CarAccessTypeId!;
-                _bll.CarAccesses.Add(carAccess);
+                _bll.CarAccesses.Add(ceVm.CarAccess!, User.GetUserId());
                 await _bll.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -122,12 +117,7 @@ namespace WebApplication.Controllers
             {
                 try
                 {
-                    var toUpdateAccess = await _bll.CarAccesses.FirstOrDefaultAsync(id, userId);
-                    toUpdateAccess!.UpdatedAt = DateTime.Now;
-                    toUpdateAccess.UpdatedBy = (Guid) userId!;
-                    toUpdateAccess.CarAccessTypeId = carAccess.CarAccessTypeId;
-                    toUpdateAccess.CarId = carAccess.CarId;
-                    _bll.CarAccesses.Update(toUpdateAccess, userId);
+                    _bll.CarAccesses.Update(carAccess, userId);
                     await _bll.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)

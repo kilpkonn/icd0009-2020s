@@ -68,7 +68,7 @@ namespace WebApplication.Controllers
             var carType = ceVm.CarType;
             if (ModelState.IsValid)
             {
-                _bll.CarTypes.Add(carType!);
+                _bll.CarTypes.Add(carType!, User.GetUserId());
                 await _bll.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }

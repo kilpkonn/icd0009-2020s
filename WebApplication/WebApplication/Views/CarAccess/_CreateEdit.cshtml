@@ -1,8 +1,13 @@
+@using WebApplication.Helpers
 @model WebApplication.Models.CarAccess.CreateEditViewModel;
 
 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
 <input type="hidden" asp-for="CarAccess!.Id" value="@(Model.CarAccess?.Id ?? Guid.NewGuid())"/>
+<input type="hidden" asp-for="CarAccess!.AppUserId" value="@(Model.CarAccess?.AppUserId ?? User.GetUserId())"/>
+<input type="hidden" asp-for="CarAccess!.CreatedBy" value="@(Model.CarAccess?.CreatedBy ?? User.GetUserId())"/>
+<input type="hidden" asp-for="CarAccess!.Id" value="@(Model.CarAccess?.UpdatedBy ?? User.GetUserId())"/>
+
 <div class="form-group">
     <label asp-for="CarAccess!.CarId" class="control-label"></label>
     <select asp-for="CarAccess!.CarId" class="form-control" asp-items="Model.CarOptions"></select>

@@ -5,6 +5,7 @@ using BLL.App.DTO;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using WebApplication.Helpers;
 
 namespace WebApplication.Controllers
 {
@@ -59,7 +60,7 @@ namespace WebApplication.Controllers
         {
             if (ModelState.IsValid)
             {
-                _bll.CarMarks.Add(carMark);
+                _bll.CarMarks.Add(carMark, User.GetUserId());
                 await _bll.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
