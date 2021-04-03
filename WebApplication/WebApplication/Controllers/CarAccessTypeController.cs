@@ -2,12 +2,14 @@ using System;
 using System.Threading.Tasks;
 using BLL.App.DTO;
 using CarApp.BLL.App;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApplication.Helpers;
 
 namespace WebApplication.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class CarAccessTypeController : Controller
     {
         private readonly IAppBll _bll;
@@ -17,12 +19,14 @@ namespace WebApplication.Controllers
             _bll = bll;
         }
 
+        [AllowAnonymous]
         // GET: CarAccessType
         public async Task<IActionResult> Index()
         {
             return View(await _bll.CarAccessTypes.GetAllAsync(null));
         }
 
+        [AllowAnonymous]
         // GET: CarAccessType/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
@@ -56,10 +60,11 @@ namespace WebApplication.Controllers
         {
             if (ModelState.IsValid)
             {
-                _bll.CarAccessTypes.Add(carAccessType, User.GetUserId());
+                await _bll.CarAccessTypes.AddAsync(carAccessType, User.GetUserId());
                 await _bll.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
             return View(carAccessType);
         }
 
@@ -76,6 +81,7 @@ namespace WebApplication.Controllers
             {
                 return NotFound();
             }
+
             return View(carAccessType);
         }
 
@@ -95,12 +101,12 @@ namespace WebApplication.Controllers
             {
                 try
                 {
-                    _bll.CarAccessTypes.Update(carAccessType, null);
+                    await _bll.CarAccessTypes.UpdateAsync(carAccessType, null);
                     await _bll.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (! await CarAccessTypeExists(carAccessType.Id))
+                    if (!await CarAccessTypeExists(carAccessType.Id))
                     {
                         return NotFound();
                     }
@@ -109,8 +115,10 @@ namespace WebApplication.Controllers
                         throw;
                     }
                 }
+
                 return RedirectToAction(nameof(Index));
             }
+
             return View(carAccessType);
         }
 
@@ -137,12 +145,8 @@ namespace WebApplication.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var carAccessType = await _bll.CarAccessTypes.FirstOrDefaultAsync(id, null);
-            if (carAccessType != null)
-            {
-                _bll.CarAccessTypes.Remove(carAccessType, null);
-                await _bll.SaveChangesAsync();
-            }
+            await _bll.CarAccessTypes.RemoveAsync(id, User.GetUserId());
+            await _bll.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 

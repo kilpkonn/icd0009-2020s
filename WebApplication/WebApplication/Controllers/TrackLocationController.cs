@@ -1,8 +1,7 @@
 using System;
 using System.Threading.Tasks;
+using BLL.App.DTO;
 using CarApp.BLL.App;
-using CarApp.DAL.App;
-using Domain.App;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -61,12 +60,11 @@ namespace WebApplication.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(CreateEditViewModel ceVm)
+        public async Task<IActionResult> Create(TrackLocation trackLocation)
         {
-            var trackLocation = ceVm.TrackLocation;
             if (ModelState.IsValid)
             {
-                _bll.TrackLocations.Add(trackLocation!, User.GetUserId());
+                await _bll.TrackLocations.AddAsync(trackLocation, User.GetUserId());
                 await _bll.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -106,10 +104,9 @@ namespace WebApplication.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, CreateEditViewModel ceVm)
+        public async Task<IActionResult> Edit(Guid id, TrackLocation trackLocation)
         {
-            var trackLocation = ceVm.TrackLocation;
-            if (id != (trackLocation?.Id ?? null))
+            if (id != trackLocation.Id)
             {
                 return NotFound();
             }
@@ -118,16 +115,7 @@ namespace WebApplication.Controllers
             {
                 try
                 {
-                    var toUpdate = await _bll.TrackLocations.FirstOrDefaultAsync(id, User.GetUserId());
-                    toUpdate!.Accuracy = trackLocation!.Accuracy;
-                    toUpdate.Elevation = trackLocation.Elevation;
-                    toUpdate.Lat = trackLocation.Lat;
-                    toUpdate.Lng = trackLocation.Lng;
-                    toUpdate.Rpm = trackLocation.Rpm;
-                    toUpdate.Speed = trackLocation.Speed;
-                    toUpdate.ElevationAccuracy = trackLocation.ElevationAccuracy;
-                    toUpdate.TrackId = trackLocation.TrackId;
-                    _bll.TrackLocations.Update(toUpdate, User.GetUserId());
+                    await _bll.TrackLocations.UpdateAsync(trackLocation, User.GetUserId());
                     await _bll.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -176,12 +164,8 @@ namespace WebApplication.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var trackLocation = await _bll.TrackLocations.FirstOrDefaultAsync(id, User.GetUserId());
-            if (trackLocation != null)
-            {
-                _bll.TrackLocations.Remove(trackLocation, User.GetUserId());
-                await _bll.SaveChangesAsync();
-            }
+            await _bll.TrackLocations.RemoveAsync(id, User.GetUserId());
+            await _bll.SaveChangesAsync();
 
             return RedirectToAction(nameof(Index));
         }

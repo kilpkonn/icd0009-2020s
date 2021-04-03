@@ -7,12 +7,12 @@ namespace PublicApi.DTO.v1
 {
     public class CarModel : ApiDtoEntity
     {
-        public string Name { get; set; } = null!;
-        public DateTime ReleaseDate { get; set; }
+        public string? Name { get; set; } = null!;
+        public DateTime? ReleaseDate { get; set; }
         
-        public Guid CarMarkId { get; set; }
+        public Guid? CarMarkId { get; set; }
         public CarMark? CarMark { get; set; }
 
-        public ICollection<CarType> CarTypes { get; set; } = new List<CarType>();
+        public ICollection<CarType>? CarTypes { get; set; }
     }
 }

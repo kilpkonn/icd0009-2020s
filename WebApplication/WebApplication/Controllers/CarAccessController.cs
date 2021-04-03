@@ -34,6 +34,7 @@ namespace WebApplication.Controllers
             {
                 return NotFound();
             }
+
             var carAccess = await _bll.CarAccesses.FirstOrDefaultAsync((Guid) id!, User.GetUserId());
             if (carAccess == null)
             {
@@ -60,15 +61,15 @@ namespace WebApplication.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(CreateEditViewModel ceVm)
+        public async Task<IActionResult> Create(CarAccess carAccess)
         {
             if (ModelState.IsValid)
             {
-                _bll.CarAccesses.Add(ceVm.CarAccess!, User.GetUserId());
+                await _bll.CarAccesses.AddAsync(carAccess, User.GetUserId());
                 await _bll.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            
+
             var userId = (Guid) User!.GetUserId()!;
             var vm = new CreateEditViewModel()
             {
@@ -85,6 +86,7 @@ namespace WebApplication.Controllers
             {
                 return NotFound();
             }
+
             var userId = (Guid) User!.GetUserId()!;
             var carAccess = await _bll.CarAccesses.FirstOrDefaultAsync((Guid) id, userId);
             if (carAccess == null)
@@ -112,12 +114,13 @@ namespace WebApplication.Controllers
             {
                 return NotFound();
             }
+
             var userId = User.GetUserId();
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _bll.CarAccesses.Update(carAccess, userId);
+                    await _bll.CarAccesses.UpdateAsync(carAccess, userId);
                     await _bll.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -165,13 +168,8 @@ namespace WebApplication.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var userId = User.GetUserId();
-            var carAccess = await _bll.CarAccesses.FirstOrDefaultAsync(id, userId);
-            if (carAccess != null)
-            {
-                _bll.CarAccesses.Remove(carAccess, User.GetUserId());
-                await _bll.SaveChangesAsync();
-            }
+            await _bll.CarAccesses.RemoveAsync(id, User.GetUserId());
+            await _bll.SaveChangesAsync();
 
             return RedirectToAction(nameof(Index));
         }

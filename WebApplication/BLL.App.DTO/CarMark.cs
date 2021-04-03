@@ -5,8 +5,8 @@ namespace BLL.App.DTO
 {
     public class CarMark : BllEntity
     {
-        public string Name { get; set; } = null!;
+        public string? Name { get; set; } 
 
-        public ICollection<CarModel> CarModels { get; set; } = new List<CarModel>();
+        public ICollection<CarModel>? CarModels { get; set; } 
     }
 }

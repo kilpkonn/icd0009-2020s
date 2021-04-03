@@ -59,7 +59,7 @@ namespace WebApplication.ApiControllers
                 return BadRequest();
             }
 
-            _bll.GasRefills.Update(_mapper.Map(gasRefill)!, User.GetUserId());
+            await _bll.GasRefills.UpdateAsync(_mapper.Map(gasRefill)!, User.GetUserId());
 
             try
             {
@@ -85,7 +85,7 @@ namespace WebApplication.ApiControllers
         [HttpPost]
         public async Task<ActionResult<GasRefill>> PostGasRefill(GasRefill gasRefill)
         {
-            _bll.GasRefills.Add(_mapper.Map(gasRefill)!, User.GetUserId());
+            await _bll.GasRefills.AddAsync(_mapper.Map(gasRefill)!, User.GetUserId());
             await _bll.SaveChangesAsync();
 
             return CreatedAtAction("GetGasRefill", new { id = gasRefill.Id }, gasRefill);

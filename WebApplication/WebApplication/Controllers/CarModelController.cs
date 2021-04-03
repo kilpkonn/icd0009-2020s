@@ -1,8 +1,7 @@
 using System;
 using System.Threading.Tasks;
+using BLL.App.DTO;
 using CarApp.BLL.App;
-using CarApp.DAL.App;
-using Domain.App;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -63,12 +62,11 @@ namespace WebApplication.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(CreateEditViewModel ceVm)
+        public async Task<IActionResult> Create(CarModel model)
         {
-            var carModel = ceVm.CarModel;
             if (ModelState.IsValid)
             {
-                _bll.CarModels.Add(carModel!, User.GetUserId());
+                await _bll.CarModels.AddAsync(model, User.GetUserId());
                 await _bll.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -107,10 +105,9 @@ namespace WebApplication.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, CreateEditViewModel ceVm)
+        public async Task<IActionResult> Edit(Guid id, CarModel model)
         {
-            var carModel = ceVm.CarModel;
-            if (id != (carModel?.Id ?? null))
+            if (id != model.Id)
             {
                 return NotFound();
             }
@@ -119,18 +116,12 @@ namespace WebApplication.Controllers
             {
                 try
                 {
-                    var toUpdate = await _bll.CarModels.FirstOrDefaultAsync(id, null);
-                    toUpdate!.Name = carModel!.Name;
-                    toUpdate.CarMarkId = carModel.CarMarkId;
-                    toUpdate.ReleaseDate = carModel.ReleaseDate;
-                    toUpdate.UpdatedAt = DateTime.Now;
-                    toUpdate.UpdatedBy = (Guid) User.GetUserId()!;
-                    _bll.CarModels.Update(toUpdate, null);
+                    await _bll.CarModels.UpdateAsync(model, null);
                     await _bll.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!await CarModelExists(carModel!.Id))
+                    if (!await CarModelExists(model.Id))
                     {
                         return NotFound();
                     }
@@ -145,7 +136,7 @@ namespace WebApplication.Controllers
 
             var vm = new CreateEditViewModel()
             {
-                CarModel = carModel,
+                CarModel = model,
                 CarMarks = new SelectList(await _bll.CarMarks.GetAllAsync(null), "Id", "Name")
             };
             return View(vm);
@@ -174,12 +165,8 @@ namespace WebApplication.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var carModel = await _bll.CarModels.FirstOrDefaultAsync(id, null);
-            if (carModel != null)
-            {
-                _bll.CarModels.Remove(carModel, null);
-                await _bll.SaveChangesAsync();
-            }
+            await _bll.CarModels.RemoveAsync(id, null);
+            await _bll.SaveChangesAsync();
 
             return RedirectToAction(nameof(Index));
         }

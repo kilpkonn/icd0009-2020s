@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using AutoMapper;
 using BLL.App.DTO;
 using BLL.App.Mappers;
@@ -19,19 +20,19 @@ namespace BLL.App.Services
             
         }
 
-        public override CarAccess Add(CarAccess entity, Guid? userId)
+        public override async Task<CarAccess> AddAsync(CarAccess entity, Guid? userId)
         {
             entity.AppUserId = (Guid) userId!;
             entity.CreatedBy = (Guid) userId!;
             entity.UpdatedBy = (Guid) userId!;
-            return base.Add(entity, userId);
+            return await base.AddAsync(entity, userId);
         }
 
-        public override CarAccess Update(CarAccess entity, Guid? userId)
+        public override async Task<CarAccess> UpdateAsync(CarAccess entity, Guid? userId)
         {
             entity.UpdatedAt = DateTime.Now;
             entity.UpdatedBy = (Guid) userId!;
-            return base.Update(entity, userId);
+            return await base.UpdateAsync(entity, userId);
         }
     }
 }

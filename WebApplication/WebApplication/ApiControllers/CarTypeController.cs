@@ -58,7 +58,7 @@ namespace WebApplication.ApiControllers
                 return BadRequest();
             }
 
-            _bll.CarTypes.Update(_mapper.Map(carType)!, User.GetUserId());
+            await _bll.CarTypes.UpdateAsync(_mapper.Map(carType)!, User.GetUserId());
 
             try
             {
@@ -84,7 +84,7 @@ namespace WebApplication.ApiControllers
         [HttpPost]
         public async Task<ActionResult<CarType>> PostCarType(CarType carType)
         {
-            carType = _mapper.Map(_bll.CarTypes.Add(_mapper.Map(carType)!, User.GetUserId()))!;
+            carType = _mapper.Map(await _bll.CarTypes.AddAsync(_mapper.Map(carType)!, User.GetUserId()))!;
             await _bll.SaveChangesAsync();
 
             return CreatedAtAction("GetCarType", new { id = carType.Id }, carType);

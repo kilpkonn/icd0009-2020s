@@ -48,14 +48,28 @@ namespace BLL.Base.Services
             Mapper = mapper;
         }
 
-        public virtual TBllEntity Add(TBllEntity entity, TKey? userId)
+#pragma warning disable 1998
+        public virtual async Task<TBllEntity> AddAsync(TBllEntity entity, TKey? userId)
         {
             return Mapper.Map(ServiceRepository.Add(Mapper.Map(entity)!))!;
         }
-
-        public virtual TBllEntity Update(TBllEntity entity, TKey? userId)
+#pragma warning restore 1998
+        
+        public virtual async Task<TBllEntity> UpdateAsync(TBllEntity entity, TKey? userId)
         {
-            return Mapper.Map(ServiceRepository.Update(Mapper.Map(entity)!, userId))!;
+            TBllEntity dbEntity = Mapper.Map(await ServiceRepository.FirstOrDefaultAsync(entity.Id, userId))!;
+
+            foreach (var toProp in typeof(TBllEntity).GetProperties())
+            {
+                var fromProp = typeof(TBllEntity).GetProperty(toProp.Name);
+                var toVal = fromProp?.GetValue(entity, null);
+                if (toVal != null)
+                {
+                    toProp.SetValue(dbEntity, toVal, null);
+                }
+            }
+            
+            return Mapper.Map(ServiceRepository.Update(Mapper.Map(dbEntity)!, userId))!;
         }
 
         public virtual TBllEntity Remove(TBllEntity entity, TKey? userId = default)

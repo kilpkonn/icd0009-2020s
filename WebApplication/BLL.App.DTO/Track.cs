@@ -10,14 +10,14 @@ namespace BLL.App.DTO
 {
     public class Track : BllEntity, IBllAppUser<AppUser>
     {
-        public DateTime StartTimestamp { get; set; }
-        public DateTime EndTimestamp { get; set; }
-        public float Distance { get; set; }
+        public DateTime? StartTimestamp { get; set; }
+        public DateTime? EndTimestamp { get; set; }
+        public float? Distance { get; set; }
         
-        public Guid CarId { get; set; }
+        public Guid? CarId { get; set; }
         public Domain.App.Car? Car { get; set; }
         
-        public Guid AppUserId { get; set; }
+        public Guid? AppUserId { get; set; }
         public AppUser? AppUser { get; set; }
     }
 }

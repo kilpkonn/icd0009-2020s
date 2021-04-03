@@ -1,8 +1,7 @@
 using System;
 using System.Threading.Tasks;
+using BLL.App.DTO;
 using CarApp.BLL.App;
-using CarApp.DAL.App;
-using Domain.App;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -61,15 +60,15 @@ namespace WebApplication.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(CreateEditViewModel ceVm)
+        public async Task<IActionResult> Create(GasRefill gasRefill)
         {
-            var gasRefill = ceVm.GasRefill;
             if (ModelState.IsValid)
             {
-                _bll.GasRefills.Add(gasRefill!, User.GetUserId());
+                await _bll.GasRefills.AddAsync(gasRefill, User.GetUserId());
                 await _bll.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
             var vm = new CreateEditViewModel()
             {
                 GasRefill = gasRefill,
@@ -91,7 +90,7 @@ namespace WebApplication.Controllers
             {
                 return NotFound();
             }
-            
+
             var vm = new CreateEditViewModel()
             {
                 GasRefill = gasRefill,
@@ -105,10 +104,9 @@ namespace WebApplication.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, CreateEditViewModel ceVm)
+        public async Task<IActionResult> Edit(Guid id, GasRefill gasRefill)
         {
-            var gasRefill = ceVm.GasRefill;
-            if (id != (gasRefill?.Id ?? null))
+            if (id != gasRefill.Id)
             {
                 return NotFound();
             }
@@ -117,12 +115,7 @@ namespace WebApplication.Controllers
             {
                 try
                 {
-                    var toUpdate = await _bll.GasRefills.FirstOrDefaultAsync(id, User.GetUserId());
-                    toUpdate!.Cost = gasRefill!.Cost;
-                    toUpdate.Timestamp = gasRefill.Timestamp;
-                    toUpdate.AmountRefilled = gasRefill.AmountRefilled;
-                    toUpdate.AppUserId = (Guid) User.GetUserId()!;
-                    _bll.GasRefills.Update(toUpdate, User.GetUserId());
+                    await _bll.GasRefills.UpdateAsync(gasRefill, User.GetUserId());
                     await _bll.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -136,9 +129,10 @@ namespace WebApplication.Controllers
                         throw;
                     }
                 }
+
                 return RedirectToAction(nameof(Index));
             }
-            
+
             var vm = new CreateEditViewModel()
             {
                 GasRefill = gasRefill,
@@ -170,12 +164,8 @@ namespace WebApplication.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var gasRefill = await _bll.GasRefills.FirstOrDefaultAsync(id, User.GetUserId());
-            if (gasRefill != null)
-            {
-                _bll.GasRefills.Remove(gasRefill, User.GetUserId());
-                await _bll.SaveChangesAsync();
-            }
+            await _bll.GasRefills.RemoveAsync(id, User.GetUserId());
+            await _bll.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 

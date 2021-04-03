@@ -1,15 +1,11 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
+using BLL.App.DTO;
 using CarApp.BLL.App;
-using CarApp.DAL.App;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using DAL.App.EF;
-using Domain.App;
-using Microsoft.AspNetCore.Authorization;
 using WebApplication.Helpers;
 using WebApplication.Models.Track;
 
@@ -64,16 +60,15 @@ namespace WebApplication.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(CreateEditViewModel ceVm)
+        public async Task<IActionResult> Create(Track track)
         {
-            var track = ceVm.Track;
             if (ModelState.IsValid)
             {
-                track!.AppUserId = (Guid) User.GetUserId()!;
-                _bll.Tracks.Add(track, User.GetUserId());
+                await _bll.Tracks.AddAsync(track, User.GetUserId());
                 await _bll.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
             var vm = new CreateEditViewModel()
             {
                 Track = track,
@@ -95,6 +90,7 @@ namespace WebApplication.Controllers
             {
                 return NotFound();
             }
+
             var vm = new CreateEditViewModel()
             {
                 Track = track,
@@ -108,10 +104,9 @@ namespace WebApplication.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, CreateEditViewModel ceVm)
+        public async Task<IActionResult> Edit(Guid id, Track track)
         {
-            var track = ceVm.Track;
-            if (id != (track?.Id ?? null))
+            if (id != track.Id)
             {
                 return NotFound();
             }
@@ -120,13 +115,7 @@ namespace WebApplication.Controllers
             {
                 try
                 {
-                    var toUpdate = await _bll.Tracks.FirstOrDefaultAsync(id, User.GetUserId());
-                    toUpdate!.CarId = track!.CarId;
-                    toUpdate.Distance = track.Distance;
-                    toUpdate.StartTimestamp = track.StartTimestamp;
-                    toUpdate.EndTimestamp = track.EndTimestamp;
-                    toUpdate.AppUserId = (Guid) User.GetUserId()!;
-                    _bll.Tracks.Update(toUpdate, User.GetUserId());
+                    await _bll.Tracks.UpdateAsync(track, User.GetUserId());
                     await _bll.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -140,8 +129,10 @@ namespace WebApplication.Controllers
                         throw;
                     }
                 }
+
                 return RedirectToAction(nameof(Index));
             }
+
             var vm = new CreateEditViewModel()
             {
                 Track = track,
@@ -173,13 +164,9 @@ namespace WebApplication.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var track = await _bll.Tracks.FirstOrDefaultAsync(id, User.GetUserId());
-            if (track != null)
-            {
-                _bll.Tracks.Remove(track, User.GetUserId());
-                await _bll.SaveChangesAsync();
-            }
-            
+            await _bll.Tracks.RemoveAsync(id, User.GetUserId());
+            await _bll.SaveChangesAsync();
+
             return RedirectToAction(nameof(Index));
         }
 

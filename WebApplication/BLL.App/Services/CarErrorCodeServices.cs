@@ -1,3 +1,5 @@
+using System;
+using System.Threading.Tasks;
 using AutoMapper;
 using BLL.App.DTO;
 using BLL.App.Mappers;
@@ -14,6 +16,13 @@ namespace BLL.App.Services
         public CarErrorCodeServices(IAppUnitOfWork serviceUow, ICarErrorCodeRepository serviceRepository,
             IMapper mapper) : base(serviceUow, serviceRepository, new CarErrorCodeMapper(mapper))
         {
+        }
+
+        public override async Task<CarErrorCode> AddAsync(CarErrorCode entity, Guid? userId)
+        {
+            entity.CreatedBy = (Guid) userId!;
+            entity.UpdatedBy = (Guid) userId!;
+            return await base.AddAsync(entity, userId);
         }
     }
 }

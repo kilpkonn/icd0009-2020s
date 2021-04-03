@@ -19,8 +19,8 @@ namespace CarApp.BLL.Base.Services
         where TDalEntity : class, IDalEntityId<TKey>
         where TKey : struct, IEquatable<TKey>
     {
-        TBllEntity Add(TBllEntity entity, TKey? userId);
-        TBllEntity Update(TBllEntity entity, TKey? userId);
+        Task<TBllEntity> AddAsync(TBllEntity entity, TKey? userId);
+        Task<TBllEntity> UpdateAsync(TBllEntity entity, TKey? userId);
         TBllEntity Remove(TBllEntity entity, TKey? userId);
         Task<IEnumerable<TBllEntity>> GetAllAsync(TKey? userId, bool tracking = false);
         Task<TBllEntity?> FirstOrDefaultAsync(TKey id, TKey? userId, bool tracking = false);

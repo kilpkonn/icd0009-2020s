@@ -8,10 +8,10 @@ namespace PublicApi.DTO.v1
 {
     public class Car : ApiDtoEntityId
     {
-        public Guid CarTypeId { get; set; }
+        public Guid? CarTypeId { get; set; }
         public CarType? CarType { get; set; }
         
-        public Guid AppUserId { get; set; }
+        public Guid? AppUserId { get; set; }
         public AppUser? AppUser { get; set; }
         
         public IEnumerable<CarAccess>? CarAccesses { get; set; }

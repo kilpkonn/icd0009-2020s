@@ -6,8 +6,8 @@ namespace PublicApi.DTO.v1
 {
     public class CarMark : ApiDtoEntity
     {
-        public string Name { get; set; } = null!;
+        public string? Name { get; set; } = null!;
 
-        public ICollection<CarModel> CarModels { get; set; } = new List<CarModel>();
+        public ICollection<CarModel>? CarModels { get; set; }
     }
 }

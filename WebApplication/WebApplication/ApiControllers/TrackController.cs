@@ -58,7 +58,7 @@ namespace WebApplication.ApiControllers
                 return BadRequest();
             }
 
-            _bll.Tracks.Update(_mapper.Map(track)!, User.GetUserId());
+            await _bll.Tracks.UpdateAsync(_mapper.Map(track)!, User.GetUserId());
             
             try
             {
@@ -84,7 +84,7 @@ namespace WebApplication.ApiControllers
         [HttpPost]
         public async Task<ActionResult<Track>> PostTrack(Track track)
         {
-            track = _mapper.Map(_bll.Tracks.Add(_mapper.Map(track)!, User.GetUserId()))!;
+            track = _mapper.Map(await _bll.Tracks.AddAsync(_mapper.Map(track)!, User.GetUserId()))!;
             await _bll.SaveChangesAsync();
 
             return CreatedAtAction("GetTrack", new { id = track.Id }, track);

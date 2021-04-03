@@ -1,14 +1,11 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
+using BLL.App.DTO;
 using CarApp.BLL.App;
-using CarApp.DAL.App;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using BLL.App.DTO;
-using Microsoft.AspNetCore.Authorization;
 using WebApplication.Helpers;
 using WebApplication.Models.Car;
 
@@ -62,24 +59,11 @@ namespace WebApplication.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(CreateEditViewModel ceVm)
+        public async Task<IActionResult> Create(BLL.App.DTO.Car car)
         {
-            var car = ceVm.Car;
             if (ModelState.IsValid)
             {
-                car!.AppUserId = (Guid) User.GetUserId()!;
-                car!.UpdatedBy = (Guid) User.GetUserId()!;
-                car!.CreatedBy = (Guid) User.GetUserId()!;
-                _bll.Cars.Add(car, User.GetUserId());
-
-                var carAccess = new CarAccess()
-                {
-                    Car = car,
-                    AppUserId = (Guid) User.GetUserId()!,
-                    CarAccessType = await _bll.CarAccessTypes.FindByNameAsync("Owner")
-                };
-                _bll.CarAccesses.Add(carAccess, User.GetUserId());
-                
+                await _bll.Cars.AddAsync(car, User.GetUserId());
                 await _bll.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -118,10 +102,9 @@ namespace WebApplication.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, CreateEditViewModel ceVm)
+        public async Task<IActionResult> Edit(Guid id, BLL.App.DTO.Car car)
         {
-            var car = ceVm.Car;
-            if (id != (car?.Id ?? Guid.Empty))
+            if (id != car.Id)
             {
                 return NotFound();
             }
@@ -130,11 +113,7 @@ namespace WebApplication.Controllers
             {
                 try
                 {
-                    var toChange = await _bll.Cars.FirstOrDefaultAsync(id, User.GetUserId());
-                    toChange!.CarTypeId = car!.CarTypeId;
-                    toChange!.UpdatedAt = DateTime.Now;
-                    toChange!.UpdatedBy = (Guid) User.GetUserId()!;
-                    _bll.Cars.Update(toChange, User.GetUserId());
+                    await _bll.Cars.UpdateAsync(car, User.GetUserId());
                     await _bll.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -183,13 +162,9 @@ namespace WebApplication.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var car = await _bll.Cars.FirstOrDefaultAsync(id, User.GetUserId());
-            if (car != null)
-            {
-                _bll.Cars.Remove(car, User.GetUserId());
-                await _bll.SaveChangesAsync();
-            }
-            
+            await _bll.Cars.RemoveAsync(id, User.GetUserId());
+            await _bll.SaveChangesAsync();
+
             return RedirectToAction(nameof(Index));
         }
 

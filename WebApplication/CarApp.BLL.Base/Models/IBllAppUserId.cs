@@ -8,8 +8,8 @@ namespace CarApp.BLL.Base.Models
     }
     
     public interface IBllAppUserId<TKey>
-    where TKey: IEquatable<TKey>
+    where TKey: struct, IEquatable<TKey>
     {
-        TKey AppUserId { get; set; }
+        TKey? AppUserId { get; set; }
     }
 }

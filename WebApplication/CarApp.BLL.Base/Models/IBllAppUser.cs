@@ -10,7 +10,7 @@ namespace CarApp.BLL.Base.Models
     }
 
     public interface IBllAppUser<TKey, TAppUser> : IBllAppUserId<TKey>
-        where TKey : IEquatable<TKey>
+        where TKey : struct, IEquatable<TKey>
         where TAppUser : IdentityUser<TKey>
     {
         TAppUser? AppUser { get; set; }

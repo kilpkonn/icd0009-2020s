@@ -6,10 +6,10 @@ namespace BLL.App.DTO
 {
     public class CarErrorCode : BllEntity
     {
-        public int CanId { get; set; }
-        public long CanData { get; set; }
+        public int? CanId { get; set; }
+        public long? CanData { get; set; }
         
-        public Guid CarId { get; set; }
+        public Guid? CarId { get; set; }
         public Domain.App.Car? Car { get; set; }
     }
 }

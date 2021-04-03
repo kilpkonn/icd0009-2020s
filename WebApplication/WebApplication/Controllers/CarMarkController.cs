@@ -60,7 +60,7 @@ namespace WebApplication.Controllers
         {
             if (ModelState.IsValid)
             {
-                _bll.CarMarks.Add(carMark, User.GetUserId());
+                await _bll.CarMarks.AddAsync(carMark, User.GetUserId());
                 await _bll.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -101,7 +101,7 @@ namespace WebApplication.Controllers
             {
                 try
                 {
-                    _bll.CarMarks.Update(carMark, null);
+                    await _bll.CarMarks.UpdateAsync(carMark, null);
                     await _bll.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -145,12 +145,8 @@ namespace WebApplication.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var carMark = await _bll.CarMarks.FirstOrDefaultAsync(id, null);
-            if (carMark != null)
-            {
-                _bll.CarMarks.Remove(carMark, null);
-                await _bll.SaveChangesAsync();
-            }
+            await _bll.CarMarks.RemoveAsync(id, null);
+            await _bll.SaveChangesAsync();
 
             return RedirectToAction(nameof(Index));
         }

@@ -58,7 +58,7 @@ namespace WebApplication.ApiControllers
                 return BadRequest();
             }
 
-            _bll.CarAccesses.Update(_mapper.Map(carAccess)!, User.GetUserId());
+            await _bll.CarAccesses.UpdateAsync(_mapper.Map(carAccess)!, User.GetUserId());
 
             try
             {
@@ -84,7 +84,7 @@ namespace WebApplication.ApiControllers
         [HttpPost]
         public async Task<ActionResult<CarAccess>> PostCarAccess(CarAccess carAccess)
         {
-            _bll.CarAccesses.Add(_mapper.Map(carAccess)!, User.GetUserId());
+            await _bll.CarAccesses.AddAsync(_mapper.Map(carAccess)!, User.GetUserId());
             await _bll.SaveChangesAsync();
 
             return CreatedAtAction("GetCarAccess", new {id = carAccess.Id}, carAccess);
