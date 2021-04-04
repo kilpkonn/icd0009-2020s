@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using CarApp.BLL.App;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PublicApi.DTO.v1;
@@ -14,6 +16,7 @@ namespace WebApplication.ApiControllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class CarMarkController : ControllerBase
     {
         private readonly IAppBll _bll;
@@ -27,6 +30,7 @@ namespace WebApplication.ApiControllers
 
         // GET: api/CarMark
         [HttpGet]
+        [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<CarMark>>> GetCarMarks()
         {
             return (await _bll.CarMarks.GetAllAsync(null))
@@ -36,6 +40,7 @@ namespace WebApplication.ApiControllers
 
         // GET: api/CarMark/5
         [HttpGet("{id}")]
+        [AllowAnonymous]
         public async Task<ActionResult<CarMark>> GetCarMark(Guid id)
         {
             var carMark = await _bll.CarMarks.FirstOrDefaultAsync(id, null);

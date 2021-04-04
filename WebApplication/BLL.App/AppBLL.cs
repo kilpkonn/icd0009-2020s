@@ -4,16 +4,29 @@ using BLL.Base;
 using CarApp.BLL.App;
 using CarApp.BLL.App.Services;
 using CarApp.DAL.App;
+using Domain.App.Identity;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
 namespace BLL.App
 {
     public class AppBll : BaseBll<IAppUnitOfWork>, IAppBll
     {
         protected IMapper Mapper;
+        protected SignInManager<AppUser> SignInManager;
+        protected UserManager<AppUser> UserManager;
+        protected ILoggerFactory LoggerFactory;
+        protected IConfiguration Configuration;
 
-        public AppBll(IAppUnitOfWork uow, IMapper mapper) : base(uow)
+        public AppBll(IAppUnitOfWork uow, IMapper mapper, SignInManager<AppUser> signInManager,
+            UserManager<AppUser> userManager, ILoggerFactory loggerFactory, IConfiguration configuration) : base(uow)
         {
             Mapper = mapper;
+            SignInManager = signInManager;
+            UserManager = userManager;
+            LoggerFactory = loggerFactory;
+            Configuration = configuration;
         }
 
         public ICarService Cars => GetService<ICarService>(() => new CarService(Uow, Uow.Cars, Mapper));
@@ -43,5 +56,9 @@ namespace BLL.App
 
         public ITrackLocationService TrackLocations =>
             GetService<ITrackLocationService>(() => new TrackLocationService(Uow, Uow.TrackLocations, Mapper));
+
+        public IAccountService Accounts =>
+            GetService<IAccountService>(() => new AccountService(SignInManager, UserManager,
+                new Logger<AccountService>(LoggerFactory), Configuration));
     }
 }

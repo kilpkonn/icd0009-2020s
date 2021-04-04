@@ -33,12 +33,10 @@ namespace WebApplication
             services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
-            
-            services.AddScoped<IAppUnitOfWork, AppUnitOfWork>();
-            services.AddScoped<IAppBll, AppBll>();
+
 
             services.AddDatabaseDeveloperPageExceptionFilter();
-            
+
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
             services
                 .AddAuthentication()
@@ -60,13 +58,13 @@ namespace WebApplication
                     }
                 );
 
-            
+
             services
                 .AddIdentity<AppUser, AppRole>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddDefaultUI()
                 .AddEntityFrameworkStores<AppDbContext>()
                 .AddDefaultTokenProviders();
-            
+
             services.AddCors(options =>
                 {
                     options.AddPolicy("CorsAllowAll", builder =>
@@ -78,6 +76,9 @@ namespace WebApplication
                 }
             );
             
+            services.AddScoped<IAppUnitOfWork, AppUnitOfWork>();
+            services.AddScoped<IAppBll, AppBll>();
+
             services.AddRazorPages();
             
             services.AddAutoMapper(

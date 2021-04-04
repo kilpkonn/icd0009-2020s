@@ -11,10 +11,18 @@
       <ProjectReference Include="..\CarApp.BLL.Base\CarApp.BLL.Base.csproj" />
       <ProjectReference Include="..\CarApp.DAL.App\CarApp.DAL.App.csproj" />
       <ProjectReference Include="..\DAL.App.DTO\DAL.App.DTO.csproj" />
+      <ProjectReference Include="..\Extensions.Base\Extensions.Base.csproj" />
     </ItemGroup>
 
     <ItemGroup>
       <PackageReference Include="AutoMapper" Version="10.1.1" />
+      <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="Microsoft.Extensions.Configuration.Binder, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60">
+        <HintPath>..\..\..\..\..\..\usr\share\dotnet\packs\Microsoft.AspNetCore.App.Ref\5.0.0\ref\net5.0\Microsoft.Extensions.Configuration.Binder.dll</HintPath>
+      </Reference>
     </ItemGroup>
 
 </Project>

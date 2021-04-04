@@ -19,6 +19,9 @@ namespace PublicApi.DTO.v1.MappingProfiles
             CreateMap<TrackLocation, BLL.App.DTO.TrackLocation>().ReverseMap();
             CreateMap<AppUser, BLL.App.DTO.Identity.AppUser>().ReverseMap();
             CreateMap<AppRole, BLL.App.DTO.Identity.AppRole>().ReverseMap();
+            CreateMap<Login, BLL.App.DTO.Identity.Login>().ReverseMap();
+            CreateMap<Register, BLL.App.DTO.Identity.Register>().ReverseMap();
+            CreateMap<JwtResponse, BLL.App.DTO.Identity.JwtResponse>().ReverseMap();
         }
     }
 
