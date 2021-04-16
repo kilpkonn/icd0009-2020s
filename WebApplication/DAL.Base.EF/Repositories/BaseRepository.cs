@@ -11,12 +11,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Base.EF.Repositories
 {
-    public class BaseRepository<TDalEntity, TDomainEntity, TDbContext> : BaseRepository<Guid, TDalEntity, TDomainEntity, TDbContext>
+    public class
+        BaseRepository<TDalEntity, TDomainEntity, TDbContext> : BaseRepository<Guid, TDalEntity, TDomainEntity,
+            TDbContext>
         where TDalEntity : class, IDalEntityId<Guid>
         where TDomainEntity : class, IDomainEntityId<Guid>
         where TDbContext : DbContext
     {
-        public BaseRepository(TDbContext dbContext, IBaseMapper<TDalEntity, TDomainEntity> mapper) : base(dbContext, mapper)
+        public BaseRepository(TDbContext dbContext, IBaseMapper<TDalEntity, TDomainEntity> mapper) : base(dbContext,
+            mapper)
         {
         }
     }
@@ -31,6 +34,7 @@ namespace DAL.Base.EF.Repositories
         protected readonly TDbContext DbContext;
         protected readonly DbSet<TDomainEntity> DbSet;
         protected readonly IBaseMapper<TDalEntity, TDomainEntity> Mapper;
+        private readonly Dictionary<TDalEntity, TDomainEntity> _entityCache = new();
 
         public BaseRepository(TDbContext dbContext, IBaseMapper<TDalEntity, TDomainEntity> mapper)
         {
@@ -53,7 +57,13 @@ namespace DAL.Base.EF.Repositories
 
         public virtual TDalEntity Add(TDalEntity entity)
         {
-            return Mapper.Map(DbSet.Add(Mapper.Map(entity)!).Entity)!;
+            var domainEntity = Mapper.Map(entity)!;
+            var updatedDomainEntity = DbSet.Add(domainEntity).Entity;
+            var dalEntity = Mapper.Map(updatedDomainEntity)!;
+
+            _entityCache.Add(entity, domainEntity);
+
+            return dalEntity;
         }
 
         public virtual TDalEntity Update(TDalEntity entity, TKey? userId)
@@ -65,19 +75,20 @@ namespace DAL.Base.EF.Repositories
                 throw new AuthenticationException("Bad user id inside entity to be deleted.");
                 // TODO: load entity from the db, check that userId inside entity is correct.
             }
-            
+
             return Mapper.Map(DbSet.Update(Mapper.Map(entity)!).Entity)!;
         }
 
         public virtual TDalEntity Remove(TDalEntity entity, TKey? userId)
         {
-            if (userId != null && !((IDomainAppUserId<TKey>) entity).AppUserId.Equals(userId))
+            var dbEntity = Mapper.Map(entity)!;
+            if (userId != null && !((IDomainAppUserId<TKey>) dbEntity).AppUserId.Equals(userId))
             {
                 throw new AuthenticationException("Bad user id inside entity to be deleted.");
                 // TODO: load entity from the db, check that userId inside entity is correct.
             }
 
-            return Mapper.Map(DbSet.Remove(Mapper.Map(entity)!).Entity)!;
+            return Mapper.Map(DbSet.Remove(dbEntity).Entity)!;
         }
 
         public virtual async Task<TDalEntity> RemoveAsync(TKey id, TKey? userId)
@@ -92,6 +103,15 @@ namespace DAL.Base.EF.Repositories
             return await DbSet.AnyAsync(e =>
                 e.Id.Equals(id) && ((IDomainAppUserId<TKey>) e).AppUserId.Equals(userId));
         }
+
+        public TDalEntity GetUpdatedEntityAfterSaveChanges(TDalEntity entity)
+        {
+            var updatedEntity = _entityCache[entity]!;
+            var dalEntity = Mapper.Map(updatedEntity)!;
+
+            return dalEntity;
+        }
+
 
         protected IQueryable<TDomainEntity> CreateQuery(TKey? userId, bool tracking = false)
         {

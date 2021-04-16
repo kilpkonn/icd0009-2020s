@@ -39,6 +39,7 @@ namespace BLL.Base.Services
         protected TUnitOfWork ServiceUow;
         protected TRepository ServiceRepository;
         protected IBaseMapper<TBllEntity, TDalEntity> Mapper;
+        private readonly Dictionary<TBllEntity, TDalEntity> _entityCache = new();
 
         public BaseEntityService(TUnitOfWork serviceUow, TRepository serviceRepository,
             IBaseMapper<TBllEntity, TDalEntity> mapper)
@@ -51,9 +52,25 @@ namespace BLL.Base.Services
 #pragma warning disable 1998
         public virtual async Task<TBllEntity> AddAsync(TBllEntity entity, TKey? userId)
         {
-            return Mapper.Map(ServiceRepository.Add(Mapper.Map(entity)!))!;
+            var dalEntity = Mapper.Map(entity)!;
+            var updatedDalEntity = ServiceRepository.Add(dalEntity);
+            var returnBllEntity = Mapper.Map(updatedDalEntity)!;
+            
+            _entityCache.Add(entity, dalEntity);
+            
+            return returnBllEntity;
+
         }
 #pragma warning restore 1998
+        
+        public TBllEntity GetUpdatedEntityAfterSaveChanges(TBllEntity entity)
+        {
+            var dalEntity = _entityCache[entity]!;
+            var updatedDalEntity = ServiceRepository.GetUpdatedEntityAfterSaveChanges(dalEntity);
+            var bllEntity = Mapper.Map(updatedDalEntity)!;
+            return bllEntity;
+        }
+
         
         public virtual async Task<TBllEntity> UpdateAsync(TBllEntity entity, TKey? userId)
         {

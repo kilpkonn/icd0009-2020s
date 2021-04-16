@@ -11,5 +11,6 @@ namespace Car.DAL.Base.Repositories
         TEntity Add(TEntity entity);
         TEntity Update(TEntity entity, TKey? userId);
         TEntity Remove(TEntity entity, TKey? userId);
+        TEntity GetUpdatedEntityAfterSaveChanges(TEntity entity);
     }
 }
