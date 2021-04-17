@@ -8,6 +8,9 @@ using DAL.App.EF;
 using DAL.App.EF.DataInit;
 using Domain.App.Identity;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using Swashbuckle.AspNetCore.SwaggerGen;
+using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -86,11 +89,27 @@ namespace WebApplication
                 typeof(BLL.App.DTO.MappingProfiles.AutoMapperProfile),
                 typeof(PublicApi.DTO.v1.MappingProfiles.AutoMapperProfile)
             );
+            
+            // add support for api versioning
+            services.AddApiVersioning(options =>
+            {
+                options.ReportApiVersions = true;
+            });
+            // add support for m2m api documentation
+            services.AddVersionedApiExplorer(options =>
+            {
+                options.GroupNameFormat = "'v'VVV";
+            });
+            // add support to generate human readable documentation from m2m docs
+            services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
+            services.AddSwaggerGen();
+
 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env,
+            IApiVersionDescriptionProvider apiVersionDescriptionProvider)
         {
             SetupAppData(app, Configuration);
 
@@ -105,6 +124,19 @@ namespace WebApplication
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+            
+            app.UseSwagger();
+            app.UseSwaggerUI(options =>
+            {
+                foreach (var apiVersionDescription in apiVersionDescriptionProvider.ApiVersionDescriptions)
+                {
+                    options.SwaggerEndpoint(
+                        $"/swagger/{apiVersionDescription.GroupName}/swagger.json",
+                        apiVersionDescription.GroupName.ToUpperInvariant()
+                    );
+                }
+            });
+
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

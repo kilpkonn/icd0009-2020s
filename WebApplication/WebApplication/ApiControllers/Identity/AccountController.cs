@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using AutoMapper;
 using CarApp.BLL.App;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PublicApi.DTO.v1.Error;
 using PublicApi.DTO.v1.Identity;
@@ -22,6 +23,11 @@ namespace WebApplication.ApiControllers.Identity
             _loginMapper = new LoginMapper(mapper);
             _registerMapper = new RegisterMapper(mapper);
         }
+
+        [Produces("application/json")]
+        [Consumes("application/json")]
+        [ProducesResponseType(typeof(JwtResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Error), StatusCodes.Status404NotFound)]
 
         [HttpPost]
         public async Task<IActionResult> Login([FromBody] Login dto)

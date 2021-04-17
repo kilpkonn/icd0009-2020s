@@ -6,6 +6,7 @@ using AutoMapper;
 using CarApp.BLL.App;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PublicApi.DTO.v1;
@@ -14,6 +15,10 @@ using WebApplication.Helpers;
 
 namespace WebApplication.ApiControllers
 {
+    /// <summary>
+    /// Car controller for managing cars 
+    /// </summary>
+    [ApiVersion("1.0")]
     [Route("api/[controller]")]
     [ApiController]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
@@ -22,6 +27,11 @@ namespace WebApplication.ApiControllers
         private readonly IAppBll _bll;
         private readonly CarErrorCodeMapper _mapper;
 
+        /// <summary>
+        /// Car Controller
+        /// </summary>
+        /// <param name="bll">BLL</param>
+        /// <param name="mapper">DTO Mapper</param>
         public CarErrorCodeController(IAppBll bll, IMapper mapper)
         {
             _bll = bll;
@@ -29,6 +39,13 @@ namespace WebApplication.ApiControllers
         }
 
         // GET: api/CarErrorCode
+        /// <summary>
+        /// Get all car error codes for user 
+        /// </summary>
+        /// <returns>Car error codes</returns>
+        [Produces("application/json")]
+        [Consumes("application/json")]
+        [ProducesResponseType(typeof(IEnumerable<CarErrorCode>), StatusCodes.Status200OK)]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CarErrorCode>>> GetCarErrorCodes()
         {
@@ -38,6 +55,15 @@ namespace WebApplication.ApiControllers
         }
 
         // GET: api/CarErrorCode/5
+        /// <summary>
+        /// Get Detailed data about car error code 
+        /// </summary>
+        /// <param name="id">Car error code id</param>
+        /// <returns>Car error code</returns>
+        [Produces("application/json")]
+        [Consumes("application/json")]
+        [ProducesResponseType(typeof(IEnumerable<CarErrorCode>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpGet("{id}")]
         public async Task<ActionResult<CarErrorCode>> GetCarErrorCode(Guid id)
         {
@@ -53,6 +79,17 @@ namespace WebApplication.ApiControllers
 
         // PUT: api/CarErrorCode/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        /// <summary>
+        /// Update car error code
+        /// </summary>
+        /// <param name="id">Id</param>
+        /// <param name="carErrorCode">Car error code</param>
+        /// <returns>Http response</returns>
+        [Produces("application/json")]
+        [Consumes("application/json")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCarErrorCode(Guid id, CarErrorCode carErrorCode)
         {
@@ -84,16 +121,34 @@ namespace WebApplication.ApiControllers
 
         // POST: api/CarErrorCode
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        /// <summary>
+        /// Add new car error code access
+        /// </summary>
+        /// <param name="carErrorCode">Car error code to add</param>
+        /// <returns>Car access</returns>
+        [Produces("application/json")]
+        [Consumes("application/json")]
+        [ProducesResponseType(typeof(IEnumerable<CarErrorCode>), StatusCodes.Status200OK)]
         [HttpPost]
         public async Task<ActionResult<CarErrorCode>> PostCarErrorCode(CarErrorCode carErrorCode)
         {
-            carErrorCode = _mapper.Map(await _bll.CarErrorCodes.AddAsync(_mapper.Map(carErrorCode)!, User.GetUserId()))!;
+            carErrorCode =
+                _mapper.Map(await _bll.CarErrorCodes.AddAsync(_mapper.Map(carErrorCode)!, User.GetUserId()))!;
             await _bll.SaveChangesAsync();
 
-            return CreatedAtAction("GetCarErrorCode", new { id = carErrorCode.Id }, carErrorCode);
+            return CreatedAtAction("GetCarErrorCode", new {id = carErrorCode.Id}, carErrorCode);
         }
 
         // DELETE: api/CarErrorCode/5
+        /// <summary>
+        /// Delete car error code
+        /// </summary>
+        /// <param name="id">Id</param>
+        /// <returns>No content</returns>
+        [Produces("application/json")]
+        [Consumes("application/json")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCarErrorCode(Guid id)
         {

@@ -6,6 +6,7 @@ using AutoMapper;
 using CarApp.BLL.App;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PublicApi.DTO.v1;
@@ -14,6 +15,10 @@ using WebApplication.Helpers;
 
 namespace WebApplication.ApiControllers
 {
+    /// <summary>
+    /// Track Location controller for managing track locations
+    /// </summary>
+    [ApiVersion("1.0")]
     [Route("api/[controller]")]
     [ApiController]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
@@ -22,6 +27,11 @@ namespace WebApplication.ApiControllers
         private readonly IAppBll _bll;
         private readonly TrackLocationMapper _mapper;
 
+        /// <summary>
+        /// Track Location Controller
+        /// </summary>
+        /// <param name="bll">BLL</param>
+        /// <param name="mapper">DTO Mapper</param>
         public TrackLocationController(IAppBll bll, IMapper mapper)
         {
             _bll = bll;
@@ -29,6 +39,13 @@ namespace WebApplication.ApiControllers
         }
 
         // GET: api/TrackLocation
+        /// <summary>
+        /// Get all track locations for user
+        /// </summary>
+        /// <returns>Track Locations</returns>
+        [Produces("application/json")]
+        [Consumes("application/json")]
+        [ProducesResponseType(typeof(IEnumerable<CarAccess>), StatusCodes.Status200OK)]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TrackLocation>>> GetTrackLocations()
         {
@@ -38,6 +55,15 @@ namespace WebApplication.ApiControllers
         }
 
         // GET: api/TrackLocation/5
+        /// <summary>
+        /// Get Detailed data about track location
+        /// </summary>
+        /// <param name="id">Track location id</param>
+        /// <returns>Track location</returns>
+        [Produces("application/json")]
+        [Consumes("application/json")]
+        [ProducesResponseType(typeof(IEnumerable<TrackLocation>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpGet("{id}")]
         public async Task<ActionResult<TrackLocation>> GetTrackLocation(Guid id)
         {
@@ -53,6 +79,17 @@ namespace WebApplication.ApiControllers
 
         // PUT: api/TrackLocation/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        /// <summary>
+        /// Update track location
+        /// </summary>
+        /// <param name="id">Id</param>
+        /// <param name="trackLocation">Track location</param>
+        /// <returns>Http response</returns>
+        [Produces("application/json")]
+        [Consumes("application/json")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutTrackLocation(Guid id, TrackLocation trackLocation)
         {
@@ -62,7 +99,7 @@ namespace WebApplication.ApiControllers
             }
 
             await _bll.TrackLocations.UpdateAsync(_mapper.Map(trackLocation)!, User.GetUserId());
-            
+
             try
             {
                 await _bll.SaveChangesAsync();
@@ -84,16 +121,34 @@ namespace WebApplication.ApiControllers
 
         // POST: api/TrackLocation
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        /// <summary>
+        /// Add new track location
+        /// </summary>
+        /// <param name="trackLocation">Track location to add</param>
+        /// <returns>Track location</returns>
+        [Produces("application/json")]
+        [Consumes("application/json")]
+        [ProducesResponseType(typeof(IEnumerable<TrackLocation>), StatusCodes.Status200OK)]
         [HttpPost]
         public async Task<ActionResult<TrackLocation>> PostTrackLocation(TrackLocation trackLocation)
         {
-            trackLocation = _mapper.Map(await _bll.TrackLocations.AddAsync(_mapper.Map(trackLocation)!, User.GetUserId()))!;
+            trackLocation =
+                _mapper.Map(await _bll.TrackLocations.AddAsync(_mapper.Map(trackLocation)!, User.GetUserId()))!;
             await _bll.SaveChangesAsync();
 
-            return CreatedAtAction("GetTrackLocation", new { id = trackLocation.Id }, trackLocation);
+            return CreatedAtAction("GetTrackLocation", new {id = trackLocation.Id}, trackLocation);
         }
 
         // DELETE: api/TrackLocation/5
+        /// <summary>
+        /// Delete track location
+        /// </summary>
+        /// <param name="id">Id</param>
+        /// <returns>No content</returns>
+        [Produces("application/json")]
+        [Consumes("application/json")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTrackLocation(Guid id)
         {

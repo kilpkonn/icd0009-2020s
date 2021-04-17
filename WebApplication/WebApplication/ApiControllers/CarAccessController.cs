@@ -6,6 +6,7 @@ using AutoMapper;
 using CarApp.BLL.App;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PublicApi.DTO.v1;
@@ -14,6 +15,10 @@ using WebApplication.Helpers;
 
 namespace WebApplication.ApiControllers
 {
+    /// <summary>
+    /// Car Access controller for managing car accesses
+    /// </summary>
+    [ApiVersion("1.0")]
     [Route("api/[controller]")]
     [ApiController]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
@@ -22,6 +27,11 @@ namespace WebApplication.ApiControllers
         private readonly IAppBll _bll;
         private readonly CarAccessMapper _mapper;
 
+        /// <summary>
+        /// Car Access Controller
+        /// </summary>
+        /// <param name="bll">BLL</param>
+        /// <param name="mapper">DTO Mapper</param>
         public CarAccessController(IAppBll bll, IMapper mapper)
         {
             _bll = bll;
@@ -29,6 +39,13 @@ namespace WebApplication.ApiControllers
         }
 
         // GET: api/CarAccess
+        /// <summary>
+        /// Get All car accesses for user 
+        /// </summary>
+        /// <returns>Car accesses</returns>
+        [Produces("application/json")]
+        [Consumes("application/json")]
+        [ProducesResponseType(typeof(IEnumerable<CarAccess>), StatusCodes.Status200OK)]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CarAccess>>> GetCarAccesses()
         {
@@ -38,6 +55,15 @@ namespace WebApplication.ApiControllers
         }
 
         // GET: api/CarAccess/5
+        /// <summary>
+        /// Get Detailed data about car access 
+        /// </summary>
+        /// <param name="id">Car access id</param>
+        /// <returns>Car access</returns>
+        [Produces("application/json")]
+        [Consumes("application/json")]
+        [ProducesResponseType(typeof(IEnumerable<CarAccess>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpGet("{id}")]
         public async Task<ActionResult<CarAccess>> GetCarAccess(Guid id)
         {
@@ -53,6 +79,17 @@ namespace WebApplication.ApiControllers
 
         // PUT: api/CarAccess/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        /// <summary>
+        /// Update Car Access
+        /// </summary>
+        /// <param name="id">Id</param>
+        /// <param name="carAccess">Car access</param>
+        /// <returns>Http response</returns>
+        [Produces("application/json")]
+        [Consumes("application/json")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCarAccess(Guid id, CarAccess carAccess)
         {
@@ -84,6 +121,14 @@ namespace WebApplication.ApiControllers
 
         // POST: api/CarAccess
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        /// <summary>
+        /// Add new car access
+        /// </summary>
+        /// <param name="carAccess">Car access to add</param>
+        /// <returns>Car access</returns>
+        [Produces("application/json")]
+        [Consumes("application/json")]
+        [ProducesResponseType(typeof(IEnumerable<CarAccess>), StatusCodes.Status200OK)]
         [HttpPost]
         public async Task<ActionResult<CarAccess>> PostCarAccess(CarAccess carAccess)
         {
@@ -94,6 +139,15 @@ namespace WebApplication.ApiControllers
         }
 
         // DELETE: api/CarAccess/5
+        /// <summary>
+        /// Delete car access
+        /// </summary>
+        /// <param name="id">Id</param>
+        /// <returns>No content</returns>
+        [Produces("application/json")]
+        [Consumes("application/json")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCarAccess(Guid id)
         {

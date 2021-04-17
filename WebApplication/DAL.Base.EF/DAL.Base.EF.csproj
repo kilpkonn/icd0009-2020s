@@ -4,6 +4,10 @@
         <TargetFramework>net5.0</TargetFramework>
     </PropertyGroup>
 
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+      <DocumentationFile>bin\Debug\net5.0\DAL.Base.EF.xml</DocumentationFile>
+    </PropertyGroup>
+
     <ItemGroup>
       <ProjectReference Include="..\CarApp.DAL.Base\CarApp.DAL.Base.csproj" />
       <ProjectReference Include="..\DAL.Base\DAL.Base.csproj" />

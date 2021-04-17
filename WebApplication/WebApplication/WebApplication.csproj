@@ -5,12 +5,22 @@
         <UserSecretsId>aspnet-WebApplication-448A786D-DDA0-4088-8207-B9610993C836</UserSecretsId>
     </PropertyGroup>
 
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+      <DocumentationFile>bin\Debug\net5.0\WebApplication.xml</DocumentationFile>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+      <DocumentationFile>bin\Release\net5.0\WebApplication.xml</DocumentationFile>
+    </PropertyGroup>
+
     <ItemGroup>
         <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.4" />
         <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="5.0.4" />
         <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.4" />
         <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="5.0.4" />
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="5.0.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="5.0.0" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="5.0.4" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.4" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.4">
@@ -19,6 +29,8 @@
         </PackageReference>
         <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
         <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="5.0.0-alpha.2" />
+        <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.1.2" />
+        <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.1.2" />
     </ItemGroup>
 
     <ItemGroup>

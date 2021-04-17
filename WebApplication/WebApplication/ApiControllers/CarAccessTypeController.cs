@@ -6,6 +6,7 @@ using AutoMapper;
 using CarApp.BLL.App;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PublicApi.DTO.v1;
@@ -14,6 +15,10 @@ using WebApplication.Helpers;
 
 namespace WebApplication.ApiControllers
 {
+    /// <summary>
+    /// Car Access Type controller for managing car access types
+    /// </summary>
+    [ApiVersion("1.0")]
     [Route("api/[controller]")]
     [ApiController]
     [Authorize(Roles = "Admin", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
@@ -22,6 +27,11 @@ namespace WebApplication.ApiControllers
         private readonly IAppBll _bll;
         private readonly CarAccessTypeMapper _mapper;
 
+        /// <summary>
+        /// Car Access Type Controller
+        /// </summary>
+        /// <param name="bll">BLL</param>
+        /// <param name="mapper">DTO Mapper</param>
         public CarAccessTypeController(IAppBll bll, IMapper mapper)
         {
             _bll = bll;
@@ -29,6 +39,13 @@ namespace WebApplication.ApiControllers
         }
 
         // GET: api/CarAccessType
+        /// <summary>
+        /// Get all car access types 
+        /// </summary>
+        /// <returns>Car access types</returns>
+        [Produces("application/json")]
+        [Consumes("application/json")]
+        [ProducesResponseType(typeof(IEnumerable<CarAccessType>), StatusCodes.Status200OK)]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CarAccessType>>> GetCarAccessTypes()
         {
@@ -37,6 +54,15 @@ namespace WebApplication.ApiControllers
         }
 
         // GET: api/CarAccessType/5
+        /// <summary>
+        /// Get Detailed data about car access type
+        /// </summary>
+        /// <param name="id">Car access type id</param>
+        /// <returns>Car access type</returns>
+        [Produces("application/json")]
+        [Consumes("application/json")]
+        [ProducesResponseType(typeof(IEnumerable<CarAccessType>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpGet("{id}")]
         public async Task<ActionResult<CarAccessType>> GetCarAccessType(Guid id)
         {
@@ -52,6 +78,17 @@ namespace WebApplication.ApiControllers
 
         // PUT: api/CarAccessType/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        /// <summary>
+        /// Update car access type
+        /// </summary>
+        /// <param name="id">Id</param>
+        /// <param name="carAccessType">Car access type</param>
+        /// <returns>Http response</returns>
+        [Produces("application/json")]
+        [Consumes("application/json")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCarAccessType(Guid id, CarAccessType carAccessType)
         {
@@ -59,7 +96,7 @@ namespace WebApplication.ApiControllers
             {
                 return BadRequest();
             }
-            
+
             await _bll.CarAccessTypes.UpdateAsync(_mapper.Map(carAccessType)!, User.GetUserId());
 
             try
@@ -83,16 +120,34 @@ namespace WebApplication.ApiControllers
 
         // POST: api/CarAccessType
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        /// <summary>
+        /// Add new car access type
+        /// </summary>
+        /// <param name="carAccessType">Car access type to add</param>
+        /// <returns>Car access type</returns>
+        [Produces("application/json")]
+        [Consumes("application/json")]
+        [ProducesResponseType(typeof(IEnumerable<CarAccessType>), StatusCodes.Status200OK)]
         [HttpPost]
         public async Task<ActionResult<CarAccessType>> PostCarAccessType(CarAccessType carAccessType)
         {
-            carAccessType = _mapper.Map(await _bll.CarAccessTypes.AddAsync(_mapper.Map(carAccessType)!, User.GetUserId()))!;
+            carAccessType =
+                _mapper.Map(await _bll.CarAccessTypes.AddAsync(_mapper.Map(carAccessType)!, User.GetUserId()))!;
             await _bll.SaveChangesAsync();
 
-            return CreatedAtAction("GetCarAccessType", new { id = carAccessType.Id }, carAccessType);
+            return CreatedAtAction("GetCarAccessType", new {id = carAccessType.Id}, carAccessType);
         }
 
         // DELETE: api/CarAccessType/5
+        /// <summary>
+        /// Delete car access type
+        /// </summary>
+        /// <param name="id">Id</param>
+        /// <returns>No content</returns>
+        [Produces("application/json")]
+        [Consumes("application/json")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCarAccessType(Guid id)
         {

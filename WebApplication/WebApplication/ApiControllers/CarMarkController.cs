@@ -6,6 +6,7 @@ using AutoMapper;
 using CarApp.BLL.App;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PublicApi.DTO.v1;
@@ -14,6 +15,10 @@ using WebApplication.Helpers;
 
 namespace WebApplication.ApiControllers
 {
+    /// <summary>
+    /// Car Mark controller for managing car marks
+    /// </summary>
+    [ApiVersion("1.0")]
     [Route("api/[controller]")]
     [ApiController]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
@@ -22,6 +27,11 @@ namespace WebApplication.ApiControllers
         private readonly IAppBll _bll;
         private readonly CarMarkMapper _mapper;
 
+        /// <summary>
+        /// Car Mark Controller
+        /// </summary>
+        /// <param name="bll">BLL</param>
+        /// <param name="mapper">DTO Mapper</param>
         public CarMarkController(IAppBll bll, IMapper mapper)
         {
             _bll = bll;
@@ -29,6 +39,13 @@ namespace WebApplication.ApiControllers
         }
 
         // GET: api/CarMark
+        /// <summary>
+        /// Get all car marks 
+        /// </summary>
+        /// <returns>Car marks</returns>
+        [Produces("application/json")]
+        [Consumes("application/json")]
+        [ProducesResponseType(typeof(IEnumerable<CarMark>), StatusCodes.Status200OK)]
         [HttpGet]
         [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<CarMark>>> GetCarMarks()
@@ -39,6 +56,15 @@ namespace WebApplication.ApiControllers
         }
 
         // GET: api/CarMark/5
+        /// <summary>
+        /// Get Detailed data about car mark 
+        /// </summary>
+        /// <param name="id">Car mark id</param>
+        /// <returns>Car mark</returns>
+        [Produces("application/json")]
+        [Consumes("application/json")]
+        [ProducesResponseType(typeof(IEnumerable<CarMark>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpGet("{id}")]
         [AllowAnonymous]
         public async Task<ActionResult<CarMark>> GetCarMark(Guid id)
@@ -55,6 +81,17 @@ namespace WebApplication.ApiControllers
 
         // PUT: api/CarMark/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        /// <summary>
+        /// Update car mark
+        /// </summary>
+        /// <param name="id">Id</param>
+        /// <param name="carMark">Car mark</param>
+        /// <returns>Http response</returns>
+        [Produces("application/json")]
+        [Consumes("application/json")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCarMark(Guid id, CarMark carMark)
         {
@@ -62,7 +99,7 @@ namespace WebApplication.ApiControllers
             {
                 return BadRequest();
             }
-            
+
             await _bll.CarMarks.UpdateAsync(_mapper.Map(carMark)!, User.GetUserId());
 
             try
@@ -86,16 +123,34 @@ namespace WebApplication.ApiControllers
 
         // POST: api/CarMark
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        /// <summary>
+        /// Add new car mark
+        /// </summary>
+        /// <param name="carMark">Car mark to add</param>
+        /// <returns>Car mark</returns>
+        [Produces("application/json")]
+        [Consumes("application/json")]
+        [ProducesResponseType(typeof(IEnumerable<CarMark>), StatusCodes.Status200OK)]
         [HttpPost]
         public async Task<ActionResult<CarMark>> PostCarMark(CarMark carMark)
         {
-            carMark = _mapper.Map(await _bll.CarMarks.AddAsync(_mapper.Map(carMark)!, User.GetUserId()))!;  // TODO: Userid?
+            carMark = _mapper.Map(await _bll.CarMarks.AddAsync(_mapper.Map(carMark)!,
+                User.GetUserId()))!; // TODO: Userid?
             await _bll.SaveChangesAsync();
 
             return CreatedAtAction("GetCarMark", new {id = carMark.Id}, carMark);
         }
 
         // DELETE: api/CarMark/5
+        /// <summary>
+        /// Delete car mark
+        /// </summary>
+        /// <param name="id">Id</param>
+        /// <returns>No content</returns>
+        [Produces("application/json")]
+        [Consumes("application/json")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCarMark(Guid id)
         {
