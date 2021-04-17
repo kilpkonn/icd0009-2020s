@@ -41,6 +41,7 @@
       <ProjectReference Include="..\DAL.App.EF\DAL.App.EF.csproj" />
       <ProjectReference Include="..\Extensions.Base\Extensions.Base.csproj" />
       <ProjectReference Include="..\PublicApi.DTO.v1\PublicApi.DTO.v1.csproj" />
+      <ProjectReference Include="..\Resources\Resources.csproj" />
     </ItemGroup>
 
     <ItemGroup>

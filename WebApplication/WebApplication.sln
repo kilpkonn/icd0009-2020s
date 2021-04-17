@@ -34,6 +34,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PublicApi.DTO.v1", "PublicA
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Extensions.Base", "Extensions.Base\Extensions.Base.csproj", "{B8D30C16-1BD0-461A-84E9-8F3B106B88F3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Resources", "Resources\Resources.csproj", "{1E801A28-667A-4D95-9BF4-8F4D364AB99E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Resource.Base", "Resource.Base\Resource.Base.csproj", "{4924AA55-9E34-4961-8B9E-F6584A8FC106}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -108,5 +112,13 @@ Global
 		{B8D30C16-1BD0-461A-84E9-8F3B106B88F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B8D30C16-1BD0-461A-84E9-8F3B106B88F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B8D30C16-1BD0-461A-84E9-8F3B106B88F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E801A28-667A-4D95-9BF4-8F4D364AB99E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E801A28-667A-4D95-9BF4-8F4D364AB99E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E801A28-667A-4D95-9BF4-8F4D364AB99E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E801A28-667A-4D95-9BF4-8F4D364AB99E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4924AA55-9E34-4961-8B9E-F6584A8FC106}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4924AA55-9E34-4961-8B9E-F6584A8FC106}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4924AA55-9E34-4961-8B9E-F6584A8FC106}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4924AA55-9E34-4961-8B9E-F6584A8FC106}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

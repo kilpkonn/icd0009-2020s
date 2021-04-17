@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using BLL.App;
@@ -13,11 +15,14 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using WebApplication.Helpers;
 
 namespace WebApplication
 {
@@ -104,6 +109,28 @@ namespace WebApplication
             services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
             services.AddSwaggerGen();
 
+            services.Configure<RequestLocalizationOptions>(options =>
+            {
+                // TODO: should be in appsettings.json
+                var appSupportedCultures = new[]
+                {
+                    new CultureInfo("et"),
+                    new CultureInfo("en-GB"),
+                };
+
+                options.SupportedCultures = appSupportedCultures;
+                options.SupportedUICultures = appSupportedCultures;
+                options.DefaultRequestCulture = new RequestCulture("en-GB", "en-GB");
+                options.SetDefaultCulture("en-GB");
+                options.RequestCultureProviders = new List<IRequestCultureProvider>()
+                {
+                    new QueryStringRequestCultureProvider(),
+                    new CookieRequestCultureProvider()
+                };
+            });
+            
+            // Custom stuff
+            // services.AddSingleton<IConfigureOptions<MvcOptions>, ConfigureModelBindingLocalization>();
 
         }
 
@@ -144,6 +171,11 @@ namespace WebApplication
             app.UseCors("CorsAllowAll");
 
             app.UseRouting();
+            
+            app.UseRequestLocalization(
+                app.ApplicationServices
+                    .GetService<IOptions<RequestLocalizationOptions>>()?.Value
+            );
 
             app.UseAuthentication();
             app.UseAuthorization();
