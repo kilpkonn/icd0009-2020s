@@ -14,28 +14,43 @@ using Microsoft.AspNetCore.WebUtilities;
 
 namespace WebApplication.Areas.Identity.Pages.Account
 {
+    /// <inheritdoc />
     [AllowAnonymous]
     public class ForgotPasswordModel : PageModel
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly IEmailSender _emailSender;
 
+        /// <inheritdoc />
         public ForgotPasswordModel(UserManager<AppUser> userManager, IEmailSender emailSender)
         {
             _userManager = userManager;
             _emailSender = emailSender;
         }
 
+        /// <summary>
+        /// Input
+        /// </summary>
         [BindProperty]
         public InputModel? Input { get; set; }
 
+        /// <summary>
+        /// Forgot password input model
+        /// </summary>
         public class InputModel
         {
+            /// <summary>
+            /// Email
+            /// </summary>
             [Required]
             [EmailAddress]
             public string? Email { get; set; }
         }
 
+        /// <summary>
+        /// Post forgot password
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> OnPostAsync()
         {
             if (ModelState.IsValid)

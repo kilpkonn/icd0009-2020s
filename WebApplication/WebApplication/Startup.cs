@@ -6,23 +6,22 @@ using System.Text;
 using BLL.App;
 using CarApp.BLL.App;
 using CarApp.DAL.App;
+using DAL.App.DTO.MappingProfiles;
 using DAL.App.EF;
 using DAL.App.EF.DataInit;
 using Domain.App.Identity;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Mvc.ApiExplorer;
-using Swashbuckle.AspNetCore.SwaggerGen;
-using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using WebApplication.Helpers;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace WebApplication
 {
@@ -90,7 +89,7 @@ namespace WebApplication
             services.AddRazorPages();
             
             services.AddAutoMapper(
-                typeof(DAL.App.DTO.MappingProfiles.AutoMapperProfile),
+                typeof(AutoMapperProfile),
                 typeof(BLL.App.DTO.MappingProfiles.AutoMapperProfile),
                 typeof(PublicApi.DTO.v1.MappingProfiles.AutoMapperProfile)
             );
@@ -221,7 +220,7 @@ namespace WebApplication
 
                     if (userManager != null && roleManager != null)
                     {
-                        DataInit.SeedIdentity(userManager, roleManager);
+                        DataInit.SeedIdentity(userManager, roleManager, configuration);
                     }
                     else
                     {

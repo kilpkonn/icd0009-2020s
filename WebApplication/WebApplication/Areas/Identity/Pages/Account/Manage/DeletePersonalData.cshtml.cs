@@ -9,12 +9,14 @@ using Microsoft.Extensions.Logging;
 
 namespace WebApplication.Areas.Identity.Pages.Account.Manage
 {
+    /// <inheritdoc />
     public class DeletePersonalDataModel : PageModel
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
         private readonly ILogger<DeletePersonalDataModel> _logger;
 
+        /// <inheritdoc />
         public DeletePersonalDataModel(
             UserManager<AppUser> userManager,
             SignInManager<AppUser> signInManager,
@@ -25,18 +27,34 @@ namespace WebApplication.Areas.Identity.Pages.Account.Manage
             _logger = logger;
         }
 
+        /// <summary>
+        /// Delete personal data input
+        /// </summary>
         [BindProperty]
         public InputModel? Input { get; set; }
 
+        /// <summary>
+        /// Delete personal data input model
+        /// </summary>
         public class InputModel
         {
+            /// <summary>
+            /// Password
+            /// </summary>
             [Required]
             [DataType(DataType.Password)]
             public string? Password { get; set; }
         }
 
+        /// <summary>
+        /// Require password
+        /// </summary>
         public bool RequirePassword { get; set; }
 
+        /// <summary>
+        /// Delete personal data get
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> OnGet()
         {
             var user = await _userManager.GetUserAsync(User);
@@ -49,6 +67,11 @@ namespace WebApplication.Areas.Identity.Pages.Account.Manage
             return Page();
         }
 
+        /// <summary>
+        /// Post delete personal data
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="InvalidOperationException"></exception>
         public async Task<IActionResult> OnPostAsync()
         {
             var user = await _userManager.GetUserAsync(User);

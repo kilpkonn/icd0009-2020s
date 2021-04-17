@@ -10,23 +10,35 @@ using Microsoft.EntityFrameworkCore;
 
 namespace WebApplication.Areas.Admin.Controllers
 {
+    /// <inheritdoc />
     [Area("Admin")]
     [Authorize(Roles = "Admin")]
     public class RolesController : Controller
     {
         private readonly RoleManager<AppRole> _roleManager;
+
+        /// <inheritdoc />
         public RolesController(RoleManager<AppRole> roleManager)
         {
             _roleManager = roleManager;
         }
 
         // GET: Admin/Roles
+        /// <summary>
+        /// Roles index
+        /// </summary>
+        /// <returns>Roles list</returns>
         public async Task<IActionResult> Index()
         {
             return View(await _roleManager.Roles.ToListAsync());
         }
 
         // GET: Admin/Roles/Details/5
+        /// <summary>
+        /// Roles details view
+        /// </summary>
+        /// <param name="id">ID</param>
+        /// <returns>Role</returns>
         public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null)
@@ -44,6 +56,10 @@ namespace WebApplication.Areas.Admin.Controllers
         }
 
         // GET: Admin/Roles/Create
+        /// <summary>
+        /// Create new role
+        /// </summary>
+        /// <returns>View</returns>
         public IActionResult Create()
         {
             return View();
@@ -52,6 +68,11 @@ namespace WebApplication.Areas.Admin.Controllers
         // POST: Admin/Roles/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        /// <summary>
+        /// Create new role
+        /// </summary>
+        /// <param name="appRole">data</param>
+        /// <returns>View</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(AppRole appRole)
@@ -66,6 +87,11 @@ namespace WebApplication.Areas.Admin.Controllers
         }
 
         // GET: Admin/Roles/Edit/5
+        /// <summary>
+        /// Edit role
+        /// </summary>
+        /// <param name="id">ID</param>
+        /// <returns></returns>
         public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null)
@@ -84,6 +110,12 @@ namespace WebApplication.Areas.Admin.Controllers
         // POST: Admin/Roles/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        /// <summary>
+        /// Edit role
+        /// </summary>
+        /// <param name="id">ID</param>
+        /// <param name="appRole">Role</param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, AppRole appRole)
@@ -120,6 +152,11 @@ namespace WebApplication.Areas.Admin.Controllers
         }
 
         // GET: Admin/Roles/Delete/5
+        /// <summary>
+        /// Delete role
+        /// </summary>
+        /// <param name="id">ID</param>
+        /// <returns></returns>
         public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null)
@@ -137,6 +174,11 @@ namespace WebApplication.Areas.Admin.Controllers
         }
 
         // POST: Admin/Roles/Delete/5
+        /// <summary>
+        /// Delete role
+        /// </summary>
+        /// <param name="id">ID</param>
+        /// <returns></returns>
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)

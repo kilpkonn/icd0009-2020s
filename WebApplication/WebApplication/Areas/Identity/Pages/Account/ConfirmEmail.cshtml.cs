@@ -12,19 +12,30 @@ using Microsoft.AspNetCore.WebUtilities;
 
 namespace WebApplication.Areas.Identity.Pages.Account
 {
+    /// <inheritdoc />
     [AllowAnonymous]
     public class ConfirmEmailModel : PageModel
     {
         private readonly UserManager<AppUser> _userManager;
 
+        /// <inheritdoc />
         public ConfirmEmailModel(UserManager<AppUser> userManager)
         {
             _userManager = userManager;
         }
 
+        /// <summary>
+        /// Status message
+        /// </summary>
         [TempData]
         public string? StatusMessage { get; set; }
 
+        /// <summary>
+        /// Get
+        /// </summary>
+        /// <param name="userId">UserId</param>
+        /// <param name="code">Email code</param>
+        /// <returns></returns>
         public async Task<IActionResult> OnGetAsync(string? userId, string? code)
         {
             if (userId == null || code == null)

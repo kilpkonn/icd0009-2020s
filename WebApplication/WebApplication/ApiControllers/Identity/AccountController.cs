@@ -9,6 +9,7 @@ using PublicApi.DTO.v1.Mappers;
 
 namespace WebApplication.ApiControllers.Identity
 {
+    /// <inheritdoc />
     [ApiController]
     [Route("api/[controller]/[action]")]
     public class AccountController : ControllerBase
@@ -16,7 +17,8 @@ namespace WebApplication.ApiControllers.Identity
         private readonly IAppBll _bll;
         private readonly LoginMapper _loginMapper;
         private readonly RegisterMapper _registerMapper;
-        
+
+        /// <inheritdoc />
         public AccountController(IAppBll bll, IMapper mapper) 
         {
             _bll = bll;
@@ -24,6 +26,11 @@ namespace WebApplication.ApiControllers.Identity
             _registerMapper = new RegisterMapper(mapper);
         }
 
+        /// <summary>
+        /// Login to account
+        /// </summary>
+        /// <param name="dto">Email and Password dto</param>
+        /// <returns>JWT or errors</returns>
         [Produces("application/json")]
         [Consumes("application/json")]
         [ProducesResponseType(typeof(JwtResponse), StatusCodes.Status200OK)]
@@ -43,6 +50,15 @@ namespace WebApplication.ApiControllers.Identity
         }
 
 
+        /// <summary>
+        /// Register user
+        /// </summary>
+        /// <param name="dto">Register dto</param>
+        /// <returns>Generated JWT or errors</returns>
+        [Produces("application/json")]
+        [Consumes("application/json")]
+        [ProducesResponseType(typeof(JwtResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Error), StatusCodes.Status404NotFound)]
         [HttpPost]
         public async Task<IActionResult> Register([FromBody] Register dto)
         {

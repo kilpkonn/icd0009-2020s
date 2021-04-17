@@ -15,6 +15,7 @@ using Microsoft.Extensions.Logging;
 
 namespace WebApplication.Areas.Identity.Pages.Account
 {
+    /// <inheritdoc />
     [AllowAnonymous]
     public class LoginModel : PageModel
     {
@@ -22,6 +23,7 @@ namespace WebApplication.Areas.Identity.Pages.Account
         private readonly SignInManager<AppUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
 
+        /// <inheritdoc />
         public LoginModel(SignInManager<AppUser> signInManager, 
             ILogger<LoginModel> logger,
             UserManager<AppUser> userManager)
@@ -31,30 +33,58 @@ namespace WebApplication.Areas.Identity.Pages.Account
             _logger = logger;
         }
 
+        /// <summary>
+        /// Input model for login
+        /// </summary>
         [BindProperty]
         public InputModel? Input { get; set; }
 
+        /// <summary>
+        /// External logins
+        /// </summary>
         public IList<AuthenticationScheme> ExternalLogins { get; set; } = new List<AuthenticationScheme>();
 
+        /// <summary>
+        /// Return url
+        /// </summary>
         public string? ReturnUrl { get; set; }
 
+        /// <summary>
+        /// Error message
+        /// </summary>
         [TempData]
         public string? ErrorMessage { get; set; }
 
+        /// <summary>
+        /// Login input model
+        /// </summary>
         public class InputModel
         {
+            /// <summary>
+            /// Email
+            /// </summary>
             [Required]
             [EmailAddress]
             public string? Email { get; set; }
 
+            /// <summary>
+            /// Password
+            /// </summary>
             [Required]
             [DataType(DataType.Password)]
             public string? Password { get; set; }
 
+            /// <summary>
+            /// Remember me
+            /// </summary>
             [Display(Name = "Remember me?")]
             public bool RememberMe { get; set; }
         }
 
+        /// <summary>
+        /// Get login
+        /// </summary>
+        /// <param name="returnUrl">Return url</param>
         public async Task OnGetAsync(string? returnUrl = null)
         {
             if (!string.IsNullOrEmpty(ErrorMessage))
@@ -72,6 +102,11 @@ namespace WebApplication.Areas.Identity.Pages.Account
             ReturnUrl = returnUrl!;
         }
 
+        /// <summary>
+        /// Post login
+        /// </summary>
+        /// <param name="returnUrl">Return url</param>
+        /// <returns></returns>
         public async Task<IActionResult> OnPostAsync(string? returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");

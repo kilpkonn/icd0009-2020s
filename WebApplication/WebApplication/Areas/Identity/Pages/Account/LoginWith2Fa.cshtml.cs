@@ -12,37 +12,64 @@ using Microsoft.Extensions.Logging;
 
 namespace WebApplication.Areas.Identity.Pages.Account
 {
+    /// <inheritdoc />
     [AllowAnonymous]
     public class LoginWith2FaModel : PageModel
     {
         private readonly SignInManager<AppUser> _signInManager;
         private readonly ILogger<LoginWith2FaModel> _logger;
 
+        /// <inheritdoc />
         public LoginWith2FaModel(SignInManager<AppUser> signInManager, ILogger<LoginWith2FaModel> logger)
         {
             _signInManager = signInManager;
             _logger = logger;
         }
 
+        /// <summary>
+        /// 2FA login input
+        /// </summary>
         [BindProperty]
         public InputModel? Input { get; set; }
 
+        /// <summary>
+        /// Remember me
+        /// </summary>
         public bool RememberMe { get; set; }
 
+        /// <summary>
+        /// Return url
+        /// </summary>
         public string? ReturnUrl { get; set; }
 
+        /// <summary>
+        /// 2FA Input model
+        /// </summary>
         public class InputModel
         {
+            /// <summary>
+            /// 2FA code
+            /// </summary>
             [Required]
             [StringLength(7, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
             [DataType(DataType.Text)]
             [Display(Name = "Authenticator code")]
             public string? TwoFactorCode { get; set; }
 
+            /// <summary>
+            /// Remember machine
+            /// </summary>
             [Display(Name = "Remember this machine")]
             public bool RememberMachine { get; set; }
         }
 
+        /// <summary>
+        /// Get 2FA login
+        /// </summary>
+        /// <param name="rememberMe">Remember me</param>
+        /// <param name="returnUrl">Return url</param>
+        /// <returns></returns>
+        /// <exception cref="InvalidOperationException">Invalid op exception</exception>
         public async Task<IActionResult> OnGetAsync(bool rememberMe, string? returnUrl = null)
         {
             // Ensure the user has gone through the username & password screen first
@@ -59,6 +86,13 @@ namespace WebApplication.Areas.Identity.Pages.Account
             return Page();
         }
 
+        /// <summary>
+        /// Post 2FA login
+        /// </summary>
+        /// <param name="rememberMe">Remember me</param>
+        /// <param name="returnUrl">Return url</param>
+        /// <returns></returns>
+        /// <exception cref="InvalidOperationException"></exception>
         public async Task<IActionResult> OnPostAsync(bool rememberMe, string? returnUrl = null)
         {
             if (!ModelState.IsValid)

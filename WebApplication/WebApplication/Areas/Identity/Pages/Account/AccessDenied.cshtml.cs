@@ -6,8 +6,12 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace WebApplication.Areas.Identity.Pages.Account
 {
+    /// <inheritdoc />
     public class AccessDeniedModel : PageModel
     {
+        /// <summary>
+        /// Empty get
+        /// </summary>
         public void OnGet()
         {
 

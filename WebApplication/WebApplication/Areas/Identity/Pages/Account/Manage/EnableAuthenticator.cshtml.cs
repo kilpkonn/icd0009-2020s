@@ -14,6 +14,7 @@ using Microsoft.Extensions.Logging;
 
 namespace WebApplication.Areas.Identity.Pages.Account.Manage
 {
+    /// <inheritdoc />
     public class EnableAuthenticatorModel : PageModel
     {
         private readonly UserManager<AppUser> _userManager;
@@ -22,6 +23,7 @@ namespace WebApplication.Areas.Identity.Pages.Account.Manage
 
         private const string AuthenticatorUriFormat = "otpauth://totp/{0}:{1}?secret={2}&issuer={0}&digits=6";
 
+        /// <inheritdoc />
         public EnableAuthenticatorModel(
             UserManager<AppUser> userManager,
             ILogger<EnableAuthenticatorModel> logger,
@@ -32,21 +34,42 @@ namespace WebApplication.Areas.Identity.Pages.Account.Manage
             _urlEncoder = urlEncoder;
         }
 
+        /// <summary>
+        /// Shared key
+        /// </summary>
         public string? SharedKey { get; set; }
 
+        /// <summary>
+        /// Auth url
+        /// </summary>
         public string? AuthenticatorUri { get; set; }
 
+        /// <summary>
+        /// Recovery codes
+        /// </summary>
         [TempData]
         public string[]? RecoveryCodes { get; set; }
 
+        /// <summary>
+        /// Status message
+        /// </summary>
         [TempData]
         public string? StatusMessage { get; set; }
 
+        /// <summary>
+        /// Enable auth input
+        /// </summary>
         [BindProperty]
         public InputModel? Input { get; set; }
 
+        /// <summary>
+        /// Enable auth input model
+        /// </summary>
         public class InputModel
         {
+            /// <summary>
+            /// Verification code
+            /// </summary>
             [Required]
             [StringLength(7, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
             [DataType(DataType.Text)]
@@ -54,6 +77,10 @@ namespace WebApplication.Areas.Identity.Pages.Account.Manage
             public string? Code { get; set; }
         }
 
+        /// <summary>
+        /// Get enable auth
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> OnGetAsync()
         {
             var user = await _userManager.GetUserAsync(User);
@@ -67,6 +94,10 @@ namespace WebApplication.Areas.Identity.Pages.Account.Manage
             return Page();
         }
 
+        /// <summary>
+        /// Post enable auth
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> OnPostAsync()
         {
             var user = await _userManager.GetUserAsync(User);

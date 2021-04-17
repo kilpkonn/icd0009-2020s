@@ -14,12 +14,14 @@ using Microsoft.AspNetCore.WebUtilities;
 
 namespace WebApplication.Areas.Identity.Pages.Account.Manage
 {
+    /// <inheritdoc />
     public partial class EmailModel : PageModel
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
         private readonly IEmailSender _emailSender;
 
+        /// <inheritdoc />
         public EmailModel(
             UserManager<AppUser> userManager,
             SignInManager<AppUser> signInManager,
@@ -30,20 +32,41 @@ namespace WebApplication.Areas.Identity.Pages.Account.Manage
             _emailSender = emailSender;
         }
 
+        /// <summary>
+        /// Username
+        /// </summary>
         public string? Username { get; set; }
 
+        /// <summary>
+        /// Email
+        /// </summary>
         public string? Email { get; set; }
 
+        /// <summary>
+        /// Is email confirmed
+        /// </summary>
         public bool IsEmailConfirmed { get; set; }
 
+        /// <summary>
+        /// Status message
+        /// </summary>
         [TempData]
         public string? StatusMessage { get; set; }
 
+        /// <summary>
+        /// Email input
+        /// </summary>
         [BindProperty]
         public InputModel? Input { get; set; }
 
+        /// <summary>
+        /// Add email input model
+        /// </summary>
         public class InputModel
         {
+            /// <summary>
+            /// New email
+            /// </summary>
             [Required]
             [EmailAddress]
             [Display(Name = "New email")]
@@ -63,6 +86,10 @@ namespace WebApplication.Areas.Identity.Pages.Account.Manage
             IsEmailConfirmed = await _userManager.IsEmailConfirmedAsync(user);
         }
 
+        /// <summary>
+        /// Get email
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> OnGetAsync()
         {
             var user = await _userManager.GetUserAsync(User);
@@ -75,6 +102,10 @@ namespace WebApplication.Areas.Identity.Pages.Account.Manage
             return Page();
         }
 
+        /// <summary>
+        /// Post change email
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> OnPostChangeEmailAsync()
         {
             var user = await _userManager.GetUserAsync(User);
@@ -113,6 +144,10 @@ namespace WebApplication.Areas.Identity.Pages.Account.Manage
             return RedirectToPage();
         }
 
+        /// <summary>
+        /// Post send verification email
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> OnPostSendVerificationEmailAsync()
         {
             var user = await _userManager.GetUserAsync(User);

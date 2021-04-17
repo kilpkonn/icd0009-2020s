@@ -11,22 +11,32 @@ using Microsoft.Extensions.Logging;
 
 namespace WebApplication.Areas.Identity.Pages.Account
 {
+    /// <inheritdoc />
     [AllowAnonymous]
     public class LogoutModel : PageModel
     {
         private readonly SignInManager<AppUser> _signInManager;
         private readonly ILogger<LogoutModel> _logger;
 
+        /// <inheritdoc />
         public LogoutModel(SignInManager<AppUser> signInManager, ILogger<LogoutModel> logger)
         {
             _signInManager = signInManager;
             _logger = logger;
         }
 
+        /// <summary>
+        /// Empty get
+        /// </summary>
         public void OnGet()
         {
         }
 
+        /// <summary>
+        /// Post logout
+        /// </summary>
+        /// <param name="returnUrl">Return url</param>
+        /// <returns></returns>
         public async Task<IActionResult> OnPost(string? returnUrl = null)
         {
             await _signInManager.SignOutAsync();

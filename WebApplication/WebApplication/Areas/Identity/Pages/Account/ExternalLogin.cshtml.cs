@@ -17,6 +17,7 @@ using Microsoft.Extensions.Logging;
 
 namespace WebApplication.Areas.Identity.Pages.Account
 {
+    /// <inheritdoc />
     [AllowAnonymous]
     public class ExternalLoginModel : PageModel
     {
@@ -25,6 +26,7 @@ namespace WebApplication.Areas.Identity.Pages.Account
         private readonly IEmailSender _emailSender;
         private readonly ILogger<ExternalLoginModel> _logger;
 
+        /// <inheritdoc />
         public ExternalLoginModel(
             SignInManager<AppUser> signInManager,
             UserManager<AppUser> userManager,
@@ -37,28 +39,56 @@ namespace WebApplication.Areas.Identity.Pages.Account
             _emailSender = emailSender;
         }
 
+        /// <summary>
+        /// Input
+        /// </summary>
         [BindProperty]
         public InputModel? Input { get; set; }
 
+        /// <summary>
+        /// Provider display name
+        /// </summary>
         public string? ProviderDisplayName { get; set; }
 
+        /// <summary>
+        /// Return url
+        /// </summary>
         public string? ReturnUrl { get; set; }
 
+        /// <summary>
+        /// Error messages
+        /// </summary>
         [TempData]
         public string? ErrorMessage { get; set; }
 
+        /// <summary>
+        /// External login model
+        /// </summary>
         public class InputModel
         {
+            /// <summary>
+            /// Email
+            /// </summary>
             [Required]
             [EmailAddress]
             public string? Email { get; set; }
         }
 
+        /// <summary>
+        /// Get Async
+        /// </summary>
+        /// <returns>Redirect</returns>
         public IActionResult OnGetAsync()
         {
             return RedirectToPage("./Login");
         }
 
+        /// <summary>
+        /// Post external login
+        /// </summary>
+        /// <param name="provider">Provider</param>
+        /// <param name="returnUrl">Return url</param>
+        /// <returns></returns>
         public IActionResult OnPost(string provider, string? returnUrl = null)
         {
             // Request a redirect to the external login provider.
@@ -67,6 +97,12 @@ namespace WebApplication.Areas.Identity.Pages.Account
             return new ChallengeResult(provider, properties);
         }
 
+        /// <summary>
+        /// Get Callback
+        /// </summary>
+        /// <param name="returnUrl">Return url</param>
+        /// <param name="remoteError">Remote error</param>
+        /// <returns></returns>
         public async Task<IActionResult> OnGetCallbackAsync(string? returnUrl = null, string? remoteError = null)
         {
             returnUrl ??= Url.Content("~/");
@@ -109,6 +145,11 @@ namespace WebApplication.Areas.Identity.Pages.Account
             }
         }
 
+        /// <summary>
+        /// Post confirmation
+        /// </summary>
+        /// <param name="returnUrl">Return url</param>
+        /// <returns></returns>
         public async Task<IActionResult> OnPostConfirmationAsync(string? returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");

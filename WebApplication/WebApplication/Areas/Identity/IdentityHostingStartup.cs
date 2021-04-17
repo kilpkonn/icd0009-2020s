@@ -11,8 +11,10 @@ using Microsoft.Extensions.DependencyInjection;
 [assembly: HostingStartup(typeof(WebApplication.Areas.Identity.IdentityHostingStartup))]
 namespace WebApplication.Areas.Identity
 {
+    /// <inheritdoc />
     public class IdentityHostingStartup : IHostingStartup
     {
+        /// <inheritdoc />
         public void Configure(IWebHostBuilder builder)
         {
             builder.ConfigureServices((context, services) => {

@@ -11,12 +11,14 @@ using WebApplication.Areas.Admin.Models;
 
 namespace WebApplication.Areas.Admin.Controllers
 {
+    /// <inheritdoc />
     [Area("Admin")]
     public class UsersController : Controller
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly RoleManager<AppRole> _roleManager;
 
+        /// <inheritdoc />
         public UsersController(UserManager<AppUser> userManager, RoleManager<AppRole> roleManager)
         {
             _userManager = userManager;
@@ -24,12 +26,21 @@ namespace WebApplication.Areas.Admin.Controllers
         }
 
         // GET: Admin/Users
+        /// <summary>
+        /// Get Users
+        /// </summary>
+        /// <returns>Users</returns>
         public async Task<IActionResult> Index()
         {
             return View(await _userManager.Users.ToListAsync());
         }
 
         // GET: Admin/Users/Details/5
+        /// <summary>
+        /// Get Detailed user data
+        /// </summary>
+        /// <param name="id">User id</param>
+        /// <returns>User data</returns>
         public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null)
@@ -54,6 +65,10 @@ namespace WebApplication.Areas.Admin.Controllers
         }
 
         // GET: Admin/Users/Create
+        /// <summary>
+        /// Create user
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> Create()
         {
             UserViewModel vm = new()
@@ -67,6 +82,11 @@ namespace WebApplication.Areas.Admin.Controllers
         // POST: Admin/Users/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        /// <summary>
+        /// Create user
+        /// </summary>
+        /// <param name="postVm">user data</param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(UserViewModel postVm)
@@ -101,6 +121,11 @@ namespace WebApplication.Areas.Admin.Controllers
         }
 
         // GET: Admin/Users/Edit/5
+        /// <summary>
+        /// Edit user
+        /// </summary>
+        /// <param name="id">User id</param>
+        /// <returns></returns>
         public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null)
@@ -127,6 +152,12 @@ namespace WebApplication.Areas.Admin.Controllers
         // POST: Admin/Users/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        /// <summary>
+        /// Edit user
+        /// </summary>
+        /// <param name="id">user id</param>
+        /// <param name="postVm">user data</param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, UserViewModel postVm)
@@ -198,6 +229,11 @@ namespace WebApplication.Areas.Admin.Controllers
         }
 
         // GET: Admin/Users/Delete/5
+        /// <summary>
+        /// Delete user
+        /// </summary>
+        /// <param name="id">User id</param>
+        /// <returns></returns>
         public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null)
@@ -215,6 +251,11 @@ namespace WebApplication.Areas.Admin.Controllers
         }
 
         // POST: Admin/Users/Delete/5
+        /// <summary>
+        /// Delete user
+        /// </summary>
+        /// <param name="id">User id</param>
+        /// <returns></returns>
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)

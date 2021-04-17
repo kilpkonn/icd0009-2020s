@@ -12,11 +12,13 @@ using Microsoft.Extensions.Logging;
 
 namespace WebApplication.Areas.Identity.Pages.Account.Manage
 {
+    /// <inheritdoc />
     public class DownloadPersonalDataModel : PageModel
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly ILogger<DownloadPersonalDataModel> _logger;
 
+        /// <inheritdoc />
         public DownloadPersonalDataModel(
             UserManager<AppUser> userManager,
             ILogger<DownloadPersonalDataModel> logger)
@@ -25,6 +27,10 @@ namespace WebApplication.Areas.Identity.Pages.Account.Manage
             _logger = logger;
         }
 
+        /// <summary>
+        /// Post download personal data
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> OnPostAsync()
         {
             var user = await _userManager.GetUserAsync(User);
@@ -33,7 +39,7 @@ namespace WebApplication.Areas.Identity.Pages.Account.Manage
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
-            _logger.LogInformation("User with ID '{UserId}' asked for their personal data.", _userManager.GetUserId(User));
+            _logger.LogInformation("User with ID '{UserId}' asked for their personal data", _userManager.GetUserId(User));
 
             // Only include personal data for download
             var personalData = new Dictionary<string, string>();

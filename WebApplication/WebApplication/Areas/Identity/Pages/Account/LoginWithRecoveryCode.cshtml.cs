@@ -12,25 +12,39 @@ using Microsoft.Extensions.Logging;
 
 namespace WebApplication.Areas.Identity.Pages.Account
 {
+    /// <inheritdoc />
     [AllowAnonymous]
     public class LoginWithRecoveryCodeModel : PageModel
     {
         private readonly SignInManager<AppUser> _signInManager;
         private readonly ILogger<LoginWithRecoveryCodeModel> _logger;
 
+        /// <inheritdoc />
         public LoginWithRecoveryCodeModel(SignInManager<AppUser> signInManager, ILogger<LoginWithRecoveryCodeModel> logger)
         {
             _signInManager = signInManager;
             _logger = logger;
         }
 
+        /// <summary>
+        /// Login with recovery code input model
+        /// </summary>
         [BindProperty]
         public InputModel? Input { get; set; }
 
+        /// <summary>
+        /// Return url
+        /// </summary>
         public string? ReturnUrl { get; set; }
 
+        /// <summary>
+        /// Login with recovery code input model
+        /// </summary>
         public class InputModel
         {
+            /// <summary>
+            /// Recovery code
+            /// </summary>
             [BindProperty]
             [Required]
             [DataType(DataType.Text)]
@@ -38,6 +52,12 @@ namespace WebApplication.Areas.Identity.Pages.Account
             public string? RecoveryCode { get; set; }
         }
 
+        /// <summary>
+        /// Login with recover y code get
+        /// </summary>
+        /// <param name="returnUrl">Return url</param>
+        /// <returns></returns>
+        /// <exception cref="InvalidOperationException"></exception>
         public async Task<IActionResult> OnGetAsync(string? returnUrl = null)
         {
             // Ensure the user has gone through the username & password screen first
@@ -52,6 +72,12 @@ namespace WebApplication.Areas.Identity.Pages.Account
             return Page();
         }
 
+        /// <summary>
+        /// Login with recovery code post
+        /// </summary>
+        /// <param name="returnUrl">Return url</param>
+        /// <returns></returns>
+        /// <exception cref="InvalidOperationException"></exception>
         public async Task<IActionResult> OnPostAsync(string? returnUrl = null)
         {
             if (!ModelState.IsValid)

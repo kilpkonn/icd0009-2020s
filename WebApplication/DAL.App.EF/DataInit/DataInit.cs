@@ -4,6 +4,7 @@ using Domain.App;
 using Domain.App.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace DAL.App.EF.DataInit
 {
@@ -79,10 +80,11 @@ namespace DAL.App.EF.DataInit
             ctx.SaveChanges();
         }
 
-        public static void SeedIdentity(UserManager<AppUser> userManager, RoleManager<AppRole> roleManager)
+        public static void SeedIdentity(UserManager<AppUser> userManager, RoleManager<AppRole> roleManager,
+            IConfiguration configuration)
         {
             var roleAdmin = new AppRole {Name = "Admin"};
-            var roleUser = new AppRole() {Name = "User"};
+            var roleUser = new AppRole {Name = "User"};
             var resultAdmin = roleManager.CreateAsync(roleAdmin).Result;
             var resultUser = roleManager.CreateAsync(roleUser).Result;
             if (!resultAdmin.Succeeded || !resultUser.Succeeded)
@@ -98,11 +100,11 @@ namespace DAL.App.EF.DataInit
             }
 
             var user = new AppUser();
-            user.Email = "tavo.annus@gmail.com";
+            user.Email = configuration.GetValue<string>("Admin:Email");
             user.UserName = user.Email;
-            user.DisplayName = "Tavo Annus";
+            user.DisplayName = configuration.GetValue<string>("Admin:DisplayName");
 
-            var result = userManager.CreateAsync(user, "Password1_").Result;
+            var result = userManager.CreateAsync(user, configuration.GetValue<string>("Admin:Password")).Result;
             if (!result.Succeeded)
             {
                 foreach (var identityError in result.Errors)

@@ -10,12 +10,14 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 namespace WebApplication.Areas.Identity.Pages.Account.Manage
 {
+    /// <inheritdoc />
     public class ChangePasswordModel : PageModel
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
         private readonly ILogger<ChangePasswordModel> _logger;
 
+        /// <inheritdoc />
         public ChangePasswordModel(
             UserManager<AppUser> userManager,
             SignInManager<AppUser> signInManager,
@@ -26,31 +28,53 @@ namespace WebApplication.Areas.Identity.Pages.Account.Manage
             _logger = logger;
         }
 
+        /// <summary>
+        /// Change password input model
+        /// </summary>
         [BindProperty]
         public InputModel? Input { get; set; }
 
+        /// <summary>
+        /// Status message
+        /// </summary>
         [TempData]
         public string? StatusMessage { get; set; }
 
+        /// <summary>
+        /// Change password input model
+        /// </summary>
         public class InputModel
         {
+            /// <summary>
+            /// Old password
+            /// </summary>
             [Required]
             [DataType(DataType.Password)]
             [Display(Name = "Current password")]
             public string? OldPassword { get; set; }
 
+            /// <summary>
+            /// New password
+            /// </summary>
             [Required]
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
             [DataType(DataType.Password)]
             [Display(Name = "New password")]
             public string? NewPassword { get; set; }
 
+            /// <summary>
+            /// Confirm password
+            /// </summary>
             [DataType(DataType.Password)]
             [Display(Name = "Confirm new password")]
             [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
             public string? ConfirmPassword { get; set; }
         }
 
+        /// <summary>
+        /// Get change password
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> OnGetAsync()
         {
             var user = await _userManager.GetUserAsync(User);
@@ -68,6 +92,10 @@ namespace WebApplication.Areas.Identity.Pages.Account.Manage
             return Page();
         }
 
+        /// <summary>
+        /// Post change password
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)

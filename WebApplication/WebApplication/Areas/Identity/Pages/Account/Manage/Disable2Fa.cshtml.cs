@@ -10,11 +10,13 @@ using Microsoft.Extensions.Logging;
 
 namespace WebApplication.Areas.Identity.Pages.Account.Manage
 {
+    /// <inheritdoc />
     public class Disable2FaModel : PageModel
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly ILogger<Disable2FaModel> _logger;
 
+        /// <inheritdoc />
         public Disable2FaModel(
             UserManager<AppUser> userManager,
             ILogger<Disable2FaModel> logger)
@@ -23,9 +25,17 @@ namespace WebApplication.Areas.Identity.Pages.Account.Manage
             _logger = logger;
         }
 
+        /// <summary>
+        /// Status message
+        /// </summary>
         [TempData]
         public string? StatusMessage { get; set; }
 
+        /// <summary>
+        /// Get disable 2FA
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="InvalidOperationException"></exception>
         public async Task<IActionResult> OnGet()
         {
             var user = await _userManager.GetUserAsync(User);
@@ -42,6 +52,11 @@ namespace WebApplication.Areas.Identity.Pages.Account.Manage
             return Page();
         }
 
+        /// <summary>
+        /// Post disable 2FA
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="InvalidOperationException"></exception>
         public async Task<IActionResult> OnPostAsync()
         {
             var user = await _userManager.GetUserAsync(User);
