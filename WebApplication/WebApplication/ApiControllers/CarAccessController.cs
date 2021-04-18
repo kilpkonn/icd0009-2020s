@@ -19,7 +19,7 @@ namespace WebApplication.ApiControllers
     /// Car Access controller for managing car accesses
     /// </summary>
     [ApiVersion("1.0")]
-    [Route("api/[controller]")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class CarAccessController : ControllerBase

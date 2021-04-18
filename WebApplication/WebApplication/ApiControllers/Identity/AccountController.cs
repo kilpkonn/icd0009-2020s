@@ -11,7 +11,7 @@ namespace WebApplication.ApiControllers.Identity
 {
     /// <inheritdoc />
     [ApiController]
-    [Route("api/[controller]/[action]")]
+    [Route("api/v{version:apiVersion}/[controller]/[action]")]
     public class AccountController : ControllerBase
     {
         private readonly IAppBll _bll;

@@ -19,7 +19,7 @@ namespace WebApplication.ApiControllers
     /// Gas Refill controller for managing gas refills
     /// </summary>
     [ApiVersion("1.0")]
-    [Route("api/[controller]")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class GasRefillController : ControllerBase

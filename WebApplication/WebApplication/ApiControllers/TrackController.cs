@@ -19,7 +19,7 @@ namespace WebApplication.ApiControllers
     /// Track controller for managing tracks
     /// </summary>
     [ApiVersion("1.0")]
-    [Route("api/[controller]")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class TrackController : ControllerBase

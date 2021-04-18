@@ -96,6 +96,7 @@ namespace WebApplication
                     });
                 }
             );
+
             
             services.AddScoped<IAppUnitOfWork, AppUnitOfWork>();
             services.AddScoped<IAppBll, AppBll>();

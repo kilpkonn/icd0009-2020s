@@ -19,7 +19,7 @@ namespace WebApplication.ApiControllers
     /// Car Mark controller for managing car marks
     /// </summary>
     [ApiVersion("1.0")]
-    [Route("api/[controller]")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class CarMarkController : ControllerBase
