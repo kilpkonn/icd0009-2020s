@@ -14,32 +14,50 @@ using Microsoft.AspNetCore.WebUtilities;
 
 namespace WebApplication.Areas.Identity.Pages.Account
 {
+    /// <inheritdoc />
     [AllowAnonymous]
     public class ResendEmailConfirmationModel : PageModel
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly IEmailSender _emailSender;
 
+        /// <inheritdoc />
         public ResendEmailConfirmationModel(UserManager<AppUser> userManager, IEmailSender emailSender)
         {
             _userManager = userManager;
             _emailSender = emailSender;
         }
 
+        /// <summary>
+        /// Resend email confirmation input
+        /// </summary>
         [BindProperty]
         public InputModel? Input { get; set; }
 
+        /// <summary>
+        /// Resend email confirmation model
+        /// </summary>
         public class InputModel
         {
+            /// <summary>
+            /// Email
+            /// </summary>
             [Required]
             [EmailAddress]
             public string? Email { get; set; }
         }
 
+        /// <summary>
+        /// Empty get
+        /// </summary>
         public void OnGet()
         {
         }
 
+        /// <summary>
+        /// Post resend email confirmation
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)

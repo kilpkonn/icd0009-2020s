@@ -11,23 +11,34 @@ using WebApplication.Models.GasRefill;
 
 namespace WebApplication.Controllers
 {
+    /// <inheritdoc />
     [Authorize]
     public class GasRefillController : Controller
     {
         private readonly IAppBll _bll;
 
+        /// <inheritdoc />
         public GasRefillController(IAppBll bll)
         {
             _bll = bll;
         }
 
         // GET: GasRefill
+        /// <summary>
+        /// Gas refill index
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> Index()
         {
             return View(await _bll.GasRefills.GetAllAsync(User.GetUserId()));
         }
 
         // GET: GasRefill/Details/5
+        /// <summary>
+        /// Gas rtefill details
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null)
@@ -46,6 +57,10 @@ namespace WebApplication.Controllers
         }
 
         // GET: GasRefill/Create
+        /// <summary>
+        /// Create gas refill
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> Create()
         {
             var vm = new CreateEditViewModel()
@@ -58,6 +73,11 @@ namespace WebApplication.Controllers
         // POST: GasRefill/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        /// <summary>
+        /// Create gas refill
+        /// </summary>
+        /// <param name="ceVm"></param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreateEditViewModel ceVm)
@@ -79,6 +99,11 @@ namespace WebApplication.Controllers
         }
 
         // GET: GasRefill/Edit/5
+        /// <summary>
+        /// Edit gas refill
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null)
@@ -103,6 +128,12 @@ namespace WebApplication.Controllers
         // POST: GasRefill/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        /// <summary>
+        /// Post edit gas refill
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="ceVm"></param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, CreateEditViewModel ceVm)
@@ -144,6 +175,11 @@ namespace WebApplication.Controllers
         }
 
         // GET: GasRefill/Delete/5
+        /// <summary>
+        /// Delete gas refill
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null)
@@ -162,6 +198,11 @@ namespace WebApplication.Controllers
         }
 
         // POST: GasRefill/Delete/5
+        /// <summary>
+        /// Post delete gas refill
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)

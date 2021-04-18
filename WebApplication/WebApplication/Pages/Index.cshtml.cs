@@ -8,15 +8,20 @@ using Microsoft.Extensions.Logging;
 
 namespace WebApplication.Pages
 {
+    /// <inheritdoc />
     public class IndexModel : PageModel
     {
         private readonly ILogger<IndexModel> _logger;
 
+        /// <inheritdoc />
         public IndexModel(ILogger<IndexModel> logger)
         {
             _logger = logger;
         }
 
+        /// <summary>
+        /// Empty get
+        /// </summary>
         public void OnGet()
         {
         }

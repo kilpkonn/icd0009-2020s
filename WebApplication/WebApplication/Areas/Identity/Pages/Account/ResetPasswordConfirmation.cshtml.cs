@@ -7,9 +7,13 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace WebApplication.Areas.Identity.Pages.Account
 {
+    /// <inheritdoc />
     [AllowAnonymous]
     public class ResetPasswordConfirmationModel : PageModel
     {
+        /// <summary>
+        /// Empty get
+        /// </summary>
         public void OnGet()
         {
 

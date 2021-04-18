@@ -17,6 +17,7 @@ using Microsoft.Extensions.Logging;
 
 namespace WebApplication.Areas.Identity.Pages.Account
 {
+    /// <inheritdoc />
     [AllowAnonymous]
     public class RegisterModel : PageModel
     {
@@ -25,6 +26,7 @@ namespace WebApplication.Areas.Identity.Pages.Account
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
 
+        /// <inheritdoc />
         public RegisterModel(
             UserManager<AppUser> userManager,
             SignInManager<AppUser> signInManager,
@@ -37,43 +39,76 @@ namespace WebApplication.Areas.Identity.Pages.Account
             _emailSender = emailSender;
         }
 
+        /// <summary>
+        /// Register input
+        /// </summary>
         [BindProperty]
         public InputModel? Input { get; set; }
 
+        /// <summary>
+        /// Return url
+        /// </summary>
         public string? ReturnUrl { get; set; }
 
+        /// <summary>
+        /// External logins
+        /// </summary>
         public IList<AuthenticationScheme> ExternalLogins { get; set; } = new List<AuthenticationScheme>();
 
+        /// <summary>
+        /// REgister input model
+        /// </summary>
         public class InputModel
         {
+            /// <summary>
+            /// Email
+            /// </summary>
             [Required]
             [EmailAddress]
             [Display(Name = "Email")]
             public string? Email { get; set; }
             
+            /// <summary>
+            /// Display name
+            /// </summary>
             [Required]
             [StringLength(32, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 1)]
             [Display(Name = "Display Name")]
             public string? DisplayName { get; set; }
 
+            /// <summary>
+            /// Password
+            /// </summary>
             [Required]
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
             [DataType(DataType.Password)]
             [Display(Name = "Password")]
             public string? Password { get; set; }
 
+            /// <summary>
+            /// Confirm password
+            /// </summary>
             [DataType(DataType.Password)]
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string? ConfirmPassword { get; set; }
         }
 
+        /// <summary>
+        /// Get register
+        /// </summary>
+        /// <param name="returnUrl"></param>
         public async Task OnGetAsync(string? returnUrl = null)
         {
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
 
+        /// <summary>
+        /// Post register
+        /// </summary>
+        /// <param name="returnUrl"></param>
+        /// <returns></returns>
         public async Task<IActionResult> OnPostAsync(string? returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");

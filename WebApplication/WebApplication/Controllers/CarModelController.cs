@@ -11,17 +11,23 @@ using WebApplication.Models.CarModel;
 
 namespace WebApplication.Controllers
 {
+    /// <inheritdoc />
     [Authorize(Roles = "Admin")]
     public class CarModelController : Controller
     {
         private readonly IAppBll _bll;
 
+        /// <inheritdoc />
         public CarModelController(IAppBll bll)
         {
             _bll = bll;
         }
 
         // GET: CarModel
+        /// <summary>
+        /// Car model index
+        /// </summary>
+        /// <returns></returns>
         [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
@@ -29,6 +35,11 @@ namespace WebApplication.Controllers
         }
 
         // GET: CarModel/Details/5
+        /// <summary>
+        /// Car model details
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [AllowAnonymous]
         public async Task<IActionResult> Details(Guid? id)
         {
@@ -48,6 +59,10 @@ namespace WebApplication.Controllers
         }
 
         // GET: CarModel/Create
+        /// <summary>
+        /// Create car model
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> Create()
         {
             var vm = new CreateEditViewModel()
@@ -60,6 +75,11 @@ namespace WebApplication.Controllers
         // POST: CarModel/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        /// <summary>
+        /// Post create car model
+        /// </summary>
+        /// <param name="ceVm"></param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreateEditViewModel ceVm)
@@ -80,6 +100,11 @@ namespace WebApplication.Controllers
         }
 
         // GET: CarModel/Edit/5
+        /// <summary>
+        /// Edit car model
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null)
@@ -104,6 +129,12 @@ namespace WebApplication.Controllers
         // POST: CarModel/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        /// <summary>
+        /// Post edit car model
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="ceVm"></param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, CreateEditViewModel ceVm)
@@ -146,6 +177,11 @@ namespace WebApplication.Controllers
         }
 
         // GET: CarModel/Delete/5
+        /// <summary>
+        /// Delete  car model
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null)
@@ -164,6 +200,11 @@ namespace WebApplication.Controllers
         }
 
         // POST: CarModel/Delete/5
+        /// <summary>
+        /// Post delete car model
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)

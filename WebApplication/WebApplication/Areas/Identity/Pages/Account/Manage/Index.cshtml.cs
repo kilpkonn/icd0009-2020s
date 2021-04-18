@@ -10,11 +10,13 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace WebApplication.Areas.Identity.Pages.Account.Manage
 {
+    /// <inheritdoc />
     public partial class IndexModel : PageModel
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
 
+        /// <inheritdoc />
         public IndexModel(
             UserManager<AppUser> userManager,
             SignInManager<AppUser> signInManager)
@@ -23,16 +25,31 @@ namespace WebApplication.Areas.Identity.Pages.Account.Manage
             _signInManager = signInManager;
         }
 
+        /// <summary>
+        /// Username
+        /// </summary>
         public string? Username { get; set; }
 
+        /// <summary>
+        /// Status message
+        /// </summary>
         [TempData]
         public string? StatusMessage { get; set; }
 
+        /// <summary>
+        /// Index input model
+        /// </summary>
         [BindProperty]
         public InputModel? Input { get; set; }
 
+        /// <summary>
+        /// Index input model
+        /// </summary>
         public class InputModel
         {
+            /// <summary>
+            /// Phone number
+            /// </summary>
             [Phone]
             [Display(Name = "Phone number")]
             public string? PhoneNumber { get; set; }
@@ -51,6 +68,10 @@ namespace WebApplication.Areas.Identity.Pages.Account.Manage
             };
         }
 
+        /// <summary>
+        /// Get index
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> OnGetAsync()
         {
             var user = await _userManager.GetUserAsync(User);
@@ -63,6 +84,10 @@ namespace WebApplication.Areas.Identity.Pages.Account.Manage
             return Page();
         }
 
+        /// <summary>
+        /// Post index
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> OnPostAsync()
         {
             var user = await _userManager.GetUserAsync(User);

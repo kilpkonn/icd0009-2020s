@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 
 namespace WebApplication.Areas.Identity.Pages.Account.Manage
 {
+    /// <inheritdoc />
     public class TwoFactorAuthenticationModel : PageModel
     {
         private const string AuthenicatorUriFormat = "otpauth://totp/{0}:{1}?secret={2}&issuer={0}";
@@ -18,6 +19,7 @@ namespace WebApplication.Areas.Identity.Pages.Account.Manage
         private readonly SignInManager<AppUser> _signInManager;
         private readonly ILogger<TwoFactorAuthenticationModel> _logger;
 
+        /// <inheritdoc />
         public TwoFactorAuthenticationModel(
             UserManager<AppUser> userManager,
             SignInManager<AppUser> signInManager,
@@ -28,18 +30,37 @@ namespace WebApplication.Areas.Identity.Pages.Account.Manage
             _logger = logger;
         }
 
+        /// <summary>
+        /// Has auth
+        /// </summary>
         public bool HasAuthenticator { get; set; }
 
+        /// <summary>
+        /// Recovery codes left
+        /// </summary>
         public int RecoveryCodesLeft { get; set; }
 
+        /// <summary>
+        /// Is 2FA enabled
+        /// </summary>
         [BindProperty]
         public bool Is2FaEnabled { get; set; }
 
+        /// <summary>
+        /// Is machine remebered
+        /// </summary>
         public bool IsMachineRemembered { get; set; }
 
+        /// <summary>
+        /// Status message
+        /// </summary>
         [TempData]
         public string? StatusMessage { get; set; }
 
+        /// <summary>
+        /// Get 2FA auth
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> OnGet()
         {
             var user = await _userManager.GetUserAsync(User);
@@ -56,6 +77,10 @@ namespace WebApplication.Areas.Identity.Pages.Account.Manage
             return Page();
         }
 
+        /// <summary>
+        /// Post 2FA auth
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> OnPost()
         {
             var user = await _userManager.GetUserAsync(User);

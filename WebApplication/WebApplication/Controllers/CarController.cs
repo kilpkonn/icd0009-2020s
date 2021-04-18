@@ -11,23 +11,34 @@ using WebApplication.Models.Car;
 
 namespace WebApplication.Controllers
 {
+    /// <inheritdoc />
     [Authorize]
     public class CarController : Controller
     {
         private readonly IAppBll _bll;
 
+        /// <inheritdoc />
         public CarController(IAppBll bll)
         {
             _bll = bll;
         }
 
         // GET: Car
+        /// <summary>
+        /// Car index
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> Index()
         {
             return View(await _bll.Cars.GetAccessibleCarsForUser((Guid) User.GetUserId()!));
         }
 
         // GET: Car/Details/5
+        /// <summary>
+        /// Get car details
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null)
@@ -45,6 +56,10 @@ namespace WebApplication.Controllers
         }
 
         // GET: Car/Create
+        /// <summary>
+        /// Create car
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> Create()
         {
             var vm = new CreateEditViewModel()
@@ -57,6 +72,11 @@ namespace WebApplication.Controllers
         // POST: Car/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        /// <summary>
+        /// Post create car
+        /// </summary>
+        /// <param name="car"></param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(BLL.App.DTO.Car car)
@@ -76,6 +96,11 @@ namespace WebApplication.Controllers
         }
 
         // GET: Car/Edit/5
+        /// <summary>
+        /// Get edit car
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null)
@@ -100,6 +125,12 @@ namespace WebApplication.Controllers
         // POST: Car/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        /// <summary>
+        /// Post edit car
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="car"></param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, BLL.App.DTO.Car car)
@@ -140,6 +171,11 @@ namespace WebApplication.Controllers
         }
 
         // GET: Car/Delete/5
+        /// <summary>
+        /// Delete car
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null)
@@ -158,6 +194,11 @@ namespace WebApplication.Controllers
         }
 
         // POST: Car/Delete/5
+        /// <summary>
+        /// Post delete car
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)

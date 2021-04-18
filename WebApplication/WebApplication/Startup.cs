@@ -25,16 +25,30 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace WebApplication
 {
+    /// <summary>
+    /// Startup class
+    /// </summary>
     public class Startup
     {
+        /// <summary>
+        /// Startup
+        /// </summary>
+        /// <param name="configuration">App configuration</param>
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
+        /// <summary>
+        /// Configuration
+        /// </summary>
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
+        /// <summary>
+        /// Configure services
+        /// </summary>
+        /// <param name="services">Services collection</param>
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<AppDbContext>(options =>
@@ -134,6 +148,12 @@ namespace WebApplication
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        /// <summary>
+        /// Configure
+        /// </summary>
+        /// <param name="app">App builder</param>
+        /// <param name="env">Host environment</param>
+        /// <param name="apiVersionDescriptionProvider">Api version builder</param>
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env,
             IApiVersionDescriptionProvider apiVersionDescriptionProvider)
         {

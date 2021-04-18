@@ -5,21 +5,32 @@ using Microsoft.Extensions.Logging;
 
 namespace WebApplication.Pages
 {
+    /// <inheritdoc />
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     [IgnoreAntiforgeryToken]
     public class ErrorModel : PageModel
     {
+        /// <summary>
+        /// Request id
+        /// </summary>
         public string RequestId { get; set; } = null!;
 
+        /// <summary>
+        /// Show request id
+        /// </summary>
         public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
 
         private readonly ILogger<ErrorModel> _logger;
 
+        /// <inheritdoc />
         public ErrorModel(ILogger<ErrorModel> logger)
         {
             _logger = logger;
         }
 
+        /// <summary>
+        /// Get error 
+        /// </summary>
         public void OnGet()
         {
             RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier;

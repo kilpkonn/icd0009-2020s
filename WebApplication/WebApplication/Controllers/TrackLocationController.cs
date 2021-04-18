@@ -11,23 +11,34 @@ using WebApplication.Models.TrackLocation;
 
 namespace WebApplication.Controllers
 {
+    /// <inheritdoc />
     [Authorize]
     public class TrackLocationController : Controller
     {
         private readonly IAppBll _bll;
 
+        /// <inheritdoc />
         public TrackLocationController(IAppBll bll)
         {
             _bll = bll;
         }
 
         // GET: TrackLocation
+        /// <summary>
+        /// Track location index
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> Index()
         {
             return View(await _bll.TrackLocations.GetAllAsync(User.GetUserId()));
         }
 
         // GET: TrackLocation/Details/5
+        /// <summary>
+        /// Track location details
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null)
@@ -46,6 +57,10 @@ namespace WebApplication.Controllers
         }
 
         // GET: TrackLocation/Create
+        /// <summary>
+        /// Create track location
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> Create()
         {
             var vm = new CreateEditViewModel()
@@ -58,6 +73,11 @@ namespace WebApplication.Controllers
         // POST: TrackLocation/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        /// <summary>
+        /// Post create track location
+        /// </summary>
+        /// <param name="ceVm"></param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreateEditViewModel ceVm)
@@ -79,6 +99,11 @@ namespace WebApplication.Controllers
         }
 
         // GET: TrackLocation/Edit/5
+        /// <summary>
+        /// Edit track locacation
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null)
@@ -103,6 +128,12 @@ namespace WebApplication.Controllers
         // POST: TrackLocation/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        /// <summary>
+        /// Post edit track location
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="ceVm"></param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, CreateEditViewModel ceVm)
@@ -144,6 +175,11 @@ namespace WebApplication.Controllers
         }
 
         // GET: TrackLocation/Delete/5
+        /// <summary>
+        /// Delete track location
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null)
@@ -162,6 +198,11 @@ namespace WebApplication.Controllers
         }
 
         // POST: TrackLocation/Delete/5
+        /// <summary>
+        /// Post delete track location
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)

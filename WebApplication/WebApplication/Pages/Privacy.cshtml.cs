@@ -8,15 +8,20 @@ using Microsoft.Extensions.Logging;
 
 namespace WebApplication.Pages
 {
+    /// <inheritdoc />
     public class PrivacyModel : PageModel
     {
         private readonly ILogger<PrivacyModel> _logger;
 
+        /// <inheritdoc />
         public PrivacyModel(ILogger<PrivacyModel> logger)
         {
             _logger = logger;
         }
 
+        /// <summary>
+        /// Empty get
+        /// </summary>
         public void OnGet()
         {
         }
