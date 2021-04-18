@@ -35,11 +35,11 @@ namespace BLL.App.Services
 
             var car = await base.AddAsync(entity, userId);
 
-            var carAccess = new CarAccess()
+            var carAccess = new CarAccess
             {
-                Car = Mapper.Map(entity),
+                CarId = car.Id,
                 AppUserId = (Guid) userId!,
-                CarAccessType = await ServiceUow.CarAccessTypes.FindByNameAsync("Owner")
+                CarAccessTypeId = (await ServiceUow.CarAccessTypes.FindByNameAsync("Owner")).Id
             };
             ServiceUow.CarAccesses.Add(carAccess);
 

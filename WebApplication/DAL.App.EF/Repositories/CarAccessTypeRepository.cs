@@ -17,7 +17,8 @@ namespace DAL.App.EF.Repositories
 
         public async Task<CarAccessType> FindByNameAsync(string name)
         {
-            return await DbSet.Where(x => x.Name == name)
+            return await DbSet.AsNoTracking()
+                .Where(x => x.Name == name)
                 .Select(e => Mapper.Map(e)!)
                 .FirstOrDefaultAsync();
         }
