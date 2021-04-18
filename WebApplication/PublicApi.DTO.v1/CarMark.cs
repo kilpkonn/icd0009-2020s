@@ -8,6 +8,6 @@ namespace PublicApi.DTO.v1
     {
         public string? Name { get; set; } = null!;
 
-        public ICollection<CarModel>? CarModels { get; set; }
+        //public ICollection<CarModel>? CarModels { get; set; }
     }
 }

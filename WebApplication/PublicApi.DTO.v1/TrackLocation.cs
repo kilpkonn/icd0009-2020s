@@ -14,6 +14,6 @@ namespace PublicApi.DTO.v1
         public float? Rpm { get; set; }
         
         public Guid? TrackId { get; set; }
-        public Track? Track { get; set; }
+        //public Track? Track { get; set; }
     }
 }

@@ -11,8 +11,8 @@ namespace PublicApi.DTO.v1
         public DateTime? ReleaseDate { get; set; }
         
         public Guid? CarMarkId { get; set; }
-        public CarMark? CarMark { get; set; }
+        //public CarMark? CarMark { get; set; }
 
-        public ICollection<CarType>? CarTypes { get; set; }
+        //public ICollection<CarType>? CarTypes { get; set; }
     }
 }

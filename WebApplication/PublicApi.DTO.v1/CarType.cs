@@ -8,6 +8,6 @@ namespace PublicApi.DTO.v1
         public string? Name { get; set; }
 
         public Guid? CarModelId { get; set; }
-        public CarModel? CarModel { get; set; }
+        //public CarModel? CarModel { get; set; }
     }
 }
