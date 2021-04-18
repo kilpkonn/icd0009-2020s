@@ -6,7 +6,7 @@ using DAL.Base;
 
 namespace DAL.App.DTO
 {
-    public class Car : DalEntityId, IDalAppUserId
+    public class Car : DalEntity, IDalAppUserId
     {
         public Guid CarTypeId { get; set; }
         public CarType? CarType { get; set; }

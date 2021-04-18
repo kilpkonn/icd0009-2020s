@@ -21,6 +21,7 @@ namespace DAL.App.EF.Repositories
         {
             return await CreateQuery(userId, tracking)
                 .Include(x => x.CarModel)
+                .ThenInclude(x => x!.CarMark)
                 .Select(e => Mapper.Map(e)!)
                 .ToListAsync();
         }
