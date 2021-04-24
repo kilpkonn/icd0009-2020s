@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Text;
 using BLL.App;
 using CarApp.BLL.App;
@@ -15,6 +16,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -55,7 +57,9 @@ namespace WebApplication
             services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
-
+            
+            //CustomIdentityErrorDescriber uses localization
+            services.AddLocalization(options => options.ResourcesPath = "Resource.Base");
 
             services.AddDatabaseDeveloperPageExceptionFilter();
 
@@ -81,12 +85,10 @@ namespace WebApplication
                 );
             services
                 .AddIdentity<AppUser, AppRole>(options => options.SignIn.RequireConfirmedAccount = false)
-                .AddErrorDescriber<LocalizedIdentityErrorDescriber>()
+                .AddErrorDescriber<LocalizedIdentityErrorDescriber>()  // <- Broken AF
                 .AddDefaultUI()
                 .AddEntityFrameworkStores<AppDbContext>()
                 .AddDefaultTokenProviders();
-
-
 
             services.AddCors(options =>
                 {
@@ -110,7 +112,7 @@ namespace WebApplication
                 typeof(BLL.App.DTO.MappingProfiles.AutoMapperProfile),
                 typeof(PublicApi.DTO.v1.MappingProfiles.AutoMapperProfile)
             );
-            
+
             // add support for api versioning
             services.AddApiVersioning(options =>
             {
@@ -124,30 +126,34 @@ namespace WebApplication
             // add support to generate human readable documentation from m2m docs
             services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
             services.AddSwaggerGen();
+            
+            var supportedCultures = Configuration
+                .GetSection("SupportedCultures")
+                .GetChildren()
+                .Select(x => new CultureInfo(x.Value))
+                .ToArray();
 
             services.Configure<RequestLocalizationOptions>(options =>
             {
-                // TODO: should be in appsettings.json
-                var appSupportedCultures = new[]
-                {
-                    new CultureInfo("et"),
-                    new CultureInfo("en-GB"),
-                };
+                // datetime and currency support
+                options.SupportedCultures = supportedCultures;
+                // UI translated strings
+                options.SupportedUICultures = supportedCultures;
+                // if nothing is found, use this
+                options.DefaultRequestCulture = new RequestCulture("et-EE", "et-EE");
+                options.SetDefaultCulture("et-EE");
 
-                options.SupportedCultures = appSupportedCultures;
-                options.SupportedUICultures = appSupportedCultures;
-                options.DefaultRequestCulture = new RequestCulture("en-GB", "en-GB");
-                options.SetDefaultCulture("en-GB");
-                options.RequestCultureProviders = new List<IRequestCultureProvider>()
+                options.RequestCultureProviders = new List<IRequestCultureProvider>
                 {
+                    // Order is important, its in which order they will be evaluated
                     new QueryStringRequestCultureProvider(),
                     new CookieRequestCultureProvider()
                 };
             });
             
-            // Custom stuff
-            // services.AddSingleton<IConfigureOptions<MvcOptions>, ConfigureModelBindingLocalization>();
-
+            services.AddMvc()
+                .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
+                .AddDataAnnotationsLocalization();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

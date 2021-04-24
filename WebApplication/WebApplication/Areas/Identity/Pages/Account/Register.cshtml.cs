@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using Resource.Base.Areas.Identity.IdentityErrorDescriber;
 using Resource.Base.Areas.Identity.Pages.Account;
 
 namespace WebApplication.Areas.Identity.Pages.Account
@@ -57,7 +58,7 @@ namespace WebApplication.Areas.Identity.Pages.Account
         public IList<AuthenticationScheme> ExternalLogins { get; set; } = new List<AuthenticationScheme>();
 
         /// <summary>
-        /// REgister input model
+        /// Register input model
         /// </summary>
         public class InputModel
         {
@@ -65,7 +66,7 @@ namespace WebApplication.Areas.Identity.Pages.Account
             /// Email
             /// </summary>
             [Required]
-            [EmailAddress]
+            [EmailAddress(ErrorMessageResourceName = nameof(LocalizedIdentityErrorDescriber.InvalidEmail), ErrorMessageResourceType = typeof(LocalizedIdentityErrorDescriber))]
             [Display(Name = nameof(Email), ResourceType = typeof(Register))]
             public string? Email { get; set; }
             
