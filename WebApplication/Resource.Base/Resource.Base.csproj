@@ -156,11 +156,188 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Compile Update="Common.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>Common.resx</DependentUpon>
-      </Compile>
+        <Compile Update="Common.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Common.resx</DependentUpon>
+        </Compile>
+
+        <Compile Update="Areas\Identity\Shared\PasswordRequirementsTooltip.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>PasswordRequirementsTooltip.resx</DependentUpon>
+        </Compile>
+
+        <Compile Update="Base.Domain\Identity\BaseUser.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>BaseUser.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Areas\Identity\Pages\Account\Login.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Login.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Areas\Identity\Pages\Account\Register.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Register.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Areas\Identity\Pages\Account\ExternalLogin.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>ExternalLogin.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Areas\Identity\Pages\Account\Manage\ChangePassword.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>ChangePassword.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Areas\Identity\Pages\Account\Manage\DeletePersonalData.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>DeletePersonalData.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Areas\Identity\Pages\Account\Manage\Disable2fa.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Disable2fa.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Areas\Identity\Pages\Account\Manage\DownloadPersonalData.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>DownloadPersonalData.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Areas\Identity\Pages\Account\Manage\Email.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Email.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Areas\Identity\Pages\Account\Manage\EnableAuthenticator.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>EnableAuthenticator.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Areas\Identity\Pages\Account\Manage\ExternalLogins.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>ExternalLogins.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Areas\Identity\Pages\Account\Manage\GenerateRecoveryCodes.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>GenerateRecoveryCodes.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Areas\Identity\Pages\Account\Manage\Index.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Index.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Areas\Identity\Pages\Account\Manage\PersonalData.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>PersonalData.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Areas\Identity\Pages\Account\Manage\ResetAuthenticator.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>ResetAuthenticator.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Areas\Identity\Pages\Account\Manage\SetPassword.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>SetPassword.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Areas\Identity\Pages\Account\Manage\ShowRecoveryCodes.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>ShowRecoveryCodes.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Areas\Identity\Pages\Account\Manage\TwoFactorAuthentication.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>TwoFactorAuthentication.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Areas\Identity\Pages\Account\AccessDenied.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>AccessDenied.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Areas\Identity\Pages\Account\ConfirmEmail.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>ConfirmEmail.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Areas\Identity\Pages\Account\ConfirmEmailChange.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>ConfirmEmailChange.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Areas\Identity\Pages\Account\ForgotPassword.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>ForgotPassword.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Areas\Identity\Pages\Account\ForgotPasswordConfirmation.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>ForgotPasswordConfirmation.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Areas\Identity\Pages\Account\Lockout.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Lockout.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Areas\Identity\Pages\Account\LoginWith2fa.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>LoginWith2fa.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Areas\Identity\Pages\Account\LoginWithRecoveryCode.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>LoginWithRecoveryCode.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Areas\Identity\Pages\Account\Logout.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Logout.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Areas\Identity\Pages\Account\RegisterConfirmation.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>RegisterConfirmation.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Areas\Identity\Pages\Account\ResendEmailConfirmation.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>ResendEmailConfirmation.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Areas\Identity\Pages\Account\ResetPassword.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>ResetPassword.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Areas\Identity\Pages\Account\ResetPasswordConfirmation.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>ResetPasswordConfirmation.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Areas\Identity\Pages\Account\Manage\_ManageNav.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>_ManageNav.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Areas\Identity\Pages\Account\Manage\_Layout.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>_Layout.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Areas\Identity\IdentityErrorDescriber\LocalizedIdentityErrorDescriber.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>LocalizedIdentityErrorDescriber.resx</DependentUpon>
+        </Compile>
     </ItemGroup>
 
 </Project>

@@ -22,6 +22,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using WebApplication.Areas.Identity.IdentityErrorDescriber;
 
 namespace WebApplication
 {
@@ -78,13 +79,14 @@ namespace WebApplication
                         };
                     }
                 );
-
-
             services
                 .AddIdentity<AppUser, AppRole>(options => options.SignIn.RequireConfirmedAccount = false)
+                .AddErrorDescriber<LocalizedIdentityErrorDescriber>()
                 .AddDefaultUI()
                 .AddEntityFrameworkStores<AppDbContext>()
                 .AddDefaultTokenProviders();
+
+
 
             services.AddCors(options =>
                 {
