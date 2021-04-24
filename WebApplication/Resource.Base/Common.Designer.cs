@@ -8,9 +8,6 @@
 //------------------------------------------------------------------------------
 
 namespace Resource.Base {
-    using System;
-    
-    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
@@ -45,9 +42,111 @@ namespace Resource.Base {
             }
         }
         
-        public static string ErrorMessageMinLength {
+        public static string ErrorMessage_MaxLength {
             get {
-                return ResourceManager.GetString("ErrorMessageMinLength", resourceCulture);
+                return ResourceManager.GetString("ErrorMessage_MaxLength", resourceCulture);
+            }
+        }
+        
+        public static string ErrorMessage_MinLength {
+            get {
+                return ResourceManager.GetString("ErrorMessage_MinLength", resourceCulture);
+            }
+        }
+        
+        public static string ErrorMessage_Required {
+            get {
+                return ResourceManager.GetString("ErrorMessage_Required", resourceCulture);
+            }
+        }
+        
+        public static string ErrorMessage_StringLengthMax {
+            get {
+                return ResourceManager.GetString("ErrorMessage_StringLengthMax", resourceCulture);
+            }
+        }
+        
+        public static string ErrorMessage_StringLengthMinMax {
+            get {
+                return ResourceManager.GetString("ErrorMessage_StringLengthMinMax", resourceCulture);
+            }
+        }
+        
+        public static string ErrorMessage_Range {
+            get {
+                return ResourceManager.GetString("ErrorMessage_Range", resourceCulture);
+            }
+        }
+        
+        public static string ErrorMessage_ValueIsInvalid {
+            get {
+                return ResourceManager.GetString("ErrorMessage_ValueIsInvalid", resourceCulture);
+            }
+        }
+        
+        public static string ErrorMessage_AttemptedValueIsInvalid {
+            get {
+                return ResourceManager.GetString("ErrorMessage_AttemptedValueIsInvalid", resourceCulture);
+            }
+        }
+        
+        public static string ErrorMessage_MissingBindRequiredValue {
+            get {
+                return ResourceManager.GetString("ErrorMessage_MissingBindRequiredValue", resourceCulture);
+            }
+        }
+        
+        public static string ErrorMessage_MissingKeyOrValue {
+            get {
+                return ResourceManager.GetString("ErrorMessage_MissingKeyOrValue", resourceCulture);
+            }
+        }
+        
+        public static string ErrorMessage_MissingRequestBodyRequiredValue {
+            get {
+                return ResourceManager.GetString("ErrorMessage_MissingRequestBodyRequiredValue", resourceCulture);
+            }
+        }
+        
+        public static string ErrorMessage_NonPropertyAttemptedValueIsInvalid {
+            get {
+                return ResourceManager.GetString("ErrorMessage_NonPropertyAttemptedValueIsInvalid", resourceCulture);
+            }
+        }
+        
+        public static string ErrorMessage_NonPropertyUnknownValueIsInvalid {
+            get {
+                return ResourceManager.GetString("ErrorMessage_NonPropertyUnknownValueIsInvalid", resourceCulture);
+            }
+        }
+        
+        public static string ErrorMessage_NonPropertyValueMustBeANumber {
+            get {
+                return ResourceManager.GetString("ErrorMessage_NonPropertyValueMustBeANumber", resourceCulture);
+            }
+        }
+        
+        public static string ErrorMessage_UnknownValueIsInvalid {
+            get {
+                return ResourceManager.GetString("ErrorMessage_UnknownValueIsInvalid", resourceCulture);
+            }
+        }
+        
+        public static string ErrorMessage_ValueMustBeANumber {
+            get {
+                return ResourceManager.GetString("ErrorMessage_ValueMustBeANumber", resourceCulture);
+            }
+        }
+        
+        public static string ErrorMessage_ValueMustNotBeNull {
+            get {
+                return ResourceManager.GetString("ErrorMessage_ValueMustNotBeNull", resourceCulture);
+            }
+        }
+        
+        public static string ErrorMessage_NotValidPhone {
+            get {
+                return ResourceManager.GetString("ErrorMessage_NotValidPhone", resourceCulture);
             }
         }
     }

@@ -7,6 +7,8 @@ using Domain.App.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Resource.Base;
+using Index = Resource.Base.Areas.Identity.Pages.Account.Manage.Index;
 
 namespace WebApplication.Areas.Identity.Pages.Account.Manage
 {
@@ -28,6 +30,8 @@ namespace WebApplication.Areas.Identity.Pages.Account.Manage
         /// <summary>
         /// Username
         /// </summary>
+        [Display(Name = nameof(Username), ResourceType = typeof(Index))]
+
         public string? Username { get; set; }
 
         /// <summary>
@@ -50,8 +54,9 @@ namespace WebApplication.Areas.Identity.Pages.Account.Manage
             /// <summary>
             /// Phone number
             /// </summary>
-            [Phone]
-            [Display(Name = "Phone number")]
+            [Phone(ErrorMessageResourceName = "ErrorMessage_NotValidPhone", ErrorMessageResourceType = typeof(Common))]
+            [Display(Name = nameof(PhoneNumber), ResourceType = typeof(Index))]
+
             public string? PhoneNumber { get; set; }
         }
 
@@ -77,7 +82,7 @@ namespace WebApplication.Areas.Identity.Pages.Account.Manage
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return NotFound(string.Format(Index.Unable_to_load_user_with_ID,_userManager.GetUserId(User)));
             }
 
             await LoadAsync(user);
@@ -93,7 +98,7 @@ namespace WebApplication.Areas.Identity.Pages.Account.Manage
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return NotFound(string.Format(Index.Unable_to_load_user_with_ID,_userManager.GetUserId(User)));
             }
 
             if (!ModelState.IsValid)
@@ -108,13 +113,13 @@ namespace WebApplication.Areas.Identity.Pages.Account.Manage
                 var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
                 if (!setPhoneResult.Succeeded)
                 {
-                    StatusMessage = "Unexpected error when trying to set phone number.";
+                    StatusMessage = Index.Unexpected_error_when_trying_to_set_phone_number;
                     return RedirectToPage();
                 }
             }
 
             await _signInManager.RefreshSignInAsync(user);
-            StatusMessage = "Your profile has been updated";
+            StatusMessage = Index.Your_profile_has_been_updated;
             return RedirectToPage();
         }
     }

@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using Resource.Base.Areas.Identity.Pages.Account.Manage;
 
 namespace WebApplication.Areas.Identity.Pages.Account.Manage
 {
@@ -40,6 +41,8 @@ namespace WebApplication.Areas.Identity.Pages.Account.Manage
         /// <summary>
         /// Email
         /// </summary>
+        [Display(Name = "DisplayEmail", ResourceType = typeof(Email))]
+
         public string? Email { get; set; }
 
         /// <summary>
@@ -69,7 +72,7 @@ namespace WebApplication.Areas.Identity.Pages.Account.Manage
             /// </summary>
             [Required]
             [EmailAddress]
-            [Display(Name = "New email")]
+            [Display(Name = nameof(NewEmail), ResourceType = typeof(Email))]
             public string? NewEmail { get; set; }
         }
 

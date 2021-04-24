@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using Resource.Base.Areas.Identity.Pages.Account;
 
 namespace WebApplication.Areas.Identity.Pages.Account
 {
@@ -65,7 +66,7 @@ namespace WebApplication.Areas.Identity.Pages.Account
             /// </summary>
             [Required]
             [EmailAddress]
-            [Display(Name = "Email")]
+            [Display(Name = nameof(Email), ResourceType = typeof(Register))]
             public string? Email { get; set; }
             
             /// <summary>
@@ -73,7 +74,7 @@ namespace WebApplication.Areas.Identity.Pages.Account
             /// </summary>
             [Required]
             [StringLength(32, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 1)]
-            [Display(Name = "Display Name")]
+            [Display(Name = nameof(DisplayName), ResourceType = typeof(Register))]
             public string? DisplayName { get; set; }
 
             /// <summary>
@@ -81,15 +82,14 @@ namespace WebApplication.Areas.Identity.Pages.Account
             /// </summary>
             [Required]
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
-            [DataType(DataType.Password)]
-            [Display(Name = "Password")]
+            [Display(Name = nameof(Password), ResourceType = typeof(Register))]
             public string? Password { get; set; }
 
             /// <summary>
             /// Confirm password
             /// </summary>
             [DataType(DataType.Password)]
-            [Display(Name = "Confirm password")]
+            [Display(Name = nameof(ConfirmPassword), ResourceType = typeof(Register))]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string? ConfirmPassword { get; set; }
         }
