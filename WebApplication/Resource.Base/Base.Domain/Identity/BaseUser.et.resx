@@ -18,22 +18,46 @@
     <resheader name="writer">
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
-    <data name="DOB" xml:space="preserve">
-        <value>Sünnikuupäev</value>
+    <data name="UserName" xml:space="preserve">
+        <value>Kasutaja nimi</value>
     </data>
-    <data name="FirstLastName" xml:space="preserve">
-        <value>Ees- ja perenimi</value>
+    <data name="NormalizedUserName" xml:space="preserve">
+        <value>Normaliseeritud kasutaja nimi</value>
     </data>
-    <data name="FirstName" xml:space="preserve">
-        <value>Eesnimi</value>
+    <data name="Email" xml:space="preserve">
+        <value>E-mail</value>
     </data>
-    <data name="Gender" xml:space="preserve">
-        <value>Sugu</value>
+    <data name="NormalizedEmail" xml:space="preserve">
+        <value>Normaliseeritud E-mail</value>
     </data>
-    <data name="LastFirstName" xml:space="preserve">
-        <value>Pere- ja eesnimi</value>
+    <data name="EmailConfirmed" xml:space="preserve">
+        <value>Email kinnitatud</value>
     </data>
-    <data name="LastName" xml:space="preserve">
-        <value>Perenimi</value>
+    <data name="PasswordHash" xml:space="preserve">
+        <value>Salasõna räsi</value>
+    </data>
+    <data name="SecurityStamp" xml:space="preserve">
+        <value>Turvalisuse märk</value>
+    </data>
+    <data name="ConcurrencyStamp" xml:space="preserve">
+        <value>Kronoloogilisuse märk</value>
+    </data>
+    <data name="PhoneNumber" xml:space="preserve">
+        <value>Telefoni nr</value>
+    </data>
+    <data name="PhoneNumberConfirmed" xml:space="preserve">
+        <value>Telefon kinnitatud</value>
+    </data>
+    <data name="TwoFactorEnabled" xml:space="preserve">
+        <value>2FA lubatud</value>
+    </data>
+    <data name="LockoutEnd" xml:space="preserve">
+        <value>Lukustuse lõpp</value>
+    </data>
+    <data name="LockoutEnabled" xml:space="preserve">
+        <value>Lukustus aktiivne</value>
+    </data>
+    <data name="AccessFailedCount" xml:space="preserve">
+        <value>Ebaõnnestunud sisse logimiste arv</value>
     </data>
 </root>

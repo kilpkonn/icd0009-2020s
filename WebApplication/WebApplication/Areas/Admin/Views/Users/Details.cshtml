@@ -1,17 +1,18 @@
+@using Resource.Base.Areas.Admin.Pages
 @model WebApplication.Areas.Admin.Models.UserViewModel
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = Users.Details;
 }
 
-<h1>Details</h1>
+<h1>@Users.Details</h1>
 
 <div>
-    <h4>AppUser</h4>
+    <h4>@Users.AppUser</h4>
     <hr />
     <partial name="_Details" model="Model"/>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.User!.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model.User!.Id">@Users.Edit</a> |
+    <a asp-action="Index">@Users.Back</a>
 </div>

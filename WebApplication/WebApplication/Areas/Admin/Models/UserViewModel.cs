@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using Domain.App.Identity;
-using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace WebApplication.Areas.Admin.Models
 {

@@ -1,17 +1,18 @@
+@using Resource.Base.Areas.Admin.Pages
 @model Domain.App.Identity.AppRole
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = Roles.Details;
 }
 
-<h1>Details</h1>
+<h1>@Roles.Details</h1>
 
 <div>
-    <h4>AppRole</h4>
+    <h4>@Roles.AppRole</h4>
     <hr/>
     <partial name="_Details" model="Model"/>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model.Id">@Roles.Edit</a> |
+    <a asp-action="Index">@Roles.Back</a>
 </div>

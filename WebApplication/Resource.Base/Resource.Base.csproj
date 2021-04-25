@@ -153,6 +153,18 @@
             <Generator>PublicResXFileCodeGenerator</Generator>
             <LastGenOutput>LocalizedIdentityErrorDescriber.Designer.cs</LastGenOutput>
         </EmbeddedResource>
+        <EmbeddedResource Update="Areas\Admin\Pages\Roles.resx">
+          <Generator>PublicResXFileCodeGenerator</Generator>
+          <LastGenOutput>Roles.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Areas\Admin\Pages\Users.resx">
+          <Generator>PublicResXFileCodeGenerator</Generator>
+          <LastGenOutput>Users.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Base.Domain\Identity\BaseRole.resx">
+          <Generator>PublicResXFileCodeGenerator</Generator>
+          <LastGenOutput>BaseRole.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
@@ -337,6 +349,21 @@
             <DesignTime>True</DesignTime>
             <AutoGen>True</AutoGen>
             <DependentUpon>LocalizedIdentityErrorDescriber.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Areas\Admin\Pages\Roles.Designer.cs">
+          <DesignTime>True</DesignTime>
+          <AutoGen>True</AutoGen>
+          <DependentUpon>Roles.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Areas\Admin\Pages\Users.Designer.cs">
+          <DesignTime>True</DesignTime>
+          <AutoGen>True</AutoGen>
+          <DependentUpon>Users.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Base.Domain\Identity\BaseRole.Designer.cs">
+          <DesignTime>True</DesignTime>
+          <AutoGen>True</AutoGen>
+          <DependentUpon>BaseRole.resx</DependentUpon>
         </Compile>
     </ItemGroup>
 

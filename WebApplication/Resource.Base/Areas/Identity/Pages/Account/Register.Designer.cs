@@ -51,15 +51,15 @@ namespace Resource.Base.Areas.Identity.Pages.Account {
             }
         }
         
-        public static string GivenName {
+        public static string FirstName {
             get {
-                return ResourceManager.GetString("GivenName", resourceCulture);
+                return ResourceManager.GetString("FirstName", resourceCulture);
             }
         }
         
-        public static string Surname {
+        public static string LastName {
             get {
-                return ResourceManager.GetString("Surname", resourceCulture);
+                return ResourceManager.GetString("LastName", resourceCulture);
             }
         }
         
@@ -111,36 +111,6 @@ namespace Resource.Base.Areas.Identity.Pages.Account {
             }
         }
         
-        public static string Country {
-            get {
-                return ResourceManager.GetString("Country", resourceCulture);
-            }
-        }
-        
-        public static string PunchUnitEmitNo {
-            get {
-                return ResourceManager.GetString("PunchUnitEmitNo", resourceCulture);
-            }
-        }
-        
-        public static string PunchUnitSiNo {
-            get {
-                return ResourceManager.GetString("PunchUnitSiNo", resourceCulture);
-            }
-        }
-        
-        public static string IOFCode {
-            get {
-                return ResourceManager.GetString("IOFCode", resourceCulture);
-            }
-        }
-        
-        public static string EOFCode {
-            get {
-                return ResourceManager.GetString("EOFCode", resourceCulture);
-            }
-        }
-        
         public static string Mandatory {
             get {
                 return ResourceManager.GetString("Mandatory", resourceCulture);
@@ -150,6 +120,12 @@ namespace Resource.Base.Areas.Identity.Pages.Account {
         public static string PasswordsDontMatch {
             get {
                 return ResourceManager.GetString("PasswordsDontMatch", resourceCulture);
+            }
+        }
+        
+        public static string Register3rdPartyNotConfigured {
+            get {
+                return ResourceManager.GetString("Register3rdPartyNotConfigured", resourceCulture);
             }
         }
         

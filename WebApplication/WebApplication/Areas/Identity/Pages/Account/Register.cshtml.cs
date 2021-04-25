@@ -1,20 +1,19 @@
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using Domain.App.Identity;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
-using Domain.App.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
-using Resource.Base.Areas.Identity.IdentityErrorDescriber;
+using Resource.Base;
 using Resource.Base.Areas.Identity.Pages.Account;
 
 namespace WebApplication.Areas.Identity.Pages.Account
@@ -65,33 +64,44 @@ namespace WebApplication.Areas.Identity.Pages.Account
             /// <summary>
             /// Email
             /// </summary>
-            [Required]
-            [EmailAddress(ErrorMessageResourceName = nameof(LocalizedIdentityErrorDescriber.InvalidEmail), ErrorMessageResourceType = typeof(LocalizedIdentityErrorDescriber))]
-            [Display(Name = nameof(Email), ResourceType = typeof(Register))]
+            [Required(ErrorMessageResourceType = typeof(Common),
+                ErrorMessageResourceName = "ErrorMessage_Required")]
+            [EmailAddress(ErrorMessageResourceType = typeof(Common),
+                ErrorMessageResourceName = "ErrorMessage_Email")]
+            [Display(ResourceType = typeof(Register),
+                Name = nameof(Email))]
             public string? Email { get; set; }
             
             /// <summary>
             /// Display name
             /// </summary>
-            [Required]
-            [StringLength(32, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 1)]
+            [Required(ErrorMessageResourceType = typeof(Common),
+                ErrorMessageResourceName = "ErrorMessage_Required")]
+            [StringLength(32,ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessage_DisplayNameLength", MinimumLength = 1)]
             [Display(Name = nameof(DisplayName), ResourceType = typeof(Register))]
             public string? DisplayName { get; set; }
 
             /// <summary>
             /// Password
             /// </summary>
-            [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
-            [Display(Name = nameof(Password), ResourceType = typeof(Register))]
+            [Required(ErrorMessageResourceType = typeof(Common),
+                ErrorMessageResourceName = "ErrorMessage_Required")]
+            [StringLength(100, ErrorMessageResourceType = typeof(Common),
+                ErrorMessageResourceName = "ErrorMessage_StringLengthMinMax", MinimumLength = 6)]
+            [DataType(DataType.Password)]
+            [Display(Name = nameof(Password),
+                ResourceType = typeof(Register))]
             public string? Password { get; set; }
 
             /// <summary>
             /// Confirm password
             /// </summary>
             [DataType(DataType.Password)]
-            [Display(Name = nameof(ConfirmPassword), ResourceType = typeof(Register))]
-            [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+            [Display(Name = nameof(ConfirmPassword),
+                ResourceType = typeof(Register))]
+            [Compare("Password",
+                ErrorMessageResourceType = typeof(Register),
+                ErrorMessageResourceName = "PasswordsDontMatch")]
             public string? ConfirmPassword { get; set; }
         }
 
@@ -116,7 +126,7 @@ namespace WebApplication.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new AppUser { UserName = Input!.Email, Email = Input.Email, DisplayName = Input.DisplayName!};
+                var user = new AppUser { UserName = Input!.Email!, Email = Input.Email!, DisplayName = Input.DisplayName!};
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {

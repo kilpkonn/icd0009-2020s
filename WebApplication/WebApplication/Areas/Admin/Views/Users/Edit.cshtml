@@ -1,12 +1,13 @@
+@using Resource.Base.Areas.Admin.Pages
 @model WebApplication.Areas.Admin.Models.UserViewModel;
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = Users.Edit;
 }
 
-<h1>Edit</h1>
+<h1>@Users.Edit</h1>
 
-<h4>AppUser</h4>
+<h4>@Users.AppUser</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -20,7 +21,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">@Users.Back</a>
 </div>
 
 @section Scripts {

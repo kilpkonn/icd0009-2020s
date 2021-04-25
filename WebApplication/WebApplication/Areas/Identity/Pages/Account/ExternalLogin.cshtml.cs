@@ -170,7 +170,7 @@ namespace WebApplication.Areas.Identity.Pages.Account
 
             if (ModelState.IsValid)
             {
-                var user = new AppUser {UserName = Input!.Email, Email = Input.Email};
+                var user = new AppUser {UserName = Input!.Email!, Email = Input.Email!};
 
                 var result = await _userManager.CreateAsync(user);
                 if (result.Succeeded)

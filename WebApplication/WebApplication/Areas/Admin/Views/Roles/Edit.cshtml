@@ -1,12 +1,13 @@
+@using Resource.Base.Areas.Admin.Pages
 @model Domain.App.Identity.AppRole
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = Roles.Edit;
 }
 
-<h1>Edit</h1>
+<h1>@Roles.Edit</h1>
 
-<h4>AppRole</h4>
+<h4>@Roles.AppRole</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -20,7 +21,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">@Roles.Back</a>
 </div>
 
 @section Scripts {

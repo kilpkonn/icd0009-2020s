@@ -1,17 +1,15 @@
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Text.Encodings.Web;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Domain.App.Identity;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using Resource.Base;
 using Resource.Base.Areas.Identity.Pages.Account;
 
 namespace WebApplication.Areas.Identity.Pages.Account
@@ -64,15 +62,20 @@ namespace WebApplication.Areas.Identity.Pages.Account
             /// <summary>
             /// Email
             /// </summary>
-            [Required]
-            [EmailAddress]
+            [Required(ErrorMessageResourceType = typeof(Common),
+                ErrorMessageResourceName = "ErrorMessage_Required")]
+            [EmailAddress(ErrorMessageResourceType = typeof(Common),
+                ErrorMessageResourceName = "ErrorMessage_Email")]
             [Display(Name = nameof(Email), ResourceType = typeof(Login))]
             public string? Email { get; set; }
 
             /// <summary>
             /// Password
             /// </summary>
-            [Required]
+            [Required(ErrorMessageResourceType = typeof(Common),
+                ErrorMessageResourceName = "ErrorMessage_Required")]
+            [StringLength(100, ErrorMessageResourceType = typeof(Common),
+                ErrorMessageResourceName = "ErrorMessage_StringLengthMinMax", MinimumLength = 6)]
             [DataType(DataType.Password)]
             [Display(Name = nameof(Password), ResourceType = typeof(Login))]
             public string? Password { get; set; }

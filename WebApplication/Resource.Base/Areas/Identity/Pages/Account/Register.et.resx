@@ -14,10 +14,10 @@
     <data name="Email" xml:space="preserve">
         <value>E-post</value>
     </data>
-    <data name="GivenName" xml:space="preserve">
+    <data name="FirstName" xml:space="preserve">
         <value>Eesnimi</value>
     </data>
-    <data name="Surname" xml:space="preserve">
+    <data name="LastName" xml:space="preserve">
         <value>Perenimi</value>
     </data>
     <data name="Password" xml:space="preserve">
@@ -44,28 +44,16 @@
     <data name="Gender" xml:space="preserve">
         <value>Sugu</value>
     </data>
-    <data name="Country" xml:space="preserve">
-        <value>Riik</value>
-    </data>
-    <data name="PunchUnitEmitNo" xml:space="preserve">
-        <value>Emit number</value>
-    </data>
-    <data name="PunchUnitSiNo" xml:space="preserve">
-        <value>SportIdent number</value>
-    </data>
-    <data name="IOFCode" xml:space="preserve">
-        <value>International Orienteering Federation kood</value>
-    </data>
-    <data name="EOFCode" xml:space="preserve">
-        <value>Estonian Orienteering Federation kood</value>
-    </data>
     <data name="Mandatory" xml:space="preserve">
         <value>Kohustuslikud</value>
     </data>
     <data name="PasswordsDontMatch" xml:space="preserve">
         <value>Parool ja parooli kordus ei ühti.</value>
     </data>
+    <data name="Register3rdPartyNotConfigured" xml:space="preserve">
+        <value>Välised autentimisteenused pole seadistatud.</value>
+    </data>
     <data name="DisplayName" xml:space="preserve">
-        <value>Näidatav nimi</value>
+        <value>Nähtav nimi</value>
     </data>
 </root>

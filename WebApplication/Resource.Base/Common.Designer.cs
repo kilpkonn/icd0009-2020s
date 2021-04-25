@@ -8,6 +8,9 @@
 //------------------------------------------------------------------------------
 
 namespace Resource.Base {
+    using System;
+    
+    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
@@ -147,6 +150,18 @@ namespace Resource.Base {
         public static string ErrorMessage_NotValidPhone {
             get {
                 return ResourceManager.GetString("ErrorMessage_NotValidPhone", resourceCulture);
+            }
+        }
+        
+        public static string ErrorMessage_Email {
+            get {
+                return ResourceManager.GetString("ErrorMessage_Email", resourceCulture);
+            }
+        }
+        
+        public static string ErrorMessage_DisplayNameLength {
+            get {
+                return ResourceManager.GetString("ErrorMessage_DisplayNameLength", resourceCulture);
             }
         }
     }

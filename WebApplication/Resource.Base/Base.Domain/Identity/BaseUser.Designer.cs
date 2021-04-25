@@ -45,39 +45,87 @@ namespace Resource.Base.Base.Domain.Identity {
             }
         }
         
-        public static string DOB {
+        public static string UserName {
             get {
-                return ResourceManager.GetString("DOB", resourceCulture);
+                return ResourceManager.GetString("UserName", resourceCulture);
             }
         }
         
-        public static string Gender {
+        public static string NormalizedUserName {
             get {
-                return ResourceManager.GetString("Gender", resourceCulture);
+                return ResourceManager.GetString("NormalizedUserName", resourceCulture);
             }
         }
         
-        public static string FirstName {
+        public static string Email {
             get {
-                return ResourceManager.GetString("FirstName", resourceCulture);
+                return ResourceManager.GetString("Email", resourceCulture);
             }
         }
         
-        public static string LastName {
+        public static string NormalizedEmail {
             get {
-                return ResourceManager.GetString("LastName", resourceCulture);
+                return ResourceManager.GetString("NormalizedEmail", resourceCulture);
             }
         }
         
-        public static string FirstLastName {
+        public static string EmailConfirmed {
             get {
-                return ResourceManager.GetString("FirstLastName", resourceCulture);
+                return ResourceManager.GetString("EmailConfirmed", resourceCulture);
             }
         }
         
-        public static string LastFirstName {
+        public static string PasswordHash {
             get {
-                return ResourceManager.GetString("LastFirstName", resourceCulture);
+                return ResourceManager.GetString("PasswordHash", resourceCulture);
+            }
+        }
+        
+        public static string SecurityStamp {
+            get {
+                return ResourceManager.GetString("SecurityStamp", resourceCulture);
+            }
+        }
+        
+        public static string ConcurrencyStamp {
+            get {
+                return ResourceManager.GetString("ConcurrencyStamp", resourceCulture);
+            }
+        }
+        
+        public static string PhoneNumber {
+            get {
+                return ResourceManager.GetString("PhoneNumber", resourceCulture);
+            }
+        }
+        
+        public static string PhoneNumberConfirmed {
+            get {
+                return ResourceManager.GetString("PhoneNumberConfirmed", resourceCulture);
+            }
+        }
+        
+        public static string TwoFactorEnabled {
+            get {
+                return ResourceManager.GetString("TwoFactorEnabled", resourceCulture);
+            }
+        }
+        
+        public static string LockoutEnd {
+            get {
+                return ResourceManager.GetString("LockoutEnd", resourceCulture);
+            }
+        }
+        
+        public static string LockoutEnabled {
+            get {
+                return ResourceManager.GetString("LockoutEnabled", resourceCulture);
+            }
+        }
+        
+        public static string AccessFailedCount {
+            get {
+                return ResourceManager.GetString("AccessFailedCount", resourceCulture);
             }
         }
     }

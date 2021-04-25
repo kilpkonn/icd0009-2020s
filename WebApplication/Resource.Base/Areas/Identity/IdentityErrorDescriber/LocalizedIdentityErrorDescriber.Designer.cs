@@ -25,7 +25,7 @@ namespace Resource.Base.Areas.Identity.IdentityErrorDescriber {
         public static System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.Equals(null, resourceMan)) {
-                    System.Resources.ResourceManager temp = new System.Resources.ResourceManager("com.akaver.Base.Resources.Areas.Identity.IdentityErrorDescriber.LocalizedIdentityErrorDescri" +
+                    System.Resources.ResourceManager temp = new System.Resources.ResourceManager("Resource.Base.Areas.Identity.IdentityErrorDescriber.LocalizedIdentityErrorDescri" +
                             "ber", typeof(LocalizedIdentityErrorDescriber).Assembly);
                     resourceMan = temp;
                 }
