@@ -18,16 +18,22 @@
     <resheader name="writer">
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
-    <data name="CarTypeId" xml:space="preserve">
-        <value>Car Type Id</value>
-    </data>
-    <data name="CarType" xml:space="preserve">
-        <value>Car Type</value>
-    </data>
     <data name="AppUserId" xml:space="preserve">
-        <value>User Id</value>
+        <value>Kasutaja ID</value>
     </data>
     <data name="AppUser" xml:space="preserve">
-        <value>User</value>
+        <value>Kasutaja</value>
+    </data>
+    <data name="CarId" xml:space="preserve">
+        <value>Auto ID</value>
+    </data>
+    <data name="Car" xml:space="preserve">
+        <value>Auto</value>
+    </data>
+    <data name="AccessTypeId" xml:space="preserve">
+        <value>Ligipääsu tüübi ID</value>
+    </data>
+    <data name="AccessType" xml:space="preserve">
+        <value>Ligipääsu tüüp</value>
     </data>
 </root>

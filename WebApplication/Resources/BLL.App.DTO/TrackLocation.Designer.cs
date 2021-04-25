@@ -14,21 +14,21 @@ namespace Resources.BLL.App.DTO {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class Car {
+    public class TrackLocation {
         
         private static System.Resources.ResourceManager resourceMan;
         
         private static System.Globalization.CultureInfo resourceCulture;
         
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Car() {
+        internal TrackLocation() {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
         public static System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.Equals(null, resourceMan)) {
-                    System.Resources.ResourceManager temp = new System.Resources.ResourceManager("Resources.BLL.App.DTO.Car", typeof(Car).Assembly);
+                    System.Resources.ResourceManager temp = new System.Resources.ResourceManager("Resources.BLL.App.DTO.TrackLocation", typeof(TrackLocation).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -45,27 +45,57 @@ namespace Resources.BLL.App.DTO {
             }
         }
         
-        public static string CarTypeId {
+        public static string Lat {
             get {
-                return ResourceManager.GetString("CarTypeId", resourceCulture);
+                return ResourceManager.GetString("Lat", resourceCulture);
             }
         }
         
-        public static string CarType {
+        public static string Lng {
             get {
-                return ResourceManager.GetString("CarType", resourceCulture);
+                return ResourceManager.GetString("Lng", resourceCulture);
             }
         }
         
-        public static string AppUserId {
+        public static string Elevation {
             get {
-                return ResourceManager.GetString("AppUserId", resourceCulture);
+                return ResourceManager.GetString("Elevation", resourceCulture);
             }
         }
         
-        public static string AppUser {
+        public static string Accuracy {
             get {
-                return ResourceManager.GetString("AppUser", resourceCulture);
+                return ResourceManager.GetString("Accuracy", resourceCulture);
+            }
+        }
+        
+        public static string ElevationAccuracy {
+            get {
+                return ResourceManager.GetString("ElevationAccuracy", resourceCulture);
+            }
+        }
+        
+        public static string Speed {
+            get {
+                return ResourceManager.GetString("Speed", resourceCulture);
+            }
+        }
+        
+        public static string Rpm {
+            get {
+                return ResourceManager.GetString("Rpm", resourceCulture);
+            }
+        }
+        
+        public static string TrackId {
+            get {
+                return ResourceManager.GetString("TrackId", resourceCulture);
+            }
+        }
+        
+        public static string Track {
+            get {
+                return ResourceManager.GetString("Track", resourceCulture);
             }
         }
     }

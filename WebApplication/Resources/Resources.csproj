@@ -21,6 +21,42 @@
         <Generator>PublicResXFileCodeGenerator</Generator>
         <LastGenOutput>Shared.Designer.cs</LastGenOutput>
       </EmbeddedResource>
+      <EmbeddedResource Update="BLL.App.DTO\CarAccess.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>CarAccess.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="BLL.App.DTO\CarAccessType.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>CarAccessType.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="BLL.App.DTO\CarErrorCode.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>CarErrorCode.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="BLL.App.DTO\CarMark.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>CarMark.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="BLL.App.DTO\CarModel.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>CarModel.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="BLL.App.DTO\CarType.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>CarType.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="BLL.App.DTO\GasRefill.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>GasRefill.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="BLL.App.DTO\Track.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>Track.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="BLL.App.DTO\TrackLocation.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>TrackLocation.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
@@ -38,6 +74,46 @@
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
         <DependentUpon>Shared.resx</DependentUpon>
+      </Compile>
+      <Compile Update="BLL.App.DTO\CarAccess.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>CarAccess.resx</DependentUpon>
+      </Compile>
+      <Compile Update="BLL.App.DTO\CarAccessType.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>CarAccessType.resx</DependentUpon>
+      </Compile>
+      <Compile Update="BLL.App.DTO\CarErrorCode.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>CarErrorCode.resx</DependentUpon>
+      </Compile>
+      <Compile Update="BLL.App.DTO\CarMark.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>CarMark.resx</DependentUpon>
+      </Compile>
+      <Compile Update="BLL.App.DTO\CarType.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>CarType.resx</DependentUpon>
+      </Compile>
+      <Compile Update="BLL.App.DTO\GasRefill.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>GasRefill.resx</DependentUpon>
+      </Compile>
+      <Compile Update="BLL.App.DTO\Track.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Track.resx</DependentUpon>
+      </Compile>
+      <Compile Update="BLL.App.DTO\TrackLocation.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>TrackLocation.resx</DependentUpon>
       </Compile>
     </ItemGroup>
 

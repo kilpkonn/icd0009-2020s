@@ -14,4 +14,13 @@
     <data name="CarTypeId" xml:space="preserve">
         <value>Auto tüübi ID</value>
     </data>
+    <data name="CarType" xml:space="preserve">
+        <value>Auto tüüp</value>
+    </data>
+    <data name="AppUserId" xml:space="preserve">
+        <value>Kasutaja ID</value>
+    </data>
+    <data name="AppUser" xml:space="preserve">
+        <value>Kasutaja</value>
+    </data>
 </root>

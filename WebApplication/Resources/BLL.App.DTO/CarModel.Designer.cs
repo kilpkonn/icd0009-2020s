@@ -14,21 +14,21 @@ namespace Resources.BLL.App.DTO {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class Car {
+    public class CarModel {
         
         private static System.Resources.ResourceManager resourceMan;
         
         private static System.Globalization.CultureInfo resourceCulture;
         
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Car() {
+        internal CarModel() {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
         public static System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.Equals(null, resourceMan)) {
-                    System.Resources.ResourceManager temp = new System.Resources.ResourceManager("Resources.BLL.App.DTO.Car", typeof(Car).Assembly);
+                    System.Resources.ResourceManager temp = new System.Resources.ResourceManager("Resources.BLL.App.DTO.CarModel", typeof(CarModel).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -45,27 +45,33 @@ namespace Resources.BLL.App.DTO {
             }
         }
         
-        public static string CarTypeId {
+        public static string Name {
             get {
-                return ResourceManager.GetString("CarTypeId", resourceCulture);
+                return ResourceManager.GetString("Name", resourceCulture);
             }
         }
         
-        public static string CarType {
+        public static string ReleaseDate {
             get {
-                return ResourceManager.GetString("CarType", resourceCulture);
+                return ResourceManager.GetString("ReleaseDate", resourceCulture);
             }
         }
         
-        public static string AppUserId {
+        public static string CarMarkId {
             get {
-                return ResourceManager.GetString("AppUserId", resourceCulture);
+                return ResourceManager.GetString("CarMarkId", resourceCulture);
             }
         }
         
-        public static string AppUser {
+        public static string CarMark {
             get {
-                return ResourceManager.GetString("AppUser", resourceCulture);
+                return ResourceManager.GetString("CarMark", resourceCulture);
+            }
+        }
+        
+        public static string Types {
+            get {
+                return ResourceManager.GetString("Types", resourceCulture);
             }
         }
     }

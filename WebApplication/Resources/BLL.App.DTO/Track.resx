@@ -18,14 +18,23 @@
     <resheader name="writer">
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
-    <data name="CarTypeId" xml:space="preserve">
-        <value>Car Type Id</value>
+    <data name="StartTimestamp" xml:space="preserve">
+        <value>Start time</value>
     </data>
-    <data name="CarType" xml:space="preserve">
-        <value>Car Type</value>
+    <data name="EndTimestamp" xml:space="preserve">
+        <value>End time</value>
+    </data>
+    <data name="Distance" xml:space="preserve">
+        <value>Distance</value>
+    </data>
+    <data name="CarId" xml:space="preserve">
+        <value>Car id</value>
+    </data>
+    <data name="Car" xml:space="preserve">
+        <value>Car</value>
     </data>
     <data name="AppUserId" xml:space="preserve">
-        <value>User Id</value>
+        <value>User id</value>
     </data>
     <data name="AppUser" xml:space="preserve">
         <value>User</value>

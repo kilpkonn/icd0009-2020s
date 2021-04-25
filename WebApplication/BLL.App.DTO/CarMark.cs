@@ -1,12 +1,15 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using BLL.Base;
 
 namespace BLL.App.DTO
 {
     public class CarMark : BllEntity
     {
-        public string? Name { get; set; } 
+        [Display(ResourceType = typeof(Resources.BLL.App.DTO.CarMark), Name = "Name")]
+        public string? Name { get; set; }
 
-        public ICollection<CarModel>? CarModels { get; set; } 
+        [Display(ResourceType = typeof(Resources.BLL.App.DTO.CarMark), Name = "Models")]
+        public ICollection<CarModel>? CarModels { get; set; }
     }
 }

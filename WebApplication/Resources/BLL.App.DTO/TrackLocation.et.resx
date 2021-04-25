@@ -18,16 +18,31 @@
     <resheader name="writer">
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
-    <data name="CarTypeId" xml:space="preserve">
-        <value>Car Type Id</value>
+    <data name="Lat" xml:space="preserve">
+        <value>Pikkuskraad</value>
     </data>
-    <data name="CarType" xml:space="preserve">
-        <value>Car Type</value>
+    <data name="Lng" xml:space="preserve">
+        <value>Laiuskraad</value>
     </data>
-    <data name="AppUserId" xml:space="preserve">
-        <value>User Id</value>
+    <data name="Elevation" xml:space="preserve">
+        <value>Kõrgus</value>
     </data>
-    <data name="AppUser" xml:space="preserve">
-        <value>User</value>
+    <data name="Accuracy" xml:space="preserve">
+        <value>Täpsus</value>
+    </data>
+    <data name="ElevationAccuracy" xml:space="preserve">
+        <value>Kõrguse täpsus</value>
+    </data>
+    <data name="Speed" xml:space="preserve">
+        <value>Kiirus</value>
+    </data>
+    <data name="Rpm" xml:space="preserve">
+        <value>Rpm</value>
+    </data>
+    <data name="TrackId" xml:space="preserve">
+        <value>Teekonna id</value>
+    </data>
+    <data name="Track" xml:space="preserve">
+        <value>Teekond</value>
     </data>
 </root>

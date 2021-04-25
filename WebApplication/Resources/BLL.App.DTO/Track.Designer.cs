@@ -14,21 +14,21 @@ namespace Resources.BLL.App.DTO {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class Car {
+    public class Track {
         
         private static System.Resources.ResourceManager resourceMan;
         
         private static System.Globalization.CultureInfo resourceCulture;
         
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Car() {
+        internal Track() {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
         public static System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.Equals(null, resourceMan)) {
-                    System.Resources.ResourceManager temp = new System.Resources.ResourceManager("Resources.BLL.App.DTO.Car", typeof(Car).Assembly);
+                    System.Resources.ResourceManager temp = new System.Resources.ResourceManager("Resources.BLL.App.DTO.Track", typeof(Track).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -45,15 +45,33 @@ namespace Resources.BLL.App.DTO {
             }
         }
         
-        public static string CarTypeId {
+        public static string StartTimestamp {
             get {
-                return ResourceManager.GetString("CarTypeId", resourceCulture);
+                return ResourceManager.GetString("StartTimestamp", resourceCulture);
             }
         }
         
-        public static string CarType {
+        public static string EndTimestamp {
             get {
-                return ResourceManager.GetString("CarType", resourceCulture);
+                return ResourceManager.GetString("EndTimestamp", resourceCulture);
+            }
+        }
+        
+        public static string Distance {
+            get {
+                return ResourceManager.GetString("Distance", resourceCulture);
+            }
+        }
+        
+        public static string CarId {
+            get {
+                return ResourceManager.GetString("CarId", resourceCulture);
+            }
+        }
+        
+        public static string Car {
+            get {
+                return ResourceManager.GetString("Car", resourceCulture);
             }
         }
         

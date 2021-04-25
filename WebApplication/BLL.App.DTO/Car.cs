@@ -10,11 +10,16 @@ namespace BLL.App.DTO
     {
         [Display(ResourceType = typeof(Resources.BLL.App.DTO.Car), Name = "CarTypeId")]
         public Guid? CarTypeId { get; set; }
+
+        [Display(ResourceType = typeof(Resources.BLL.App.DTO.Car), Name = "CarType")]
         public CarType? CarType { get; set; }
-        
+
+        [Display(ResourceType = typeof(Resources.BLL.App.DTO.Car), Name = "AppUserId")]
         public Guid? AppUserId { get; set; }
+
+        [Display(ResourceType = typeof(Resources.BLL.App.DTO.Car), Name = "AppUser")]
         public AppUser? AppUser { get; set; }
-        
+
         public IEnumerable<CarAccess>? CarAccesses { get; set; }
     }
 }
