@@ -17,9 +17,9 @@
         <Generator>PublicResXFileCodeGenerator</Generator>
         <LastGenOutput>Car.Designer.cs</LastGenOutput>
       </EmbeddedResource>
-      <EmbeddedResource Update="Areas\Identity\Pages\Account\Login.resx">
+      <EmbeddedResource Update="Shared.resx">
         <Generator>PublicResXFileCodeGenerator</Generator>
-        <LastGenOutput>Login.Designer.cs</LastGenOutput>
+        <LastGenOutput>Shared.Designer.cs</LastGenOutput>
       </EmbeddedResource>
     </ItemGroup>
 
@@ -34,10 +34,10 @@
         <AutoGen>True</AutoGen>
         <DependentUpon>Car.resx</DependentUpon>
       </Compile>
-      <Compile Update="Areas\Identity\Pages\Account\Login.Designer.cs">
+      <Compile Update="Shared.Designer.cs">
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
-        <DependentUpon>Login.resx</DependentUpon>
+        <DependentUpon>Shared.resx</DependentUpon>
       </Compile>
     </ItemGroup>
 

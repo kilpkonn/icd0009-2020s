@@ -1,11 +1,13 @@
+@using Resource.Base
+@using Resources
 @model WebApplication.Models.CarType.CreateEditViewModel;
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = Common.Create;
 }
 
-<h1>Create</h1>
+<h1>@Common.Create</h1>
 
-<h4>CarType</h4>
+<h4>@Shared.CarType</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -19,7 +21,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">@Common.Back</a>
 </div>
 
 @section Scripts {

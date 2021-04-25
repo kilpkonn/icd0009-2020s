@@ -1,20 +1,22 @@
+@using Resource.Base
+@using Resources
 @model BLL.App.DTO.CarMark
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = Common.Details;
 }
 
-<h1>Details</h1>
+<h1>@Common.Details</h1>
 
 <div>
-    <h4>CarMark</h4>
+    <h4>@Shared.CarMark</h4>
     <hr />
     <partial name="_Details" model="Model"/>
 </div>
 <div>
     @if (User.IsInRole("Admin"))
     {
-        <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+        <a asp-action="Edit" asp-route-id="@Model.Id">@Common.Edit</a>
     }
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">@Common.Back</a>
 </div>

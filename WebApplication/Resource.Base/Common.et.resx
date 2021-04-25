@@ -71,4 +71,37 @@
     <data name="ErrorMessage_DisplayNameLength" xml:space="preserve">
         <value>Nimi {0} peab olema vähemalt {2} ja maksimaalselt {1}tähemärki pikk.</value>
     </data>
+    <data name="Create" xml:space="preserve">
+        <value>Lisa uus</value>
+    </data>
+    <data name="Delete" xml:space="preserve">
+        <value>Kustuta</value>
+    </data>
+    <data name="Edit" xml:space="preserve">
+        <value>Muuda</value>
+    </data>
+    <data name="Index" xml:space="preserve">
+        <value>Algvaade</value>
+    </data>
+    <data name="DeleteConfirmation" xml:space="preserve">
+        <value>Kas sa oled kustutamises kindel?</value>
+    </data>
+    <data name="Back" xml:space="preserve">
+        <value>Tagasi</value>
+    </data>
+    <data name="Details" xml:space="preserve">
+        <value>Deital vaade</value>
+    </data>
+    <data name="Login" xml:space="preserve">
+        <value>Sisene</value>
+    </data>
+    <data name="Logout" xml:space="preserve">
+        <value>Välju</value>
+    </data>
+    <data name="Register" xml:space="preserve">
+        <value>Registreeru</value>
+    </data>
+    <data name="Hello" xml:space="preserve">
+        <value>Tere</value>
+    </data>
 </root>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>@ViewData["Title"] - Car App</title>
+    <title>@ViewData["Title"] - @Resources.Shared.WebApplication</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="~/css/site.css"/>
 </head>
@@ -11,7 +11,7 @@
 <header>
     <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
         <div class="container">
-            <a class="navbar-brand" asp-area="" asp-page="/Index">WebApplication</a>
+            <a class="navbar-brand" asp-area="" asp-page="/Index">@Resources.Shared.WebApplication</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -20,23 +20,23 @@
                 <ul class="navbar-nav flex-grow-1">
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Marks
+                            @Resources.Shared.CarMark
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
 
-                            <a class="nav-link text-dark" asp-area="" asp-controller="CarMark" asp-action="Index">Marks</a>
-                            <a class="nav-link text-dark" asp-area="" asp-controller="CarModel" asp-action="Index">Models</a>
-                            <a class="nav-link text-dark" asp-area="" asp-controller="CarType" asp-action="Index">Types</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="CarMark" asp-action="Index">@Resources.Shared.CarMark</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="CarModel" asp-action="Index">@Resources.Shared.CarModel</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="CarType" asp-action="Index">@Resources.Shared.CarType</a>
 
                             @if (User.Identity?.IsAuthenticated ?? false)
                             {
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Car" asp-action="Index">Cars</a>
-                                <a class="nav-link text-dark" asp-area="" asp-controller="CarAccess" asp-action="Index">CarAccesses</a>
-                                <a class="nav-link text-dark" asp-area="" asp-controller="CarErrorCode" asp-action="Index">ErrorCodes</a>
-                                <a class="nav-link text-dark" asp-area="" asp-controller="GasRefill" asp-action="Index">GasRefills</a>
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Track" asp-action="Index">Tracks</a>
-                                <a class="nav-link text-dark" asp-area="" asp-controller="TrackLocation" asp-action="Index">TrackLocations</a>
-                                <a class="nav-link text-dark" asp-area="" asp-controller="CarAccessType" asp-action="Index">AccessTypes</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Car" asp-action="Index">@Resources.Shared.Car</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="CarAccess" asp-action="Index">@Resources.Shared.CarAccess</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="CarErrorCode" asp-action="Index">@Resources.Shared.CarErrorCode</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="GasRefill" asp-action="Index">@Resources.Shared.GasRefill</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Track" asp-action="Index">@Resources.Shared.Track</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="TrackLocation" asp-action="Index">@Resources.Shared.TrackLocation</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="CarAccessType" asp-action="Index">@Resources.Shared.CarAccessType</a>
                             }
                         </div>
                     </li>
@@ -47,8 +47,8 @@
                                 Users
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="nav-link text-dark" asp-area="Admin" asp-controller="Users" asp-action="Index">Users</a>
-                                <a class="nav-link text-dark" asp-area="Admin" asp-controller="Roles" asp-action="Index">Roles</a>
+                                <a class="nav-link text-dark" asp-area="Admin" asp-controller="Users" asp-action="Index">@Resources.Shared.Users</a>
+                                <a class="nav-link text-dark" asp-area="Admin" asp-controller="Roles" asp-action="Index">@Resources.Shared.Roles</a>
                             </div>
                         </li>
                     }
@@ -69,7 +69,7 @@
 
 <footer class="border-top footer text-muted">
     <div class="container">
-        &copy; 2021 - WebApplication - <a asp-area="" asp-page="/Privacy">Privacy</a>
+        &copy; 2021 - @Resources.Shared.WebApplication - <a asp-area="" asp-page="/Privacy">@Resources.Shared.PrivacyPolicy</a>
     </div>
 </footer>
 

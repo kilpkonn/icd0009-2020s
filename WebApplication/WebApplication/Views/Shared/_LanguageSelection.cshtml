@@ -1,8 +1,8 @@
 @using Microsoft.Extensions.Options
 @using Microsoft.AspNetCore.Builder
-@inject IOptions<RequestLocalizationOptions> LocalizationOptions
+@inject IOptions<RequestLocalizationOptions> _localizationOptions
 @{
-    var cultureItems = LocalizationOptions.Value.SupportedUICultures
+    var cultureItems = _localizationOptions.Value.SupportedUICultures
         .Select(c => new {Value = c.Name, Text = c.NativeName}).ToList();
 }
 <li class="nav-item dropdown">

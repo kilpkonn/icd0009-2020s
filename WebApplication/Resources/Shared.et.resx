@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<root>
+    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <xsd:element name="root" msdata:IsDataSet="true">
+            
+        </xsd:element>
+    </xsd:schema>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="Car" xml:space="preserve">
+        <value>Auto</value>
+    </data>
+    <data name="CarAccess" xml:space="preserve">
+        <value>Auto ligipääs</value>
+    </data>
+    <data name="CarAccessType" xml:space="preserve">
+        <value>Ligipääsu tüüp</value>
+    </data>
+    <data name="CarErrorCode" xml:space="preserve">
+        <value>Auto vea kood</value>
+    </data>
+    <data name="CarMark" xml:space="preserve">
+        <value>Auto mark</value>
+    </data>
+    <data name="CarModel" xml:space="preserve">
+        <value>Auto mudel</value>
+    </data>
+    <data name="CarType" xml:space="preserve">
+        <value>Auto tüüp</value>
+    </data>
+    <data name="GasRefill" xml:space="preserve">
+        <value>Tankimine</value>
+    </data>
+    <data name="Track" xml:space="preserve">
+        <value>Teekond</value>
+    </data>
+    <data name="TrackLocation" xml:space="preserve">
+        <value>Teekonna punkt</value>
+    </data>
+    <data name="HomePage" xml:space="preserve">
+        <value>Avalehekülg</value>
+    </data>
+    <data name="Welcome" xml:space="preserve">
+        <value>Tere tulemast!</value>
+    </data>
+    <data name="PrivacyPolicy" xml:space="preserve">
+        <value>Andmekaitse</value>
+    </data>
+    <data name="Error" xml:space="preserve">
+        <value>Viga</value>
+    </data>
+    <data name="ErrorHeader" xml:space="preserve">
+        <value>Teie päringu töötlemisel tekkis viga.</value>
+    </data>
+    <data name="RequestId" xml:space="preserve">
+        <value>Päringu id</value>
+    </data>
+    <data name="WebApplication" xml:space="preserve">
+        <value>Auto rakendus</value>
+    </data>
+    <data name="Users" xml:space="preserve">
+        <value>Kasutajad</value>
+    </data>
+    <data name="Roles" xml:space="preserve">
+        <value>Rollid</value>
+    </data>
+</root>
