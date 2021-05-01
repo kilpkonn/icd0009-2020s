@@ -74,7 +74,7 @@ namespace BLL.Base.Services
         
         public virtual async Task<TBllEntity> UpdateAsync(TBllEntity entity, TKey? userId)
         {
-            TBllEntity dbEntity = Mapper.Map(await ServiceRepository.FirstOrDefaultAsync(entity.Id, userId))!;
+            TBllEntity dbEntity = Mapper.Map(await ServiceRepository.FirstOrDefaultAsyncNoIncludes(entity.Id, userId))!;
 
             foreach (var toProp in typeof(TBllEntity).GetProperties())
             {

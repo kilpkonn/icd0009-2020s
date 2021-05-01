@@ -25,5 +25,12 @@ namespace DAL.App.EF.Repositories
                 .Select(e => Mapper.Map(e)!)
                 .ToListAsync();
         }
+
+        public override async Task<CarModel?> FirstOrDefaultAsync(Guid id, Guid? userId, bool tracking = false)
+        {
+            var query = CreateQuery(userId, tracking)
+                .Include(x => x.CarMark);
+            return Mapper.Map(await query.FirstOrDefaultAsync(e => e.Id.Equals(id)));
+        }
     }
 }

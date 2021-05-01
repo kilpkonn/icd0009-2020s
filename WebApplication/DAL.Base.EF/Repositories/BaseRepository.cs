@@ -75,6 +75,13 @@ namespace DAL.Base.EF.Repositories
         }
 
         /// <inheritdoc />
+        public virtual async Task<TDalEntity?> FirstOrDefaultAsyncNoIncludes(TKey id, TKey? userId, bool tracking = false)
+        {
+            var query = CreateQuery(userId, tracking);
+            return Mapper.Map(await query.FirstOrDefaultAsync(e => e.Id.Equals(id)));
+        }
+
+        /// <inheritdoc />
         public virtual TDalEntity Add(TDalEntity entity)
         {
             var domainEntity = Mapper.Map(entity)!;

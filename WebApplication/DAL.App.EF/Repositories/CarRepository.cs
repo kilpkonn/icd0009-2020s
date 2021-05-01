@@ -21,9 +21,29 @@ namespace DAL.App.EF.Repositories
             return (await DbContext.CarAccesses
                 .Include(x => x.Car)
                 .ThenInclude(x => x!.CarType)
+                .ThenInclude(x => x!.CarModel)
+                .ThenInclude(x => x!.CarMark)
+                .Include(x => x.Car)
+                .ThenInclude(x => x!.AppUser)
+                // .Include(x => x.Car)
+                // .ThenInclude(x => x!.UpdatedBy)
+                // .Include(x => x.Car)
+                // .ThenInclude(x => x!.CreatedBy)
                 .Where(x => x.AppUserId == userId)
                 .Select(x => Mapper.Map(x.Car)!)
                 .ToListAsync())!;
+        }
+
+        public override async Task<DTO.Car?> FirstOrDefaultAsync(Guid id, Guid? userId, bool tracking = false)
+        {
+            var query = CreateQuery(userId, tracking)
+                .Include(x => x.CarType)
+                .ThenInclude(x => x!.CarModel)
+                .ThenInclude(x => x!.CarMark)
+                .Include(x => x.AppUser);
+                // .Include(x => x.UpdatedBy)
+                // .Include(x => x.CreatedBy);
+            return Mapper.Map(await query.FirstOrDefaultAsync(e => e.Id.Equals(id)));
         }
     }
 }

@@ -85,7 +85,7 @@ namespace WebApplication.ApiControllers
         /// <returns>Http response</returns>
         [Produces("application/json")]
         [Consumes("application/json")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpPut("{id}")]
@@ -96,7 +96,7 @@ namespace WebApplication.ApiControllers
                 return BadRequest();
             }
 
-            await _bll.Cars.UpdateAsync(_mapper.Map(car)!, User.GetUserId());
+            car = _mapper.Map(await _bll.Cars.UpdateAsync(_mapper.Map(car)!, User.GetUserId()))!;
 
             try
             {
@@ -114,7 +114,7 @@ namespace WebApplication.ApiControllers
                 }
             }
 
-            return NoContent();
+            return Ok(car);
         }
 
         // POST: api/Car

@@ -12,6 +12,7 @@ namespace Car.DAL.Base.Repositories
     {
         Task<IEnumerable<TEntity>> GetAllAsync(TKey? userId, bool tracking = false);
         Task<TEntity?> FirstOrDefaultAsync(TKey id, TKey? userId, bool tracking = false);
+        Task<TEntity?> FirstOrDefaultAsyncNoIncludes(TKey id, TKey? userId, bool tracking = false);
         Task<bool> ExistsAsync(TKey id, TKey? userId);
         Task<TEntity> RemoveAsync(TKey id, TKey? userId);
     }
