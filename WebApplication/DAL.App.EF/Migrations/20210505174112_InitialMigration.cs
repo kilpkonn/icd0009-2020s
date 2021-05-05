@@ -26,7 +26,7 @@ namespace DAL.App.EF.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    DisplayName = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
+                    DisplayName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -48,32 +48,14 @@ namespace DAL.App.EF.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CarAccessTypes",
+                name: "LangStrings",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AccessLevel = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CarAccessTypes", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "CarMarks",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CarMarks", x => x.Id);
+                    table.PrimaryKey("PK_LangStrings", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -183,11 +165,71 @@ namespace DAL.App.EF.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "CarAccessTypes",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    NameId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    AccessLevel = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CarAccessTypes", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CarAccessTypes_LangStrings_NameId",
+                        column: x => x.NameId,
+                        principalTable: "LangStrings",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CarMarks",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    NameId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CarMarks", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CarMarks_LangStrings_NameId",
+                        column: x => x.NameId,
+                        principalTable: "LangStrings",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Translations",
+                columns: table => new
+                {
+                    Culture = table.Column<string>(type: "nvarchar(5)", maxLength: 5, nullable: false),
+                    LangStringId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Value = table.Column<string>(type: "nvarchar(max)", maxLength: 10240, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Translations", x => new { x.Culture, x.LangStringId });
+                    table.ForeignKey(
+                        name: "FK_Translations_LangStrings_LangStringId",
+                        column: x => x.LangStringId,
+                        principalTable: "LangStrings",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "CarModels",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    NameId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ReleaseDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CarMarkId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -203,6 +245,12 @@ namespace DAL.App.EF.Migrations
                         column: x => x.CarMarkId,
                         principalTable: "CarMarks",
                         principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CarModels_LangStrings_NameId",
+                        column: x => x.NameId,
+                        principalTable: "LangStrings",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -211,7 +259,7 @@ namespace DAL.App.EF.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    NameId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CarModelId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -225,6 +273,12 @@ namespace DAL.App.EF.Migrations
                         name: "FK_CarTypes_CarModels_CarModelId",
                         column: x => x.CarModelId,
                         principalTable: "CarModels",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CarTypes_LangStrings_NameId",
+                        column: x => x.NameId,
+                        principalTable: "LangStrings",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -279,13 +333,13 @@ namespace DAL.App.EF.Migrations
                         column: x => x.AppUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_CarAccesses_CarAccessTypes_CarAccessTypeId",
                         column: x => x.CarAccessTypeId,
                         principalTable: "CarAccessTypes",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_CarAccesses_Cars_CarId",
                         column: x => x.CarId,
@@ -337,7 +391,7 @@ namespace DAL.App.EF.Migrations
                         column: x => x.AppUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_GasRefills_Cars_CarId",
                         column: x => x.CarId,
@@ -369,13 +423,13 @@ namespace DAL.App.EF.Migrations
                         column: x => x.AppUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Tracks_Cars_CarId",
                         column: x => x.CarId,
                         principalTable: "Cars",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -458,14 +512,29 @@ namespace DAL.App.EF.Migrations
                 column: "CarId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_CarAccessTypes_NameId",
+                table: "CarAccessTypes",
+                column: "NameId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_CarErrorCodes_CarId",
                 table: "CarErrorCodes",
                 column: "CarId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_CarMarks_NameId",
+                table: "CarMarks",
+                column: "NameId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_CarModels_CarMarkId",
                 table: "CarModels",
                 column: "CarMarkId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CarModels_NameId",
+                table: "CarModels",
+                column: "NameId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Cars_AppUserId",
@@ -481,6 +550,11 @@ namespace DAL.App.EF.Migrations
                 name: "IX_CarTypes_CarModelId",
                 table: "CarTypes",
                 column: "CarModelId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CarTypes_NameId",
+                table: "CarTypes",
+                column: "NameId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_GasRefills_AppUserId",
@@ -506,6 +580,11 @@ namespace DAL.App.EF.Migrations
                 name: "IX_Tracks_CarId",
                 table: "Tracks",
                 column: "CarId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Translations_LangStringId",
+                table: "Translations",
+                column: "LangStringId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -538,6 +617,9 @@ namespace DAL.App.EF.Migrations
                 name: "TrackLocations");
 
             migrationBuilder.DropTable(
+                name: "Translations");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
@@ -560,6 +642,9 @@ namespace DAL.App.EF.Migrations
 
             migrationBuilder.DropTable(
                 name: "CarMarks");
+
+            migrationBuilder.DropTable(
+                name: "LangStrings");
         }
     }
 }

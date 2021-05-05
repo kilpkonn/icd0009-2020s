@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DAL.App.EF.Repositories
 {
-    public class CarModelRepository : BaseRepository<DTO.CarModel, Domain.App.CarModel, AppDbContext>, ICarModelRepository
+    public class CarModelRepository : BaseRepository<CarModel, Domain.App.CarModel, AppDbContext>, ICarModelRepository
     {
         public CarModelRepository(AppDbContext dbContext, IMapper mapper) : base(dbContext, new CarModelMapper(mapper))
         {
@@ -22,6 +22,10 @@ namespace DAL.App.EF.Repositories
         {
             return await CreateQuery(userId, tracking)
                 .Include(x => x.CarMark)
+                .ThenInclude(x => x!.Name)
+                .ThenInclude(x => x!.Translations)
+                .Include(x => x.Name)
+                .ThenInclude(x => x!.Translations)
                 .Select(e => Mapper.Map(e)!)
                 .ToListAsync();
         }
@@ -29,7 +33,11 @@ namespace DAL.App.EF.Repositories
         public override async Task<CarModel?> FirstOrDefaultAsync(Guid id, Guid? userId, bool tracking = false)
         {
             var query = CreateQuery(userId, tracking)
-                .Include(x => x.CarMark);
+                .Include(x => x.CarMark)
+                .ThenInclude(x => x!.Name)
+                .ThenInclude(x => x!.Translations)
+                .Include(x => x.Name)
+                .ThenInclude(x => x!.Translations);
             return Mapper.Map(await query.FirstOrDefaultAsync(e => e.Id.Equals(id)));
         }
     }

@@ -6,7 +6,8 @@ namespace Domain.App
 {
     public class CarType : DomainEntity
     {
-        public string Name { get; set; } = null!;
+        public Guid NameId { get; set; }
+        public LangString? Name { get; set; }
         
         public Guid CarModelId { get; set; }
         public CarModel? CarModel { get; set; }

@@ -11,18 +11,23 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DAL.App.EF.Repositories
 {
-    public class CarTypeRepository : BaseRepository<DTO.CarType, Domain.App.CarType, AppDbContext>, ICarTypeRepository
+    public class CarTypeRepository : BaseRepository<CarType, Domain.App.CarType, AppDbContext>, ICarTypeRepository
     {
         public CarTypeRepository(AppDbContext dbContext, IMapper mapper) : base(dbContext, new CarTypeMapper(mapper))
         {
             
         }
 
-        public override async Task<IEnumerable<DTO.CarType>> GetAllAsync(Guid? userId, bool tracking = false)
+        public override async Task<IEnumerable<CarType>> GetAllAsync(Guid? userId, bool tracking = false)
         {
             return await CreateQuery(userId, tracking)
                 .Include(x => x.CarModel)
+                .ThenInclude(x => x!.Name)
+                .ThenInclude(x => x!.Translations)
+                .Include(x => x.CarModel)
                 .ThenInclude(x => x!.CarMark)
+                .ThenInclude(x => x!.Name)
+                .ThenInclude(x => x!.Translations)
                 .Select(e => Mapper.Map(e)!)
                 .ToListAsync();
         }
@@ -31,7 +36,12 @@ namespace DAL.App.EF.Repositories
         {
             var query = CreateQuery(userId, tracking)
                 .Include(x => x.CarModel)
-                .ThenInclude(x => x!.CarMark);
+                .ThenInclude(x => x!.Name)
+                .ThenInclude(x => x!.Translations)
+                .Include(x => x.CarModel)
+                .ThenInclude(x => x!.CarMark)
+                .ThenInclude(x => x!.Name)
+                .ThenInclude(x => x!.Translations);
             return Mapper.Map(await query.FirstOrDefaultAsync(e => e.Id.Equals(id)));
         }
     }

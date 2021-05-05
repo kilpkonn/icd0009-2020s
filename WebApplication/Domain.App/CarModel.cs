@@ -7,7 +7,9 @@ namespace Domain.App
 {
     public class CarModel : DomainEntity
     {
-        public string Name { get; set; } = null!;
+        public Guid NameId { get; set; }
+        public LangString? Name { get; set; }
+        
         public DateTime ReleaseDate { get; set; }
         
         public Guid CarMarkId { get; set; }

@@ -16,7 +16,7 @@ namespace DAL.App.EF.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.3")
+                .HasAnnotation("ProductVersion", "5.0.4")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("Domain.App.Car", b =>
@@ -99,11 +99,12 @@ namespace DAL.App.EF.Migrations
                     b.Property<int>("AccessLevel")
                         .HasColumnType("int");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid>("NameId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("NameId");
 
                     b.ToTable("CarAccessTypes");
                 });
@@ -154,9 +155,8 @@ namespace DAL.App.EF.Migrations
                     b.Property<Guid>("CreatedBy")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid>("NameId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -165,6 +165,8 @@ namespace DAL.App.EF.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("NameId");
 
                     b.ToTable("CarMarks");
                 });
@@ -184,9 +186,8 @@ namespace DAL.App.EF.Migrations
                     b.Property<Guid>("CreatedBy")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid>("NameId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("ReleaseDate")
                         .HasColumnType("datetime2");
@@ -200,6 +201,8 @@ namespace DAL.App.EF.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CarMarkId");
+
+                    b.HasIndex("NameId");
 
                     b.ToTable("CarModels");
                 });
@@ -219,9 +222,8 @@ namespace DAL.App.EF.Migrations
                     b.Property<Guid>("CreatedBy")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid>("NameId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -232,6 +234,8 @@ namespace DAL.App.EF.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CarModelId");
+
+                    b.HasIndex("NameId");
 
                     b.ToTable("CarTypes");
                 });
@@ -309,8 +313,7 @@ namespace DAL.App.EF.Migrations
 
                     b.Property<string>("DisplayName")
                         .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)
@@ -442,6 +445,38 @@ namespace DAL.App.EF.Migrations
                     b.HasIndex("TrackId");
 
                     b.ToTable("TrackLocations");
+                });
+
+            modelBuilder.Entity("Domain.Base.LangString", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("LangStrings");
+                });
+
+            modelBuilder.Entity("Domain.Base.Translation", b =>
+                {
+                    b.Property<string>("Culture")
+                        .HasMaxLength(5)
+                        .HasColumnType("nvarchar(5)");
+
+                    b.Property<Guid>("LangStringId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Value")
+                        .IsRequired()
+                        .HasMaxLength(10240)
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Culture", "LangStringId");
+
+                    b.HasIndex("LangStringId");
+
+                    b.ToTable("Translations");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -581,7 +616,7 @@ namespace DAL.App.EF.Migrations
                     b.HasOne("Domain.App.Car", "Car")
                         .WithMany("CarAccesses")
                         .HasForeignKey("CarId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("AppUser");
@@ -591,15 +626,37 @@ namespace DAL.App.EF.Migrations
                     b.Navigation("CarAccessType");
                 });
 
-            modelBuilder.Entity("Domain.App.CarErrorCode", b =>
+            modelBuilder.Entity("Domain.App.CarAccessType", b =>
                 {
-                    b.HasOne("Domain.App.Car", "Car")
+                    b.HasOne("Domain.Base.LangString", "Name")
                         .WithMany()
-                        .HasForeignKey("CarId")
+                        .HasForeignKey("NameId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.Navigation("Name");
+                });
+
+            modelBuilder.Entity("Domain.App.CarErrorCode", b =>
+                {
+                    b.HasOne("Domain.App.Car", "Car")
+                        .WithMany("CarErrorCodes")
+                        .HasForeignKey("CarId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Car");
+                });
+
+            modelBuilder.Entity("Domain.App.CarMark", b =>
+                {
+                    b.HasOne("Domain.Base.LangString", "Name")
+                        .WithMany()
+                        .HasForeignKey("NameId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Name");
                 });
 
             modelBuilder.Entity("Domain.App.CarModel", b =>
@@ -607,10 +664,18 @@ namespace DAL.App.EF.Migrations
                     b.HasOne("Domain.App.CarMark", "CarMark")
                         .WithMany("CarModels")
                         .HasForeignKey("CarMarkId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Base.LangString", "Name")
+                        .WithMany()
+                        .HasForeignKey("NameId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("CarMark");
+
+                    b.Navigation("Name");
                 });
 
             modelBuilder.Entity("Domain.App.CarType", b =>
@@ -618,10 +683,18 @@ namespace DAL.App.EF.Migrations
                     b.HasOne("Domain.App.CarModel", "CarModel")
                         .WithMany("CarTypes")
                         .HasForeignKey("CarModelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Base.LangString", "Name")
+                        .WithMany()
+                        .HasForeignKey("NameId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("CarModel");
+
+                    b.Navigation("Name");
                 });
 
             modelBuilder.Entity("Domain.App.GasRefill", b =>
@@ -633,9 +706,9 @@ namespace DAL.App.EF.Migrations
                         .IsRequired();
 
                     b.HasOne("Domain.App.Car", "Car")
-                        .WithMany()
+                        .WithMany("GasRefills")
                         .HasForeignKey("CarId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("AppUser");
 
@@ -664,11 +737,22 @@ namespace DAL.App.EF.Migrations
             modelBuilder.Entity("Domain.App.TrackLocation", b =>
                 {
                     b.HasOne("Domain.App.Track", "Track")
-                        .WithMany()
+                        .WithMany("TrackLocations")
                         .HasForeignKey("TrackId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Track");
+                });
+
+            modelBuilder.Entity("Domain.Base.Translation", b =>
+                {
+                    b.HasOne("Domain.Base.LangString", "LangString")
+                        .WithMany("Translations")
+                        .HasForeignKey("LangStringId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("LangString");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -725,6 +809,10 @@ namespace DAL.App.EF.Migrations
             modelBuilder.Entity("Domain.App.Car", b =>
                 {
                     b.Navigation("CarAccesses");
+
+                    b.Navigation("CarErrorCodes");
+
+                    b.Navigation("GasRefills");
                 });
 
             modelBuilder.Entity("Domain.App.CarMark", b =>
@@ -744,6 +832,16 @@ namespace DAL.App.EF.Migrations
                     b.Navigation("GasRefills");
 
                     b.Navigation("Tracks");
+                });
+
+            modelBuilder.Entity("Domain.App.Track", b =>
+                {
+                    b.Navigation("TrackLocations");
+                });
+
+            modelBuilder.Entity("Domain.Base.LangString", b =>
+                {
+                    b.Navigation("Translations");
                 });
 #pragma warning restore 612, 618
         }

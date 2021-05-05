@@ -15,5 +15,7 @@ namespace Domain.App
         public AppUser? AppUser { get; set; }
         
         public IEnumerable<CarAccess>? CarAccesses { get; set; }
+        public IEnumerable<CarErrorCode> CarErrorCodes { get; set; } = new List<CarErrorCode>();
+        public IEnumerable<GasRefill> GasRefills { get; set; } = new List<GasRefill>();
     }
 }

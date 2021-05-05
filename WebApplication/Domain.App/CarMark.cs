@@ -7,7 +7,8 @@ namespace Domain.App
 {
     public class CarMark : DomainEntity
     {
-        public string Name { get; set; } = null!;
+        public Guid NameId { get; set; }
+        public LangString? Name { get; set; }
 
         public ICollection<CarModel> CarModels { get; set; } = new List<CarModel>();
     }
