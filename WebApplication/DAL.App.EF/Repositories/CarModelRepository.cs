@@ -40,5 +40,21 @@ namespace DAL.App.EF.Repositories
                 .ThenInclude(x => x!.Translations);
             return Mapper.Map(await query.FirstOrDefaultAsync(e => e.Id.Equals(id)));
         }
+
+        public override CarModel Update(CarModel entity, Guid? userId)
+        {
+            var domainEntity = DbSet
+                .AsNoTracking()
+                .Include(x => x.Name)
+                .ThenInclude(x => x!.Translations)
+                .First(x => x.Id == entity.Id);
+
+            var newEntity = Mapper.Map(entity)!;
+            newEntity.Name = domainEntity.Name;
+            newEntity.Name?.SetTranslation(entity.Name);
+            
+            var updatedEntity = DbSet.Update(newEntity!).Entity;
+            return Mapper.Map(updatedEntity)!;
+        }
     }
 }
