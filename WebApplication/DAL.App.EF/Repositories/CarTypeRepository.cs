@@ -21,6 +21,8 @@ namespace DAL.App.EF.Repositories
         public override async Task<IEnumerable<CarType>> GetAllAsync(Guid? userId, bool tracking = false)
         {
             return await CreateQuery(userId, tracking)
+                .Include(x => x.Name)
+                .ThenInclude(x => x!.Translations)
                 .Include(x => x.CarModel)
                 .ThenInclude(x => x!.Name)
                 .ThenInclude(x => x!.Translations)
@@ -35,6 +37,8 @@ namespace DAL.App.EF.Repositories
         public override async Task<CarType?> FirstOrDefaultAsync(Guid id, Guid? userId, bool tracking = false)
         {
             var query = CreateQuery(userId, tracking)
+                .Include(x => x.Name)
+                .ThenInclude(x => x!.Translations)
                 .Include(x => x.CarModel)
                 .ThenInclude(x => x!.Name)
                 .ThenInclude(x => x!.Translations)

@@ -35,12 +35,11 @@ namespace DAL.App.EF.Repositories
 
         public async Task<CarAccessType> FindByNameAsync(string name)
         {
-            return await DbSet.AsNoTracking()
+            return Mapper.Map((await DbSet.AsNoTracking()
                 .Include(x => x.Name)
                 .ThenInclude(x => x!.Translations)
-                .Where(x => x.Name == name)
-                .Select(e => Mapper.Map(e)!)
-                .FirstOrDefaultAsync();
+                .ToListAsync())
+                .FirstOrDefault(x => x.Name == name))!;
         }
 
         public override CarAccessType Update(CarAccessType entity, Guid? userId)
