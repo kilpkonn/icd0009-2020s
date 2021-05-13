@@ -11,6 +11,7 @@ namespace BLL.App.DTO
         public string? Name { get; set; }
 
         [Display(ResourceType = typeof(Resources.BLL.App.DTO.CarModel), Name = "ReleaseDate")]
+        [DataType(DataType.Date)]
         public DateTime? ReleaseDate { get; set; }
 
         [Display(ResourceType = typeof(Resources.BLL.App.DTO.CarModel), Name = "CarMarkId")]

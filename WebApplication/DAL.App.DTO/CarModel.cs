@@ -4,7 +4,7 @@ using DAL.Base;
 
 namespace DAL.App.DTO
 {
-    public class CarModel : DalEntityId
+    public class CarModel : DalEntity
     {
         public string Name { get; set; } = null!;
         public DateTime ReleaseDate { get; set; }

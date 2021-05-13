@@ -3,7 +3,7 @@ using DAL.Base;
 
 namespace DAL.App.DTO
 {
-    public class CarMark : DalEntityId
+    public class CarMark : DalEntity
     {
         public string Name { get; set; } = null!;
 

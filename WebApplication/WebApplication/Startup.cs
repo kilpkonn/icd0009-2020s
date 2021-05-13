@@ -25,6 +25,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using WebApplication.Areas.Identity.IdentityErrorDescriber;
+using WebApplication.Helpers;
 
 namespace WebApplication
 {
@@ -105,7 +106,12 @@ namespace WebApplication
             services.AddScoped<IAppUnitOfWork, AppUnitOfWork>();
             services.AddScoped<IAppBll, AppBll>();
 
-            services.AddRazorPages();
+            // services.AddRazorPages();
+            services.AddControllersWithViews(options =>
+            {
+                options.ModelBinderProviders.Insert(0, new CustomFloatingPointBinderProvider());
+            });
+
             
             services.AddAutoMapper(
                 typeof(AutoMapperProfile),
