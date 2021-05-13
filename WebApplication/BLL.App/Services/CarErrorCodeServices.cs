@@ -21,7 +21,9 @@ namespace BLL.App.Services
         public override async Task<CarErrorCode> AddAsync(CarErrorCode entity, Guid? userId)
         {
             entity.CreatedBy = (Guid) userId!;
+            entity.CreatedAt = DateTime.Now;
             entity.UpdatedBy = (Guid) userId!;
+            entity.UpdatedAt = DateTime.Now;
             return await base.AddAsync(entity, userId);
         }
     }

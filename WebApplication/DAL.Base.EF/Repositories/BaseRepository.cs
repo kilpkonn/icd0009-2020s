@@ -38,14 +38,17 @@ namespace DAL.Base.EF.Repositories
         /// Database context
         /// </summary>
         protected readonly TDbContext DbContext;
+
         /// <summary>
         /// Database set (table)
         /// </summary>
         protected readonly DbSet<TDomainEntity> DbSet;
+
         /// <summary>
         /// Entity mapper
         /// </summary>
         protected readonly IBaseMapper<TDalEntity, TDomainEntity> Mapper;
+
         private readonly Dictionary<TDalEntity, TDomainEntity> _entityCache = new();
 
         /// <summary>
@@ -75,7 +78,8 @@ namespace DAL.Base.EF.Repositories
         }
 
         /// <inheritdoc />
-        public virtual async Task<TDalEntity?> FirstOrDefaultAsyncNoIncludes(TKey id, TKey? userId, bool tracking = false)
+        public virtual async Task<TDalEntity?> FirstOrDefaultAsyncNoIncludes(TKey id, TKey? userId,
+            bool tracking = false)
         {
             var query = CreateQuery(userId, tracking);
             return Mapper.Map(await query.FirstOrDefaultAsync(e => e.Id.Equals(id)));
@@ -111,7 +115,8 @@ namespace DAL.Base.EF.Repositories
         public virtual TDalEntity Remove(TDalEntity entity, TKey? userId)
         {
             var dbEntity = Mapper.Map(entity)!;
-            if (userId != null && !((IDomainAppUserId<TKey>) dbEntity).AppUserId.Equals(userId))
+            if (userId != null && typeof(IDomainAppUserId<TKey>).IsAssignableFrom(typeof(TDalEntity)) &&
+                !((IDomainAppUserId<TKey>) dbEntity).AppUserId.Equals(userId))
             {
                 throw new AuthenticationException("Bad user id inside entity to be deleted.");
                 // TODO: load entity from the db, check that userId inside entity is correct.
