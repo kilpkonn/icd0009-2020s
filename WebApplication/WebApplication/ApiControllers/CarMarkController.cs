@@ -26,6 +26,7 @@ namespace WebApplication.ApiControllers
     {
         private readonly IAppBll _bll;
         private readonly CarMarkMapper _mapper;
+        private readonly NewCarMarkMapper _newCarMarkMapper;
 
         /// <summary>
         /// Car Mark Controller
@@ -36,6 +37,7 @@ namespace WebApplication.ApiControllers
         {
             _bll = bll;
             _mapper = new CarMarkMapper(mapper);
+            _newCarMarkMapper = new NewCarMarkMapper(mapper);
         }
 
         // GET: api/CarMark
@@ -132,12 +134,12 @@ namespace WebApplication.ApiControllers
         [Consumes("application/json")]
         [ProducesResponseType(typeof(IEnumerable<CarMark>), StatusCodes.Status200OK)]
         [HttpPost]
-        public async Task<ActionResult<CarMark>> PostCarMark(CarMark carMark)
+        public async Task<ActionResult<CarMark>> PostCarMark(NewCarMark carMark)
         {
-            carMark = _mapper.Map(await _bll.CarMarks.AddAsync(_mapper.Map(carMark)!, User.GetUserId()))!;
+            var res = _mapper.Map(await _bll.CarMarks.AddAsync(_newCarMarkMapper.Map(carMark)!, User.GetUserId()))!;
             await _bll.SaveChangesAsync();
 
-            return CreatedAtAction("GetCarMark", new {id = carMark.Id}, carMark);
+            return CreatedAtAction("GetCarMark", new {id = res.Id}, res);
         }
 
         // DELETE: api/CarMark/5

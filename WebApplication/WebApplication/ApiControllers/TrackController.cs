@@ -26,6 +26,7 @@ namespace WebApplication.ApiControllers
     {
         private readonly IAppBll _bll;
         private readonly TrackMapper _mapper;
+        private readonly NewTrackMapper _newTrackMapper;
 
         /// <summary>
         /// Track Controller
@@ -36,6 +37,7 @@ namespace WebApplication.ApiControllers
         {
             _bll = bll;
             _mapper = new TrackMapper(mapper);
+            _newTrackMapper = new NewTrackMapper(mapper);
         }
 
         // GET: api/Track
@@ -130,12 +132,12 @@ namespace WebApplication.ApiControllers
         [Consumes("application/json")]
         [ProducesResponseType(typeof(IEnumerable<Track>), StatusCodes.Status200OK)]
         [HttpPost]
-        public async Task<ActionResult<Track>> PostTrack(Track track)
+        public async Task<ActionResult<Track>> PostTrack(NewTrack track)
         {
-            track = _mapper.Map(await _bll.Tracks.AddAsync(_mapper.Map(track)!, User.GetUserId()))!;
+            var res = _mapper.Map(await _bll.Tracks.AddAsync(_newTrackMapper.Map(track)!, User.GetUserId()))!;
             await _bll.SaveChangesAsync();
 
-            return CreatedAtAction("GetTrack", new {id = track.Id}, track);
+            return CreatedAtAction("GetTrack", new {id = res.Id}, res);
         }
 
         // DELETE: api/Track/5

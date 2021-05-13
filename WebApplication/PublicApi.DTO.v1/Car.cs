@@ -15,4 +15,9 @@ namespace PublicApi.DTO.v1
         //public IEnumerable<CarAccess>? CarAccesses { get; set; }
         
     }
+    
+    public class NewCar
+    {
+        public Guid? CarTypeId { get; set; }
+    }
 }

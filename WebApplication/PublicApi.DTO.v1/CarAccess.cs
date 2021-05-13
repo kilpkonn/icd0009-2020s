@@ -16,4 +16,11 @@ namespace PublicApi.DTO.v1
         public Guid? CarAccessTypeId { get; set; }
         //public CarAccessType? CarAccessType { get; set; }
     }
+    
+    public class NewCarAccess
+    {
+        public Guid AppUserId { get; set; }
+        public Guid? CarId { get; set; }
+        public Guid? CarAccessTypeId { get; set; }
+    }
 }

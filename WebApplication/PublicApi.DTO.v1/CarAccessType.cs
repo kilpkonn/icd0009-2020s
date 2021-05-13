@@ -7,4 +7,10 @@ namespace PublicApi.DTO.v1
         public string? Name { get; set; } = null!;
         public int? AccessLevel { get; set; }
     }
+    
+    public class NewCarAccessType
+    {
+        public string Name { get; set; } = null!;
+        public int AccessLevel { get; set; }
+    }
 }

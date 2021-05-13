@@ -15,4 +15,11 @@ namespace PublicApi.DTO.v1
 
         //public ICollection<CarType>? CarTypes { get; set; }
     }
+    
+    public class NewCarModel
+    {
+        public string Name { get; set; } = null!;
+        // public DateTime? ReleaseDate { get; set; }
+        public Guid? CarMarkId { get; set; }
+    }
 }

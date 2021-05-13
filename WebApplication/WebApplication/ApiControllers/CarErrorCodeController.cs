@@ -26,6 +26,7 @@ namespace WebApplication.ApiControllers
     {
         private readonly IAppBll _bll;
         private readonly CarErrorCodeMapper _mapper;
+        private readonly NewCarErrorCodeMapper _newCarErrorCodeMapper;
 
         /// <summary>
         /// Car Controller
@@ -36,6 +37,7 @@ namespace WebApplication.ApiControllers
         {
             _bll = bll;
             _mapper = new CarErrorCodeMapper(mapper);
+            _newCarErrorCodeMapper = new NewCarErrorCodeMapper(mapper);
         }
 
         // GET: api/CarErrorCode
@@ -130,13 +132,13 @@ namespace WebApplication.ApiControllers
         [Consumes("application/json")]
         [ProducesResponseType(typeof(IEnumerable<CarErrorCode>), StatusCodes.Status200OK)]
         [HttpPost]
-        public async Task<ActionResult<CarErrorCode>> PostCarErrorCode(CarErrorCode carErrorCode)
+        public async Task<ActionResult<CarErrorCode>> PostCarErrorCode(NewCarErrorCode carErrorCode)
         {
-            carErrorCode =
-                _mapper.Map(await _bll.CarErrorCodes.AddAsync(_mapper.Map(carErrorCode)!, User.GetUserId()))!;
+            var res =
+                _mapper.Map(await _bll.CarErrorCodes.AddAsync(_newCarErrorCodeMapper.Map(carErrorCode)!, User.GetUserId()))!;
             await _bll.SaveChangesAsync();
 
-            return CreatedAtAction("GetCarErrorCode", new {id = carErrorCode.Id}, carErrorCode);
+            return CreatedAtAction("GetCarErrorCode", new {id = res.Id}, res);
         }
 
         // DELETE: api/CarErrorCode/5

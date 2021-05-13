@@ -8,4 +8,11 @@ namespace PublicApi.DTO.v1.Mappers
         {
         }
     }
+    
+    public class NewGasRefillMapper : BaseMapper<NewGasRefill, BLL.App.DTO.GasRefill>
+    {
+        public NewGasRefillMapper(IMapper mapper) : base(mapper)
+        {
+        }
+    }
 }

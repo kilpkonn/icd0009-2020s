@@ -11,4 +11,12 @@ namespace PublicApi.DTO.v1
         public Guid? CarId { get; set; }
         //public Car? Car { get; set; }
     }
+    
+    public class NewCarErrorCode
+    {
+        public int? CanId { get; set; }
+        public long? CanData { get; set; }
+        
+        public Guid? CarId { get; set; }
+    }
 }

@@ -16,4 +16,13 @@ namespace PublicApi.DTO.v1
         public Guid? CarId { get; set; }
         //public Car? Car { get; set; }
     }
+    
+    public class NewGasRefill
+    {
+        public float AmountRefilled { get; set; }
+        public DateTime Timestamp { get; set; }
+        public float Cost { get; set; }
+
+        public Guid? CarId { get; set; }
+    }
 }

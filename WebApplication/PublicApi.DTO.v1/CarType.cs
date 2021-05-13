@@ -10,4 +10,10 @@ namespace PublicApi.DTO.v1
         public Guid? CarModelId { get; set; }
         public CarModel? CarModel { get; set; }
     }
+    
+    public class NewCarType
+    {
+        public string Name { get; set; } = null!;
+        public Guid CarModelId { get; set; }
+    }
 }

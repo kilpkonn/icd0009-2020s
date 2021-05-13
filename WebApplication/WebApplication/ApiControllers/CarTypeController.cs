@@ -26,6 +26,7 @@ namespace WebApplication.ApiControllers
     {
         private readonly IAppBll _bll;
         private readonly CarTypeMapper _mapper;
+        private readonly NewCarTypeMapper _newCarTypeMapper;
 
         /// <summary>
         /// Car Type Controller
@@ -36,6 +37,7 @@ namespace WebApplication.ApiControllers
         {
             _bll = bll;
             _mapper = new CarTypeMapper(mapper);
+            _newCarTypeMapper = new NewCarTypeMapper(mapper);
         }
 
         // GET: api/CarType
@@ -132,12 +134,12 @@ namespace WebApplication.ApiControllers
         [Consumes("application/json")]
         [ProducesResponseType(typeof(IEnumerable<CarType>), StatusCodes.Status200OK)]
         [HttpPost]
-        public async Task<ActionResult<CarType>> PostCarType(CarType carType)
+        public async Task<ActionResult<CarType>> PostCarType(NewCarType carType)
         {
-            carType = _mapper.Map(await _bll.CarTypes.AddAsync(_mapper.Map(carType)!, User.GetUserId()))!;
+            var res = _mapper.Map(await _bll.CarTypes.AddAsync(_newCarTypeMapper.Map(carType)!, User.GetUserId()))!;
             await _bll.SaveChangesAsync();
 
-            return CreatedAtAction("GetCarType", new {id = carType.Id}, carType);
+            return CreatedAtAction("GetCarType", new {id = res.Id}, res);
         }
 
         // DELETE: api/CarType/5

@@ -8,4 +8,11 @@ namespace PublicApi.DTO.v1.Mappers
         {
         }
     }
+    
+    public class NewCarErrorCodeMapper : BaseMapper<NewCarErrorCode, BLL.App.DTO.CarErrorCode>
+    {
+        public NewCarErrorCodeMapper(IMapper mapper) : base(mapper)
+        {
+        }
+    }
 }

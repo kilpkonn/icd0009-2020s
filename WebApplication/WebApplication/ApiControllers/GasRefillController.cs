@@ -26,6 +26,7 @@ namespace WebApplication.ApiControllers
     {
         private readonly IAppBll _bll;
         private readonly GasRefillMapper _mapper;
+        private readonly NewGasRefillMapper _newGasRefillMapper;
 
         /// <summary>
         /// Gas Refill Controller
@@ -36,6 +37,7 @@ namespace WebApplication.ApiControllers
         {
             _bll = bll;
             _mapper = new GasRefillMapper(mapper);
+            _newGasRefillMapper = new NewGasRefillMapper(mapper);
         }
 
         // GET: api/GasRefill
@@ -130,12 +132,12 @@ namespace WebApplication.ApiControllers
         [Consumes("application/json")]
         [ProducesResponseType(typeof(IEnumerable<GasRefill>), StatusCodes.Status200OK)]
         [HttpPost]
-        public async Task<ActionResult<GasRefill>> PostGasRefill(GasRefill gasRefill)
+        public async Task<ActionResult<GasRefill>> PostGasRefill(NewGasRefill gasRefill)
         {
-            await _bll.GasRefills.AddAsync(_mapper.Map(gasRefill)!, User.GetUserId());
+            var res = await _bll.GasRefills.AddAsync(_newGasRefillMapper.Map(gasRefill)!, User.GetUserId());
             await _bll.SaveChangesAsync();
 
-            return CreatedAtAction("GetGasRefill", new {id = gasRefill.Id}, gasRefill);
+            return CreatedAtAction("GetGasRefill", new {id = res.Id}, res);
         }
 
         // DELETE: api/GasRefill/5

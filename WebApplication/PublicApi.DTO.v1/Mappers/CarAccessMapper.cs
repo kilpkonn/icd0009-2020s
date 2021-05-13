@@ -8,4 +8,11 @@ namespace PublicApi.DTO.v1.Mappers
         {
         }
     }
+    
+    public class NewCarAccessMapper : BaseMapper<NewCarAccess, BLL.App.DTO.CarAccess>
+    {
+        public NewCarAccessMapper(IMapper mapper) : base(mapper)
+        {
+        }
+    }
 }

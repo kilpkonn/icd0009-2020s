@@ -16,4 +16,13 @@ namespace PublicApi.DTO.v1
         public Guid? AppUserId { get; set; }
         //public AppUser? AppUser { get; set; }
     }
+    
+    public class NewTrack 
+    {
+        public DateTime StartTimestamp { get; set; }
+        public DateTime EndTimestamp { get; set; }
+        public float Distance { get; set; }
+        public Guid CarId { get; set; }
+        public Guid AppUserId { get; set; }
+    }
 }

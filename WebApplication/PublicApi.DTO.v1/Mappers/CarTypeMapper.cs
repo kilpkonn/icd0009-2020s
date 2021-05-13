@@ -8,4 +8,11 @@ namespace PublicApi.DTO.v1.Mappers
         {
         }
     }
+    
+    public class NewCarTypeMapper : BaseMapper<NewCarType, BLL.App.DTO.CarType>
+    {
+        public NewCarTypeMapper(IMapper mapper) : base(mapper)
+        {
+        }
+    }
 }

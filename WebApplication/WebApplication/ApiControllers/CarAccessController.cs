@@ -26,6 +26,7 @@ namespace WebApplication.ApiControllers
     {
         private readonly IAppBll _bll;
         private readonly CarAccessMapper _mapper;
+        private readonly NewCarAccessMapper _newCarAccessMapper;
 
         /// <summary>
         /// Car Access Controller
@@ -36,6 +37,7 @@ namespace WebApplication.ApiControllers
         {
             _bll = bll;
             _mapper = new CarAccessMapper(mapper);
+            _newCarAccessMapper = new NewCarAccessMapper(mapper);
         }
 
         // GET: api/CarAccess
@@ -130,12 +132,12 @@ namespace WebApplication.ApiControllers
         [Consumes("application/json")]
         [ProducesResponseType(typeof(IEnumerable<CarAccess>), StatusCodes.Status200OK)]
         [HttpPost]
-        public async Task<ActionResult<CarAccess>> PostCarAccess(CarAccess carAccess)
+        public async Task<ActionResult<CarAccess>> PostCarAccess(NewCarAccess carAccess)
         {
-            await _bll.CarAccesses.AddAsync(_mapper.Map(carAccess)!, User.GetUserId());
+            var res = await _bll.CarAccesses.AddAsync(_newCarAccessMapper.Map(carAccess)!, User.GetUserId());
             await _bll.SaveChangesAsync();
 
-            return CreatedAtAction("GetCarAccess", new {id = carAccess.Id}, carAccess);
+            return CreatedAtAction("GetCarAccess", new {id = res.Id}, res);
         }
 
         // DELETE: api/CarAccess/5

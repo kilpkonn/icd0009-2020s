@@ -8,4 +8,11 @@ namespace PublicApi.DTO.v1.Mappers
         {
         }
     }
+    
+    public class NewTrackLocationMapper : BaseMapper<NewTrackLocation, BLL.App.DTO.TrackLocation>
+    {
+        public NewTrackLocationMapper(IMapper mapper) : base(mapper)
+        {
+        }
+    }
 }

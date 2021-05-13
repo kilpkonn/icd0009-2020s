@@ -22,6 +22,18 @@ namespace PublicApi.DTO.v1.MappingProfiles
             CreateMap<Login, BLL.App.DTO.Identity.Login>().ReverseMap();
             CreateMap<Register, BLL.App.DTO.Identity.Register>().ReverseMap();
             CreateMap<JwtResponse, BLL.App.DTO.Identity.JwtResponse>().ReverseMap();
+            
+            CreateMap<NewCar, BLL.App.DTO.Car>().ReverseMap();
+            CreateMap<NewCarAccess, BLL.App.DTO.CarAccess>().ReverseMap();
+            CreateMap<NewCarAccessType, BLL.App.DTO.CarAccessType>().ReverseMap();
+            CreateMap<NewCarErrorCode, BLL.App.DTO.CarErrorCode>().ReverseMap();
+            CreateMap<NewCarMark, BLL.App.DTO.CarMark>().ReverseMap();
+            CreateMap<NewCarModel, BLL.App.DTO.CarModel>().ReverseMap();
+            CreateMap<NewCarType, BLL.App.DTO.CarType>().ReverseMap();
+            CreateMap<NewGasRefill, BLL.App.DTO.GasRefill>().ReverseMap();
+            CreateMap<NewTrack, BLL.App.DTO.Track>().ReverseMap();
+            CreateMap<NewTrackLocation, BLL.App.DTO.TrackLocation>().ReverseMap();
+
         }
     }
 

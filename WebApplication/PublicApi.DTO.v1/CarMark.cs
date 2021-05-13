@@ -10,4 +10,9 @@ namespace PublicApi.DTO.v1
 
         //public ICollection<CarModel>? CarModels { get; set; }
     }
+    
+    public class NewCarMark
+    {
+        public string? Name { get; set; } = null!;
+    }
 }
