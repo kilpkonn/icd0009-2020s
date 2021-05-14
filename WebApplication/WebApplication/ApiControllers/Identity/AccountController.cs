@@ -19,7 +19,7 @@ namespace WebApplication.ApiControllers.Identity
         private readonly RegisterMapper _registerMapper;
 
         /// <inheritdoc />
-        public AccountController(IAppBll bll, IMapper mapper) 
+        public AccountController(IAppBll bll, IMapper mapper)
         {
             _bll = bll;
             _loginMapper = new LoginMapper(mapper);
@@ -35,7 +35,6 @@ namespace WebApplication.ApiControllers.Identity
         [Consumes("application/json")]
         [ProducesResponseType(typeof(JwtResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(Error), StatusCodes.Status404NotFound)]
-
         [HttpPost]
         public async Task<IActionResult> Login([FromBody] Login dto)
         {
@@ -43,9 +42,9 @@ namespace WebApplication.ApiControllers.Identity
 
             if (res != null)
             {
-                return Ok(res);
+                return Ok(new JwtResponse {Token = res.Token});
             }
-            
+
             return NotFound(new Error("User/Password problem!"));
         }
 
@@ -66,8 +65,9 @@ namespace WebApplication.ApiControllers.Identity
 
             if (res != null)
             {
-                return Ok(res);
+                return Ok(new JwtResponse {Token = res.Token});
             }
+
             return BadRequest(new Error("Error registering! Try some other email"));
         }
     }
