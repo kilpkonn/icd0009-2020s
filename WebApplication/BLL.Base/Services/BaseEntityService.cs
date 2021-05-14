@@ -56,10 +56,9 @@ namespace BLL.Base.Services
             var updatedDalEntity = ServiceRepository.Add(dalEntity);
             var returnBllEntity = Mapper.Map(updatedDalEntity)!;
             
-            _entityCache.Add(entity, dalEntity);
+            _entityCache.Add(returnBllEntity, dalEntity);
             
             return returnBllEntity;
-
         }
 #pragma warning restore 1998
         

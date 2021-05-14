@@ -234,6 +234,11 @@ namespace WebApplication
             using var ctx = serviceScope.ServiceProvider.GetService<AppDbContext>();
             if (ctx != null)
             {
+                // // in case of testing - dont do setup
+                // if (ctx!.Database.ProviderName == "Microsoft.EntityFrameworkCore.InMemory") 
+                //     return;
+
+                
                 if (configuration.GetValue<bool>("AppData:DropDatabase"))
                 {
                     Console.Write("Drop database");

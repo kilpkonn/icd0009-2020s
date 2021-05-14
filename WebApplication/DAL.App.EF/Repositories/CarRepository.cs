@@ -19,6 +19,7 @@ namespace DAL.App.EF.Repositories
         public async Task<IEnumerable<DTO.Car>> GetAccessibleCarsForUser(Guid userId)
         {
             return (await DbContext.CarAccesses
+                .AsNoTracking()
                 .Include(x => x.Car)
                 .ThenInclude(x => x!.CarType)
                 .ThenInclude(x => x!.Name)

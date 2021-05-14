@@ -42,11 +42,10 @@ namespace DAL.App.EF.Repositories
 
         public override async Task<CarErrorCode?> FirstOrDefaultAsync(Guid id, Guid? userId, bool tracking = false)
         {
-            return await CreateQuery(null)
+            return Mapper.Map(await CreateQuery(null)
                 .Include(e => e.Car)
                 .Where(e => e.Car!.AppUserId == userId)
-                .Select(e => Mapper.Map(e)!)
-                .FirstOrDefaultAsync(e => e.Id == id);
+                .FirstOrDefaultAsync(e => e.Id == id));
         }
 
         public override async Task<bool> ExistsAsync(Guid id, Guid? userId)

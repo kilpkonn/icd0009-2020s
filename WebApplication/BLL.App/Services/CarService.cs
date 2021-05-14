@@ -49,6 +49,8 @@ namespace BLL.App.Services
         public override async Task<DTO.Car> UpdateAsync(DTO.Car entity, Guid? userId)
         {
             entity.UpdatedBy = (Guid) userId!;
+            entity.AppUser = null;
+            entity.CarType = null;
             entity.UpdatedAt = DateTime.Now;
             return await base.UpdateAsync(entity, userId);
         }
