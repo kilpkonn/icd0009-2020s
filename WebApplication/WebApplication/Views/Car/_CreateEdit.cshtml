@@ -4,6 +4,6 @@
 <input type="hidden" asp-for="Car!.Id" value="@(Model.Car?.Id ?? Guid.NewGuid())"/>
 <div class="form-group">
     <label asp-for="Car!.CarTypeId" class="control-label"></label>
-    <select asp-for="Car!.CarTypeId" class="form-control" asp-items="Model.CarTypeOptions"></select>
+    <select id="car-type-select" asp-for="Car!.CarTypeId" class="form-control" asp-items="Model.CarTypeOptions"></select>
     <span asp-validation-for="Car!.CarTypeId" class="text-danger"></span>
 </div>

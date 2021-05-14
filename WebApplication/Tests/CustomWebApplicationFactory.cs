@@ -49,11 +49,17 @@ namespace Tests
                             Name = new LangString("TestModel"),
                             CarTypes = new List<CarType>
                             {
-                                new() { Name = new LangString("TestType") }
+                                new() {Name = new LangString("TestType")}
                             }
                         }
                     }
                 });
+                db.CarAccessTypes.Add(new CarAccessType()
+                {
+                    Name = "Owner",
+                    AccessLevel = 100,
+                });
+                db.SaveChanges();
             });
         }
     }
