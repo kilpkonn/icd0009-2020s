@@ -47,7 +47,7 @@ namespace WebApplication.ApiControllers
         /// <returns>Track Locations</returns>
         [Produces("application/json")]
         [Consumes("application/json")]
-        [ProducesResponseType(typeof(IEnumerable<CarAccess>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(IEnumerable<TrackLocation>), StatusCodes.Status200OK)]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TrackLocation>>> GetTrackLocations()
         {
