@@ -37,10 +37,6 @@ namespace DAL.App.EF.Repositories
                 .ThenInclude(x => x!.Translations)
                 .Include(x => x.Car)
                 .ThenInclude(x => x!.AppUser)
-                // .Include(x => x.Car)
-                // .ThenInclude(x => x!.UpdatedBy)
-                // .Include(x => x.Car)
-                // .ThenInclude(x => x!.CreatedBy)
                 .Where(x => x.AppUserId == userId)
                 .Select(x => Mapper.Map(x.Car)!)
                 .ToListAsync())!;
@@ -61,9 +57,15 @@ namespace DAL.App.EF.Repositories
                 .ThenInclude(x => x!.CarMark)
                 .ThenInclude(x => x!.Name)
                 .ThenInclude(x => x!.Translations)
-                .Include(x => x.AppUser);
-                // .Include(x => x.UpdatedBy)
-                // .Include(x => x.CreatedBy);
+                .Include(x => x.AppUser)
+                .Include(x => x.CarErrorCodes)
+                .Include(x => x.CarAccesses)
+                .ThenInclude(x => x.AppUser)
+                .Include(x => x.CarAccesses)
+                .ThenInclude(x => x.CarAccessType)
+                .ThenInclude(x => x!.Name)
+                .ThenInclude(x => x!.Translations);
+
             return Mapper.Map(await query.FirstOrDefaultAsync(e => e.Id.Equals(id)));
         }
     }

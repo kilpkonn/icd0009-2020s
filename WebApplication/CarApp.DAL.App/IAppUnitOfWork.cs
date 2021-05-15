@@ -15,5 +15,6 @@ namespace CarApp.DAL.App
         IGasRefillRepository GasRefills { get; }
         ITrackLocationRepository TrackLocations { get; }
         ITrackRepository Tracks { get; }
+        IUserRepository Users { get; }
     }
 }

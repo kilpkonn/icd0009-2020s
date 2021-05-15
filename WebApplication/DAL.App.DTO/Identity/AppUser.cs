@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Car.DAL.Base.Models;
 using Microsoft.AspNetCore.Identity;
 
 namespace DAL.App.DTO.Identity

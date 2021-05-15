@@ -15,5 +15,6 @@ namespace DAL.App.DTO
         public AppUser? AppUser { get; set; }
         
         public IEnumerable<CarAccess>? CarAccesses { get; set; }
+        public IEnumerable<CarErrorCode>? CarErrorCodes { get; set; }
     }
 }

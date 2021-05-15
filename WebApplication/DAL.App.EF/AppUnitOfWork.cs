@@ -24,5 +24,6 @@ namespace DAL.App.EF
         public IGasRefillRepository GasRefills => GetRepository(() => new GasRefillRepository(UowDbContext, Mapper));
         public ITrackLocationRepository TrackLocations => GetRepository(() => new TrackLocationRepository(UowDbContext, Mapper));
         public ITrackRepository Tracks => GetRepository(() => new TrackRepository(UowDbContext, Mapper));
+        public IUserRepository Users => GetRepository(() => new UserRepository(UowDbContext, Mapper));
     }
 }

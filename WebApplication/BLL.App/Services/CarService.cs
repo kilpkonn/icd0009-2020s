@@ -39,7 +39,9 @@ namespace BLL.App.Services
             {
                 CarId = car.Id,
                 AppUserId = (Guid) userId!,
-                CarAccessTypeId = (await ServiceUow.CarAccessTypes.FindByNameAsync("Owner")).Id
+                CarAccessTypeId = (await ServiceUow.CarAccessTypes.FindByNameAsync("Owner")).Id,
+                CreatedBy = (Guid) userId,
+                UpdatedBy = (Guid) userId
             };
             ServiceUow.CarAccesses.Add(carAccess);
 

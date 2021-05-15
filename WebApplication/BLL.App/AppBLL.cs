@@ -60,5 +60,7 @@ namespace BLL.App
         public IAccountService Accounts =>
             GetService<IAccountService>(() => new AccountService(SignInManager, UserManager,
                 new Logger<AccountService>(LoggerFactory), Configuration));
+
+        public IUserService Users => GetService<IUserService>(() => new UserService(Uow, Mapper));
     }
 }

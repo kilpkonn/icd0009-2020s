@@ -5,7 +5,7 @@ using DAL.Base;
 
 namespace DAL.App.DTO
 {
-    public class CarAccess : DalEntityId, IDalAppUser<AppUser>
+    public class CarAccess : DalEntity, IDalAppUser<AppUser>
     {
         public Guid AppUserId { get; set; }
         public AppUser? AppUser { get; set; }

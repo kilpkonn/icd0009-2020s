@@ -18,6 +18,7 @@ namespace CarApp.BLL.App
         ITrackLocationService TrackLocations { get; }
         
         IAccountService Accounts { get; }
+        IUserService Users { get; }
         
     }
 
