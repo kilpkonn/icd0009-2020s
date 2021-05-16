@@ -75,4 +75,19 @@
     <data name="Roles" xml:space="preserve">
         <value>Roles</value>
     </data>
+    <data name="CreatedBy" xml:space="preserve">
+        <value>Created By</value>
+    </data>
+    <data name="CreatedAt" xml:space="preserve">
+        <value>Created At</value>
+    </data>
+    <data name="UpdatedBy" xml:space="preserve">
+        <value>Updated By</value>
+    </data>
+    <data name="UpdatedAt" xml:space="preserve">
+        <value>Updated At</value>
+    </data>
+    <data name="Save" xml:space="preserve">
+        <value>Save</value>
+    </data>
 </root>

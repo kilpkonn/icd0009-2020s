@@ -230,5 +230,11 @@ namespace Resource.Base {
                 return ResourceManager.GetString("Hello", resourceCulture);
             }
         }
+        
+        public static string Save {
+            get {
+                return ResourceManager.GetString("Save", resourceCulture);
+            }
+        }
     }
 }

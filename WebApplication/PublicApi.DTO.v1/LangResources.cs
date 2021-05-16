@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Resource.Base;
+using Resource.Base.Areas.Identity.Pages.Account;
 using Resources.Views.Shared;
 
 namespace PublicApi.DTO.v1
@@ -10,6 +11,9 @@ namespace PublicApi.DTO.v1
         public Dto Dto { get; set; } = new Dto();
         public ResourcesHelper<Common> Common = new();
         public ResourcesHelper<Resources.Shared> Shared = new();
+        public ResourcesHelper<Login> Login = new();
+        public ResourcesHelper<Register> Register = new();
+        public ResourcesHelper<Logout> Logout = new();
     }
 
     public class Dto

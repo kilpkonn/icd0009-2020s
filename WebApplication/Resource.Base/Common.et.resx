@@ -104,4 +104,7 @@
     <data name="Hello" xml:space="preserve">
         <value>Tere</value>
     </data>
+    <data name="Save" xml:space="preserve">
+        <value>Salvesta</value>
+    </data>
 </root>
