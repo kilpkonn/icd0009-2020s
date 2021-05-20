@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "npx webpack build && rm -rf ../WebApplication/WebApplication/wwwroot/js && cp -r ./dist ../WebApplication/WebApplication/wwwroot/js"
+    "build": "npx webpack build && rm -rf ../WebApplication/wwwroot/js && cp -r ./dist ../WebApplication/wwwroot/js"
   },
   "keywords": [
     "asp",
