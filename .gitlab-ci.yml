@@ -1,5 +1,4 @@
-mage: tmaier/docker-compose:latest
-
+image: tmaier/docker-compose:latest
 build-job:
   only:
     - master
