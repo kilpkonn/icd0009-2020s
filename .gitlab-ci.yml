@@ -5,7 +5,7 @@ build-job:
   stage: build
   script:
     - cd ./WebApplication
-    - docker build . -t webapp
+    - docker build . -t kilpkonn/icd0009-webapp
     - docker login -u "kilpkonn" -p "${CI_DOCKERHUB_TOKEN}"
     - docker push "kilpkonn/icd0009-webapp"
 
