@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL", "DAL\DAL.csproj", "{04C9C27C-0C2E-43F0-9A28-CC1D10ED21AE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApp", "WebApp\WebApp.csproj", "{E331A965-7C49-492E-B3AC-FBAF2FA628CC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{04C9C27C-0C2E-43F0-9A28-CC1D10ED21AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{04C9C27C-0C2E-43F0-9A28-CC1D10ED21AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{04C9C27C-0C2E-43F0-9A28-CC1D10ED21AE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E331A965-7C49-492E-B3AC-FBAF2FA628CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E331A965-7C49-492E-B3AC-FBAF2FA628CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E331A965-7C49-492E-B3AC-FBAF2FA628CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E331A965-7C49-492E-B3AC-FBAF2FA628CC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -11,6 +11,9 @@ namespace Domain
         public Guid SubjectId { get; set; }
         public Subject? Subject { get; set; }
         
+        public Guid? GradeId { get; set; }
+        public Grade? Grade { get; set; }
+        
         public EDeclarationStatus DeclarationStatus { get; set; }
     }
 

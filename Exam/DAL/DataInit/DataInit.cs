@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Domain;
-using Domain.Identity;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+﻿﻿using System;
+ using System.Collections.Generic;
+ using Domain;
+ using Domain.Identity;
+ using Microsoft.AspNetCore.Identity;
+ using Microsoft.EntityFrameworkCore;
 
-namespace DAL.DataInit
+ namespace DAL.DataInit
 {
     public class DataInit
     {
@@ -82,7 +81,7 @@ namespace DAL.DataInit
             };
             ctx.Declarations.Add(declarationSubmitted);
             ctx.Declarations.Add(declarationAccepted);
-           
+            ctx.SaveChanges();
             
             
             var homework1 = new Homework()
@@ -92,16 +91,10 @@ namespace DAL.DataInit
                 Description = "distributed",
                 Submissions = new List<Submission>()
                 {
-                    new Submission()
+                    new()
                     {
                         Value = "Submission1",
-                        Grade = new Grade()
-                        {
-                            AppUser = userManager.FindByEmailAsync("student2@test.com").Result,
-                            GradeType = EGradeType.Submission,
-                            Subject = subject,
-                            Value = 4,
-                        }
+                        AppUser = userManager.FindByEmailAsync("student2@test.com").Result,
                     }
                 }
             };
@@ -115,14 +108,13 @@ namespace DAL.DataInit
             ctx.Homeworks.Add(homework1);
             ctx.Homeworks.Add(homework2);
             
-            var subjectGrade = new Grade()
+            var declarationGrade = new Grade()
             {
-                AppUser = userManager.FindByEmailAsync("student2@test.com").Result,
                 GradeType = EGradeType.Subject,
-                Subject = subject,
+                Declaration = declarationAccepted,
                 Value = 4,
             };
-            ctx.Grades.Add(subjectGrade);
+            ctx.Grades.Add(declarationGrade);
             
             ctx.LecturerSubjects.Add(new LecturerSubject()
             {

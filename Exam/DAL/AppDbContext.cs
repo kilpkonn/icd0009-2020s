@@ -1,15 +1,15 @@
 using System;
+using System.Linq;
 using Domain;
 using Domain.Identity;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace DAL
 {
-    public class AppDbContext : 
-        IdentityDbContext<AppUser, AppRole, Guid, IdentityUserClaim<Guid>, AppUserRole,
-        IdentityUserLogin<Guid>, IdentityRoleClaim<Guid>, IdentityUserToken<Guid>>
+    public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid>
+        // IdentityDbContext<AppUser, AppRole, Guid, IdentityUserClaim<Guid>, AppUserRole, IdentityUserLogin<Guid>, 
+        //     IdentityRoleClaim<Guid>, IdentityUserToken<Guid>>
     {
         public DbSet<Declaration> Declarations { get; set; } = default!;
         public DbSet<Grade> Grades { get; set; } = default!;
@@ -27,6 +27,19 @@ namespace DAL
             : base(options)
         {
            
+        }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+
+            foreach (var relationship in builder.Model.GetEntityTypes()
+                .SelectMany(e => e.GetForeignKeys()))
+            {
+                relationship.DeleteBehavior = DeleteBehavior.Restrict;
+            }
+
+
         }
     }
 }
