@@ -34,6 +34,8 @@ namespace WebApp.Areas.Admin.Controllers
             }
 
             var quiz = await _context.Quizzes
+                .Include(x => x.QuizQuestions)
+                .ThenInclude(x => x.QuizOptions)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (quiz == null)
             {
@@ -225,6 +227,8 @@ namespace WebApp.Areas.Admin.Controllers
             }
 
             var quiz = await _context.Quizzes
+                .Include(x => x.QuizQuestions)
+                .ThenInclude(x => x.QuizOptions)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (quiz == null)
             {
