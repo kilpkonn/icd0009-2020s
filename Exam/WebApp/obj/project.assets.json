@@ -2671,6 +2671,20 @@
           "bin/placeholder/Domain.dll": {}
         }
       },
+      "Extensions/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v5.0",
+        "dependencies": {
+          "Microsoft.IdentityModel.Tokens": "5.6.0",
+          "System.IdentityModel.Tokens.Jwt": "5.6.0"
+        },
+        "compile": {
+          "bin/placeholder/Extensions.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Extensions.dll": {}
+        }
+      },
       "Resource.Base/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v5.0",
@@ -8553,6 +8567,11 @@
       "path": "../Domain/Domain.csproj",
       "msbuildProject": "../Domain/Domain.csproj"
     },
+    "Extensions/1.0.0": {
+      "type": "project",
+      "path": "../Extensions/Extensions.csproj",
+      "msbuildProject": "../Extensions/Extensions.csproj"
+    },
     "Resource.Base/1.0.0": {
       "type": "project",
       "path": "../Resource.Base/Resource.Base.csproj",
@@ -8563,6 +8582,7 @@
     "net5.0": [
       "DAL >= 1.0.0",
       "Domain >= 1.0.0",
+      "Extensions >= 1.0.0",
       "Microsoft.AspNetCore.Authentication.JwtBearer >= 5.0.6",
       "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore >= 5.0.6",
       "Microsoft.AspNetCore.Identity.EntityFrameworkCore >= 5.0.6",
@@ -8605,6 +8625,9 @@
             },
             "/home/tavo/git/icd0009-2020s/Exam/Domain/Domain.csproj": {
               "projectPath": "/home/tavo/git/icd0009-2020s/Exam/Domain/Domain.csproj"
+            },
+            "/home/tavo/git/icd0009-2020s/Exam/Extensions/Extensions.csproj": {
+              "projectPath": "/home/tavo/git/icd0009-2020s/Exam/Extensions/Extensions.csproj"
             },
             "/home/tavo/git/icd0009-2020s/Exam/Resource.Base/Resource.Base.csproj": {
               "projectPath": "/home/tavo/git/icd0009-2020s/Exam/Resource.Base/Resource.Base.csproj"

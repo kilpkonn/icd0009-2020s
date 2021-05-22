@@ -1,0 +1,66 @@
+@model IEnumerable<Domain.Quiz>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Current quizzes</h1>
+<table class="table">
+    <thead>
+    <tr>
+        <th>
+            Quiz
+        </th>
+        <th>
+            Stats
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                <a asp-action="Fill" asp-route-id="@item.Id">@item.Name</a>
+            </td>
+            <td>
+                <table class="table">
+                    <tr>
+                        <td>Users</td>
+                        <td>
+                            @(item.QuizQuestions!.SelectMany(x =>
+                                x.QuizOptions!.SelectMany(a =>
+                                    a.QuizAnswers!.Select(b => b.AppUserId)
+                                    )
+                                ).Distinct()
+                                .Count())
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Avg grade</td>
+                        <td>
+                            @(item.QuizQuestions!.SelectMany(x =>
+                                x.QuizOptions!.SelectMany(a => a.QuizAnswers!))
+                                .Select(x => x.QuizOption!.Score)
+                                .Sum())
+                            /
+                            @(item.QuizQuestions!.SelectMany(x =>
+                                x.QuizOptions!.SelectMany(a =>
+                                    a.QuizAnswers!.Select(b => b.AppUserId)
+                                    )
+                                ).Distinct()
+                                .Count() * item.QuizQuestions!.SelectMany(x => x.QuizOptions!.Select(o => o.Score))
+                                    .Sum())
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Avg options</td>
+                        <td>@(item.QuizQuestions!.Select(x => x.QuizOptions!.Count()).Average())</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

@@ -8,6 +8,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApp", "WebApp\WebApp.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Resource.Base", "Resource.Base\Resource.Base.csproj", "{5671E949-2BF7-49BE-8396-6C543EAEDEA3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Extensions", "Extensions\Extensions.csproj", "{AEFC1D74-EC55-4E8F-947B-D23B23CB4BFC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,9 @@ Global
 		{5671E949-2BF7-49BE-8396-6C543EAEDEA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5671E949-2BF7-49BE-8396-6C543EAEDEA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5671E949-2BF7-49BE-8396-6C543EAEDEA3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AEFC1D74-EC55-4E8F-947B-D23B23CB4BFC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AEFC1D74-EC55-4E8F-947B-D23B23CB4BFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AEFC1D74-EC55-4E8F-947B-D23B23CB4BFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AEFC1D74-EC55-4E8F-947B-D23B23CB4BFC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
