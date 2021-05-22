@@ -15,8 +15,8 @@ namespace Domain
         public Guid SubjectId { get; set; }
         public Subject? Subject { get; set; }
         
-        public Guid? QuizId { get; set; }
-        public Quiz? Quiz { get; set; }
+        // public Guid? QuizId { get; set; }
+        // public Quiz? Quiz { get; set; }
         
         public ICollection<Submission>? Submissions { get; set; }
     }

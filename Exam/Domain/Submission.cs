@@ -10,8 +10,8 @@ namespace Domain
         public Guid HomeworkId { get; set; }
         public Homework? Homework { get; set; }
         
-        public Guid? QuizId { get; set; }
-        public Quiz? Quiz { get; set; }
+        // public Guid? QuizId { get; set; }
+        // public Quiz? Quiz { get; set; }
         
         public Guid? GradeId { get; set; }
         public Grade? Grade { get; set; }
