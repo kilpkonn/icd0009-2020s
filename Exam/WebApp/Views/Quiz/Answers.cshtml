@@ -1,0 +1,47 @@
+@model Domain.Quiz
+
+@{
+    ViewData["Title"] = "Quiz";
+}
+
+<h4>@Model.Name</h4>
+<hr/>
+<div class="m-4">
+    @Model.Description
+</div>
+<hr>
+
+<div>
+    @foreach (var question in Model.QuizQuestions!)
+    {
+        <div class="form-group">
+            <b class="control-label">@question.Text</b>
+            <table class="table">
+                <thead>
+                <tr>
+                    <td>Optiob</td>
+                    <td>Answers</td>
+                    <td>Score</td>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var option in question.QuizOptions!)
+                {
+                    <tr>
+                        <td>@option.Text</td>
+                        <td>@option.QuizAnswers!.Count</td>
+                        <td>@option.Score</td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    }
+    <div class="form-group">
+        <input type="submit" value="Submit" class="btn btn-primary"/>
+    </div>
+
+</div>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

@@ -21,7 +21,8 @@
     {
         <tr>
             <td>
-                <a asp-action="Fill" asp-route-id="@item.Id">@item.Name</a>
+                <a asp-action="Fill" asp-route-id="@item.Id">@item.Name</a> |
+                <a asp-action="Answers" asp-route-id="@item.Id">Answers</a>
             </td>
             <td>
                 <table class="table">

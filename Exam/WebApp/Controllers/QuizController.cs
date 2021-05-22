@@ -73,5 +73,20 @@ namespace WebApp.Controllers
 
             return RedirectToAction("Index");
         }
+        
+        
+        public async Task<IActionResult> Answers(Guid? id)
+        {
+            if (id == null)
+            {
+                return RedirectToAction("Index");
+            }
+
+            return View(await _context.Quizzes
+                .Include(x => x.QuizQuestions)
+                .ThenInclude(x => x.QuizOptions)
+                .ThenInclude(x => x.QuizAnswers)
+                .FirstOrDefaultAsync(x => x.Id == id));
+        }
     }
 }
