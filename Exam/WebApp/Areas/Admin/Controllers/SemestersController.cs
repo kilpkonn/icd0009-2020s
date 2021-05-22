@@ -11,24 +11,40 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp.Areas.Admin.Controllers
 {
+    /// <summary>
+    /// 
+    /// </summary>
     [Area("Admin")]
     [Authorize(Roles = "Admin")]
     public class SemestersController : Controller
     {
         private readonly AppDbContext _context;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="context"></param>
         public SemestersController(AppDbContext context)
         {
             _context = context;
         }
 
         // GET: Admin/Semesters
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> Index()
         {
             return View(await _context.Semesters.ToListAsync());
         }
 
         // GET: Admin/Semesters/Details/5
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null)
@@ -47,6 +63,10 @@ namespace WebApp.Areas.Admin.Controllers
         }
 
         // GET: Admin/Semesters/Create
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public IActionResult Create()
         {
             return View();
@@ -55,6 +75,11 @@ namespace WebApp.Areas.Admin.Controllers
         // POST: Admin/Semesters/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="semester"></param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Name,StartDate,EndDate,Id")] Semester semester)
@@ -70,6 +95,11 @@ namespace WebApp.Areas.Admin.Controllers
         }
 
         // GET: Admin/Semesters/Edit/5
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null)
@@ -88,6 +118,12 @@ namespace WebApp.Areas.Admin.Controllers
         // POST: Admin/Semesters/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="semester"></param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, [Bind("Name,StartDate,EndDate,Id")] Semester semester)
@@ -121,6 +157,11 @@ namespace WebApp.Areas.Admin.Controllers
         }
 
         // GET: Admin/Semesters/Delete/5
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null)
@@ -139,6 +180,11 @@ namespace WebApp.Areas.Admin.Controllers
         }
 
         // POST: Admin/Semesters/Delete/5
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)

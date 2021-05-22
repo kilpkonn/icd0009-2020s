@@ -10,6 +10,7 @@ using WebApp.Areas.Admin.Models;
 
 namespace WebApp.Areas.Admin.Controllers
 {
+    /// <inheritdoc />
     [Area("Admin")]
     [Authorize(Roles = "Admin")]
 
@@ -17,18 +18,28 @@ namespace WebApp.Areas.Admin.Controllers
     {
         private readonly AppDbContext _context;
 
+        /// <inheritdoc />
         public QuizzesController(AppDbContext context)
         {
             _context = context;
         }
 
         // GET: Admin/Quizzes
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> Index()
         {
             return View(await _context.Quizzes.ToListAsync());
         }
 
         // GET: Admin/Quizzes/Details/5
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null)
@@ -49,6 +60,10 @@ namespace WebApp.Areas.Admin.Controllers
         }
 
         // GET: Admin/Quizzes/Create
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public IActionResult Create()
         {
             return View(new QuizViewModel()
@@ -60,6 +75,11 @@ namespace WebApp.Areas.Admin.Controllers
         // POST: Admin/Quizzes/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="vm"></param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(QuizViewModel vm)
@@ -77,6 +97,11 @@ namespace WebApp.Areas.Admin.Controllers
             return View(new QuizViewModel() {Quiz = quiz});
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="vm"></param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateQuestion(QuizViewModel vm)
@@ -98,6 +123,11 @@ namespace WebApp.Areas.Admin.Controllers
             return View("Edit", new QuizViewModel() {Quiz = quiz});
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="vm"></param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteQuestion(QuizViewModel vm)
@@ -118,6 +148,11 @@ namespace WebApp.Areas.Admin.Controllers
             return View("Edit", new QuizViewModel() {Quiz = quiz});
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="vm"></param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateQuestionOption(QuizViewModel vm)
@@ -138,6 +173,11 @@ namespace WebApp.Areas.Admin.Controllers
             return View("Edit", new QuizViewModel() {Quiz = quiz});
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="vm"></param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteQuestionOption(QuizViewModel vm)
@@ -159,6 +199,11 @@ namespace WebApp.Areas.Admin.Controllers
         }
 
         // GET: Admin/Quizzes/Edit/5
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null)
@@ -186,6 +231,12 @@ namespace WebApp.Areas.Admin.Controllers
         // POST: Admin/Quizzes/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="vm"></param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, QuizViewModel vm)
@@ -222,6 +273,11 @@ namespace WebApp.Areas.Admin.Controllers
         }
 
         // GET: Admin/Quizzes/Delete/5
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null)
@@ -242,6 +298,11 @@ namespace WebApp.Areas.Admin.Controllers
         }
 
         // POST: Admin/Quizzes/Delete/5
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)

@@ -10,6 +10,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Resource.Base", "Resource.B
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Extensions", "Extensions\Extensions.csproj", "{AEFC1D74-EC55-4E8F-947B-D23B23CB4BFC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PublicApi.DTO", "PublicApi.DTO\PublicApi.DTO.csproj", "{0AC2D0DB-450A-48AF-AAD6-96EB4200BAE6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,5 +38,9 @@ Global
 		{AEFC1D74-EC55-4E8F-947B-D23B23CB4BFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AEFC1D74-EC55-4E8F-947B-D23B23CB4BFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AEFC1D74-EC55-4E8F-947B-D23B23CB4BFC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0AC2D0DB-450A-48AF-AAD6-96EB4200BAE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0AC2D0DB-450A-48AF-AAD6-96EB4200BAE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0AC2D0DB-450A-48AF-AAD6-96EB4200BAE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0AC2D0DB-450A-48AF-AAD6-96EB4200BAE6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

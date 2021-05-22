@@ -11,15 +11,26 @@ using WebApp.Models;
 
 namespace WebApp.Controllers
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class QuizController : Controller
     {
         private readonly AppDbContext _context;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="context"></param>
         public QuizController(AppDbContext context)
         {
             _context = context;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> Index()
         {
             return View(await _context.Quizzes
@@ -29,6 +40,11 @@ namespace WebApp.Controllers
                 .ToListAsync());
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<IActionResult> Fill(Guid? id)
         {
             if (id == null)
@@ -52,6 +68,11 @@ namespace WebApp.Controllers
         }
         
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="vm"></param>
+        /// <returns></returns>
         public async Task<IActionResult> PostFill(QuizViewModel vm)
         {
             if (ModelState.IsValid)
@@ -75,6 +96,11 @@ namespace WebApp.Controllers
         }
         
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<IActionResult> Answers(Guid? id)
         {
             if (id == null)
