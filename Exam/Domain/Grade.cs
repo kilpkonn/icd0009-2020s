@@ -22,6 +22,6 @@ namespace Domain
 
     public enum EGradeType
     {
-        
+        Subject, Submission
     }
 }

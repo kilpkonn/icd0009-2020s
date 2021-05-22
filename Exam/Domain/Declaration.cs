@@ -16,6 +16,6 @@ namespace Domain
 
     public enum EDeclarationStatus
     {
-        
+        Accepted, Rejected, Cancelled, Pending
     }
 }
