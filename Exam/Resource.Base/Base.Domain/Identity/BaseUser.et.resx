@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<root>
+    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <xsd:element name="root" msdata:IsDataSet="true">
+            
+        </xsd:element>
+    </xsd:schema>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="UserName" xml:space="preserve">
+        <value>Kasutaja nimi</value>
+    </data>
+    <data name="NormalizedUserName" xml:space="preserve">
+        <value>Normaliseeritud kasutaja nimi</value>
+    </data>
+    <data name="Email" xml:space="preserve">
+        <value>E-mail</value>
+    </data>
+    <data name="NormalizedEmail" xml:space="preserve">
+        <value>Normaliseeritud E-mail</value>
+    </data>
+    <data name="EmailConfirmed" xml:space="preserve">
+        <value>Email kinnitatud</value>
+    </data>
+    <data name="PasswordHash" xml:space="preserve">
+        <value>Salasõna räsi</value>
+    </data>
+    <data name="SecurityStamp" xml:space="preserve">
+        <value>Turvalisuse märk</value>
+    </data>
+    <data name="ConcurrencyStamp" xml:space="preserve">
+        <value>Kronoloogilisuse märk</value>
+    </data>
+    <data name="PhoneNumber" xml:space="preserve">
+        <value>Telefoni nr</value>
+    </data>
+    <data name="PhoneNumberConfirmed" xml:space="preserve">
+        <value>Telefon kinnitatud</value>
+    </data>
+    <data name="TwoFactorEnabled" xml:space="preserve">
+        <value>2FA lubatud</value>
+    </data>
+    <data name="LockoutEnd" xml:space="preserve">
+        <value>Lukustuse lõpp</value>
+    </data>
+    <data name="LockoutEnabled" xml:space="preserve">
+        <value>Lukustus aktiivne</value>
+    </data>
+    <data name="AccessFailedCount" xml:space="preserve">
+        <value>Ebaõnnestunud sisse logimiste arv</value>
+    </data>
+</root>

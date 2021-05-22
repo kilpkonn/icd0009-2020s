@@ -1,0 +1,18 @@
+@using Resource.Base.Areas.Admin.Pages
+@model WebApp.Areas.Admin.Models.UserViewModel
+
+@{
+    ViewData["Title"] = Users.Details;
+}
+
+<h1>@Users.Details</h1>
+
+<div>
+    <h4>@Users.AppUser</h4>
+    <hr />
+    <partial name="_Details" model="Model"/>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.User!.Id">@Users.Edit</a> |
+    <a asp-action="Index">@Users.Back</a>
+</div>

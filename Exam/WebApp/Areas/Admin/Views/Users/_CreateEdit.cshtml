@@ -1,0 +1,69 @@
+@model WebApp.Areas.Admin.Models.UserViewModel;
+
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<input type="hidden" asp-for="User!.Id" value="@(Model.User?.Id ?? Guid.NewGuid())"/>
+<div class="form-group">
+    <label asp-for="User!.UserName" class="control-label"></label>
+    <input asp-for="User!.UserName" class="form-control"/>
+    <span asp-validation-for="User!.UserName" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="User!.NormalizedUserName" class="control-label"></label>
+    <input asp-for="User!.NormalizedUserName" class="form-control"/>
+    <span asp-validation-for="User!.NormalizedUserName" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="User!.Email" class="control-label"></label>
+    <input asp-for="User!.Email" class="form-control"/>
+    <span asp-validation-for="User!.Email" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="User!.NormalizedEmail" class="control-label"></label>
+    <input asp-for="User!.NormalizedEmail" class="form-control"/>
+    <span asp-validation-for="User!.NormalizedEmail" class="text-danger"></span>
+</div>
+<div class="form-group form-check">
+    <label class="form-check-label">
+        <input class="form-check-input" asp-for="User!.EmailConfirmed"/> @Html.DisplayNameFor(model => model.User!.EmailConfirmed)
+    </label>
+</div>
+<div class="form-group">
+    <label asp-for="User!.PasswordHash" class="control-label"></label>
+    <input asp-for="User!.PasswordHash" class="form-control"/>
+    <span asp-validation-for="User!.PasswordHash" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="User!.PhoneNumber" class="control-label"></label>
+    <input asp-for="User!.PhoneNumber" class="form-control"/>
+    <span asp-validation-for="User!.PhoneNumber" class="text-danger"></span>
+</div>
+<div class="form-group form-check">
+    <label class="form-check-label">
+        <input class="form-check-input" asp-for="User!.PhoneNumberConfirmed"/> @Html.DisplayNameFor(model => model.User!.PhoneNumberConfirmed)
+    </label>
+</div>
+<div class="form-group form-check">
+    <label class="form-check-label">
+        <input class="form-check-input" asp-for="User!.TwoFactorEnabled"/> @Html.DisplayNameFor(model => model.User!.TwoFactorEnabled)
+    </label>
+</div>
+<div class="form-group">
+    <label asp-for="User!.LockoutEnd" class="control-label"></label>
+    <input asp-for="User!.LockoutEnd" class="form-control"/>
+    <span asp-validation-for="User!.LockoutEnd" class="text-danger"></span>
+</div>
+<div class="form-group form-check">
+    <label class="form-check-label">
+        <input class="form-check-input" asp-for="User!.LockoutEnabled"/> @Html.DisplayNameFor(model => model.User!.LockoutEnabled)
+    </label>
+</div>
+<div class="form-group">
+    <label asp-for="User!.AccessFailedCount" class="control-label"></label>
+    <input asp-for="User!.AccessFailedCount" class="form-control" value="0"/>
+    <span asp-validation-for="User!.AccessFailedCount" class="text-danger"></span>
+</div>
+<div class="form-group">
+    @Html.ListBoxFor(m => m.SelectedRoles,
+        new MultiSelectList(Model.Roles, "Name", "Name", Model.SelectedRoles),
+        new {@class = "form-control"})
+</div>

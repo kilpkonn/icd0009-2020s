@@ -2076,6 +2076,16 @@
         "runtime": {
           "bin/placeholder/Domain.dll": {}
         }
+      },
+      "Resource.Base/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v5.0",
+        "compile": {
+          "bin/placeholder/Resource.Base.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Resource.Base.dll": {}
+        }
       }
     }
   },
@@ -6819,6 +6829,11 @@
       "type": "project",
       "path": "../Domain/Domain.csproj",
       "msbuildProject": "../Domain/Domain.csproj"
+    },
+    "Resource.Base/1.0.0": {
+      "type": "project",
+      "path": "../Resource.Base/Resource.Base.csproj",
+      "msbuildProject": "../Resource.Base/Resource.Base.csproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -6832,6 +6847,7 @@
       "Microsoft.EntityFrameworkCore.SqlServer >= 5.0.6",
       "Microsoft.EntityFrameworkCore.Sqlite >= 5.0.6",
       "Microsoft.EntityFrameworkCore.Tools >= 5.0.6",
+      "Resource.Base >= 1.0.0",
       "Swashbuckle.AspNetCore.SwaggerGen >= 6.1.4"
     ]
   },
@@ -6865,6 +6881,9 @@
             },
             "/home/tavo/git/icd0009-2020s/Exam/Domain/Domain.csproj": {
               "projectPath": "/home/tavo/git/icd0009-2020s/Exam/Domain/Domain.csproj"
+            },
+            "/home/tavo/git/icd0009-2020s/Exam/Resource.Base/Resource.Base.csproj": {
+              "projectPath": "/home/tavo/git/icd0009-2020s/Exam/Resource.Base/Resource.Base.csproj"
             }
           }
         }
