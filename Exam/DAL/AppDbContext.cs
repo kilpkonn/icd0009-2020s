@@ -39,7 +39,16 @@ namespace DAL
                 relationship.DeleteBehavior = DeleteBehavior.Restrict;
             }
 
-
+            builder.Entity<QuizQuestion>()
+                .HasMany(x => x.QuizOptions)
+                .WithOne(x => x.QuizQuestion!)
+                .OnDelete(DeleteBehavior.Cascade);
+            
+            builder.Entity<Quiz>()
+                .HasMany(x => x.QuizQuestions)
+                .WithOne(x => x.Quiz!)
+                .OnDelete(DeleteBehavior.Cascade);
         }
+        
     }
 }

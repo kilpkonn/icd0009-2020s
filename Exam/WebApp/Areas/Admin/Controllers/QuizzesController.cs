@@ -71,7 +71,7 @@ namespace WebApp.Areas.Admin.Controllers
 
             return View(new QuizViewModel() {Quiz = quiz});
         }
-        
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateQuestion(QuizViewModel vm)
@@ -85,7 +85,72 @@ namespace WebApp.Areas.Admin.Controllers
                 await _context.SaveChangesAsync();
             }
 
-            return View("Edit", new QuizViewModel() {Quiz = _context.Quizzes.Find(vm.Quiz!.Id)});
+            var quiz = await _context.Quizzes
+                .Include(x => x.QuizQuestions)
+                .ThenInclude(x => x.QuizOptions)
+                .FirstAsync(x => x.Id == vm.Quiz!.Id);
+
+            return View("Edit", new QuizViewModel() {Quiz = quiz});
+        }
+        
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteQuestion(QuizViewModel vm)
+        {
+            var question = vm.QuizQuestion;
+            if (ModelState.IsValid && question != null)
+            {
+                var tmp = _context.QuizQuestions.Find(question.Id)!;
+                _context.Remove(question);
+                await _context.SaveChangesAsync();
+            }
+
+            var quiz = await _context.Quizzes
+                .Include(x => x.QuizQuestions)
+                .ThenInclude(x => x.QuizOptions)
+                .FirstAsync(x => x.Id == vm.Quiz!.Id);
+
+            return View("Edit", new QuizViewModel() {Quiz = quiz});
+        }
+        
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateQuestionOption(QuizViewModel vm)
+        {
+            var option = vm.QuizOption;
+            if (ModelState.IsValid && option != null)
+            {
+                option.Id = Guid.NewGuid();
+                _context.Add(option);
+                await _context.SaveChangesAsync();
+            }
+
+            var quiz = await _context.Quizzes
+                .Include(x => x.QuizQuestions)
+                .ThenInclude(x => x.QuizOptions)
+                .FirstAsync(x => x.Id == vm.Quiz!.Id);
+
+            return View("Edit", new QuizViewModel() {Quiz = quiz});
+        }
+        
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteQuestionOption(QuizViewModel vm)
+        {
+            var option = vm.QuizOption;
+            if (ModelState.IsValid && option != null)
+            {
+                var tmp = _context.QuizOptions.Find(option.Id)!;
+                _context.QuizOptions.Remove(tmp);
+                await _context.SaveChangesAsync();
+            }
+
+            var quiz = await _context.Quizzes
+                .Include(x => x.QuizQuestions)
+                .ThenInclude(x => x.QuizOptions)
+                .FirstAsync(x => x.Id == vm.Quiz!.Id);
+
+            return View("Edit", new QuizViewModel() {Quiz = quiz});
         }
 
         // GET: Admin/Quizzes/Edit/5
@@ -98,6 +163,7 @@ namespace WebApp.Areas.Admin.Controllers
 
             var quiz = await _context.Quizzes
                 .Include(x => x.QuizQuestions)
+                .ThenInclude(x => x.QuizOptions)
                 .FirstAsync(x => x.Id == id);
             if (quiz == null)
             {
@@ -120,7 +186,7 @@ namespace WebApp.Areas.Admin.Controllers
         public async Task<IActionResult> Edit(Guid id, QuizViewModel vm)
         {
             var quiz = vm.Quiz;
-            if (id != quiz.Id)
+            if (id != quiz?.Id)
             {
                 return NotFound();
             }

@@ -586,7 +586,7 @@ namespace DAL.Migrations
                     b.HasOne("Domain.QuizQuestion", "QuizQuestion")
                         .WithMany("QuizOptions")
                         .HasForeignKey("QuizQuestionId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("QuizQuestion");
@@ -597,7 +597,7 @@ namespace DAL.Migrations
                     b.HasOne("Domain.Quiz", "Quiz")
                         .WithMany("QuizQuestions")
                         .HasForeignKey("QuizId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Quiz");

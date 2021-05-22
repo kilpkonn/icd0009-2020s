@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Domain;
 
 namespace WebApp.Areas.Admin.Models
@@ -7,5 +6,7 @@ namespace WebApp.Areas.Admin.Models
     {
         public Quiz? Quiz { get; set; }
         public QuizQuestion? QuizQuestion { get; set; }
+        
+        public QuizOption? QuizOption { get; set; }
     }
 }

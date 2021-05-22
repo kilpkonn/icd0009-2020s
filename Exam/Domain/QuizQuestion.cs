@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Domain
 {
     public class QuizQuestion: DomainEntityId
     {
+        [Display(Name = "Question")]
         public string Text { get; set; } = default!;
         
         public Guid QuizId { get; set; }

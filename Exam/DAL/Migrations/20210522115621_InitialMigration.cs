@@ -222,7 +222,7 @@ namespace DAL.Migrations
                         column: x => x.QuizId,
                         principalTable: "Quizzes",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -314,7 +314,7 @@ namespace DAL.Migrations
                         column: x => x.QuizQuestionId,
                         principalTable: "QuizQuestions",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
