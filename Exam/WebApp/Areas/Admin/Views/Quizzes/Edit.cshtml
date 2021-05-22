@@ -1,0 +1,44 @@
+@model WebApp.Areas.Admin.Models.QuizViewModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Quiz</h4>
+<hr/>
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <partial name="_CreateEdit" model="Model"/>
+
+            <input type="hidden" asp-for="Quiz!.Id"/>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary"/>
+            </div>
+        </form>
+        
+        <form asp-action="CreateQuestion">
+            <div class="form-group">
+                <label asp-for="QuizQuestion!.Text" class="control-label"></label>
+                <input asp-for="QuizQuestion!.Text" class="form-control"/>
+                <span asp-validation-for="QuizQuestion!.Text" class="text-danger"></span>
+            </div>
+            
+            <input type="hidden" asp-for="Quiz!.Id"/>
+            <input type="hidden" asp-for="Quiz!.Name"/>
+            <input type="hidden" asp-for="Quiz!.Description"/>
+
+            <div class="form-group">
+                <input type="submit" value="Add Question" class="btn btn-primary"/>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

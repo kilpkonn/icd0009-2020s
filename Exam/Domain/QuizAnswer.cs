@@ -11,7 +11,7 @@ namespace Domain
         // public Guid SubmissionId { get; set; }
         // public Submission? Submission { get; set; }
         
-        public Guid AppUserId { get; set; }
+        public Guid? AppUserId { get; set; }
         public AppUser? AppUser { get; set; }
     }
 }

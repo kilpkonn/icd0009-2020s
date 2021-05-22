@@ -9,8 +9,8 @@ namespace Domain
         
         public Guid QuizId { get; set; }
         public Quiz? Quiz { get; set; }
-        
-        public ICollection<QuizOption>? QuizOptions { get; set; }
+
+        public ICollection<QuizOption>? QuizOptions { get; set; } = new List<QuizOption>();
 
     }
 }

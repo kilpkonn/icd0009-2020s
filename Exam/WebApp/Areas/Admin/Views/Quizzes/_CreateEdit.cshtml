@@ -1,0 +1,13 @@
+@model WebApp.Areas.Admin.Models.QuizViewModel
+
+<div class="form-group">
+    <label asp-for="Quiz!.Name" class="control-label"></label>
+    <input asp-for="Quiz!.Name" class="form-control"/>
+    <span asp-validation-for="Quiz!.Name" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="Quiz!.Description" class="control-label"></label>
+    <input asp-for="Quiz!.Description" class="form-control"/>
+    <span asp-validation-for="Quiz!.Description" class="text-danger"></span>
+</div>
+
