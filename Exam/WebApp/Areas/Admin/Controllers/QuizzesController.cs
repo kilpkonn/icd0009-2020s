@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using DAL;
 using Domain;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApp.Areas.Admin.Models;
@@ -10,6 +11,8 @@ using WebApp.Areas.Admin.Models;
 namespace WebApp.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "Admin")]
+
     public class QuizzesController : Controller
     {
         private readonly AppDbContext _context;
