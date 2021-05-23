@@ -38,9 +38,11 @@ namespace WebApp.ApiControllers
         /// <returns></returns>
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<PublicApi.DTO.Subject>), StatusCodes.Status200OK)]
-        public async Task<ActionResult<IEnumerable<Subject>>> GetSubjects()
+        public async Task<ActionResult<IEnumerable<Subject>>> GetSubjects(Guid? semesterId = null)
         {
-            return await _context.Subjects.ToListAsync();
+            return await _context.Subjects
+                .Where(x => semesterId == null || x.SemesterId == semesterId)
+                .ToListAsync();
         }
 
         // GET: api/Subjects/5
@@ -52,11 +54,14 @@ namespace WebApp.ApiControllers
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(PublicApi.DTO.Subject), StatusCodes.Status200OK)]
 
-        public async Task<ActionResult<Subject>> GetSubject(Guid id)
+        public async Task<ActionResult<PublicApi.DTO.Subject>> GetSubject(Guid id)
         {
             var subject = await _context.Subjects
                 .Include(x => x.Homeworks)
+                .ThenInclude(x => x.Submissions)
+                .ThenInclude(x => x.Grade)
                 .Include(x => x.Declarations)
+                .ThenInclude(x => x.Grade)
                 .FirstOrDefaultAsync(x => x.Id ==id);
 
             if (subject == null)
@@ -64,7 +69,40 @@ namespace WebApp.ApiControllers
                 return NotFound();
             }
 
-            return subject;
+            return new PublicApi.DTO.Subject()
+            {
+                Id = subject.Id,
+                Title = subject.Title,
+                Description = subject.Description,
+                Declarations = subject.Declarations!.Select(x => new PublicApi.DTO.Declaration()
+                {
+                    Id = x.Id,
+                    SubjectId = x.SubjectId,
+                    AppUserId = x.AppUserId,
+                    Grade = x.Grade != null ? new PublicApi.DTO.Grade()
+                    {
+                        GradeType = x.Grade!.GradeType,
+                    } : null,
+                    DeclarationStatus = x.DeclarationStatus,
+                }).ToList(),
+                Homeworks = subject.Homeworks!.Select(x => new PublicApi.DTO.Homework()
+                {
+                    Id = x.Id,
+                    Title = x.Title,
+                    Description = x.Description,
+                    SubjectId = x.SubjectId,
+                    Submissions = x.Submissions!.Select(s => new PublicApi.DTO.Submission()
+                    {
+                        Id = s.Id,
+                        HomeworkId = s.HomeworkId,
+                        GradeId = s.GradeId,
+                        Grade = s.Grade != null ? new PublicApi.DTO.Grade()
+                        {
+                            Value = s.Grade!.Value
+                        } : null,
+                    }).ToList()
+                }).ToList()
+            };
         }
 
         // PUT: api/Subjects/5
@@ -85,12 +123,9 @@ namespace WebApp.ApiControllers
                 return BadRequest();
             }
 
-            Subject entity = new()
-            {
-                Id = subject.Id,
-                Title = subject.Title,
-                Description = subject.Description,
-            };
+            Subject entity = _context.Subjects.Find(subject.Id);
+            entity.Title = subject.Title;
+            entity.Description = subject.Description;
 
             _context.Entry(entity).State = EntityState.Modified;
 
