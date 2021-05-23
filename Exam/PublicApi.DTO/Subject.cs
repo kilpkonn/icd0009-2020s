@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Domain;
 
@@ -8,6 +9,8 @@ namespace PublicApi.DTO
         public string Title { get; set; } = default!;
         
         public string Description { get; set; } = default!;
+        
+        public Guid SemesterId { get; set; }
 
         public ICollection<Declaration>? Declarations { get; set; }
         
@@ -19,5 +22,8 @@ namespace PublicApi.DTO
         public string Title { get; set; } = default!;
         
         public string Description { get; set; } = default!;
+        
+        public Guid SemesterId { get; set; }
+
     }
 }

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using DAL;
 using Domain;
+using Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 
@@ -160,13 +161,27 @@ namespace WebApp.ApiControllers
 
         public async Task<ActionResult<Subject>> PostSubject(PublicApi.DTO.NewSubject subject)
         {
+            if (_context.Subjects.Where(x => x.SemesterId == subject.SemesterId)
+                .FirstOrDefault(x => x.Title == subject.Title) != null)
+            {
+                return BadRequest();
+            }
+            
             Subject entity = new()
             {
-                Id = subject.Id,
+                Id = new Guid(),
                 Title = subject.Title,
                 Description = subject.Description,
+                SemesterId = subject.SemesterId
             };
+
             _context.Subjects.Add(entity);
+            _context.LecturerSubjects.Add(new LecturerSubject()
+            {
+                AppUserId = (Guid) User.GetUserId()!,
+                Subject = entity,
+            });
+
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetSubject", new { id = entity.Id }, subject);
