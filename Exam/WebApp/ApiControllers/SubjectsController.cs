@@ -73,6 +73,7 @@ namespace WebApp.ApiControllers
             return new PublicApi.DTO.Subject()
             {
                 Id = subject.Id,
+                SemesterId = subject.SemesterId,
                 Title = subject.Title,
                 Description = subject.Description,
                 Declarations = subject.Declarations!.Select(x => new PublicApi.DTO.Declaration()
@@ -80,6 +81,7 @@ namespace WebApp.ApiControllers
                     Id = x.Id,
                     SubjectId = x.SubjectId,
                     AppUserId = x.AppUserId,
+                    GradeId = x.GradeId,
                     Grade = x.Grade != null ? new PublicApi.DTO.Grade()
                     {
                         GradeType = x.Grade!.GradeType,

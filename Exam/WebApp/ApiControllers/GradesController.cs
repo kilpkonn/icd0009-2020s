@@ -130,7 +130,7 @@ namespace WebApp.ApiControllers
             _context.Grades.Add(entity);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetGrade", new { id = entity.Id }, grade);
+            return CreatedAtAction("GetGrade", new { id = entity.Id }, entity);
         }
 
         // DELETE: api/Grades/5

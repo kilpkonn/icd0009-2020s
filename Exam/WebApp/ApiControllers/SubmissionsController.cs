@@ -52,16 +52,30 @@ namespace WebApp.ApiControllers
         /// <returns></returns>
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(PublicApi.DTO.Submission), StatusCodes.Status200OK)]
-        public async Task<ActionResult<Submission>> GetSubmission(Guid id)
+        public async Task<ActionResult<PublicApi.DTO.Submission>> GetSubmission(Guid id)
         {
-            var submission = await _context.Submissions.FindAsync(id);
+            var submission = await _context.Submissions
+                .Include(x => x.Grade)
+                .FirstOrDefaultAsync(x => x.Id == id);
 
             if (submission == null)
             {
                 return NotFound();
             }
 
-            return submission;
+            return new PublicApi.DTO.Submission()
+            {
+                Id = submission.Id,
+                HomeworkId = submission.HomeworkId,
+                AppUserId = submission.AppUserId,
+                Grade = submission.Grade != null ? new PublicApi.DTO.Grade()
+                {
+                    Id = submission.Grade.Id,
+                    Value = submission.Grade.Value,
+                    GradeType = submission.Grade.GradeType
+                } : null,
+                Value = submission.Value,
+            };
         }
 
         // PUT: api/Submissions/5
