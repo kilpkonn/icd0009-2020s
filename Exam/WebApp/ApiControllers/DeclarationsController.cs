@@ -2,18 +2,21 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DAL;
+using Extensions;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using DAL;
-using Domain;
-using Microsoft.AspNetCore.Authorization;
+using PublicApi.DTO;
+using Declaration = Domain.Declaration;
 
 namespace WebApp.ApiControllers
 {
     /// <inheritdoc />
     [Route("api/v{version:apiVersion}/[controller]")]
-    [Authorize]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [ApiController]
     public class DeclarationsController : ControllerBase
     {
@@ -34,6 +37,8 @@ namespace WebApp.ApiControllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
+        [ProducesResponseType(typeof(IEnumerable<PublicApi.DTO.Declaration>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<IEnumerable<Declaration>>> GetDeclarations()
         {
             return await _context.Declarations.ToListAsync();
@@ -46,6 +51,8 @@ namespace WebApp.ApiControllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
+        [ProducesResponseType(typeof(PublicApi.DTO.Declaration), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<Declaration>> GetDeclaration(Guid id)
         {
             var declaration = await _context.Declarations.FindAsync(id);
@@ -67,14 +74,24 @@ namespace WebApp.ApiControllers
         /// <param name="declaration"></param>
         /// <returns></returns>
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutDeclaration(Guid id, Declaration declaration)
+        [ProducesResponseType(typeof(PublicApi.DTO.Declaration), StatusCodes.Status200OK)]
+        public async Task<IActionResult> PutDeclaration(Guid id, PublicApi.DTO.NewDeclaration declaration)
         {
             if (id != declaration.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(declaration).State = EntityState.Modified;
+            Declaration entity = new()
+            {
+                Id = declaration.Id,
+                AppUserId = (Guid) User.GetUserId()!,
+                GradeId = declaration.GradeId,
+                DeclarationStatus = declaration.DeclarationStatus,
+                SubjectId = declaration.SubjectId,
+            };
+
+            _context.Entry(entity).State = EntityState.Modified;
 
             try
             {
@@ -103,12 +120,21 @@ namespace WebApp.ApiControllers
         /// <param name="declaration"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<ActionResult<Declaration>> PostDeclaration(Declaration declaration)
+        [ProducesResponseType(typeof(PublicApi.DTO.Declaration), StatusCodes.Status200OK)]
+        public async Task<ActionResult<Declaration>> PostDeclaration(NewDeclaration declaration)
         {
-            _context.Declarations.Add(declaration);
+            Declaration entity = new()
+            {
+                AppUserId = (Guid) User.GetUserId()!,
+                DeclarationStatus = declaration.DeclarationStatus,
+                GradeId = declaration.GradeId,
+                SubjectId = declaration.SubjectId,
+            };
+
+            _context.Declarations.Add(entity);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetDeclaration", new { id = declaration.Id }, declaration);
+            return CreatedAtAction("GetDeclaration", new {id = declaration.Id}, declaration);
         }
 
         // DELETE: api/Declarations/5

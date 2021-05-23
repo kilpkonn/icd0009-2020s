@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using DAL;
 using Domain;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp.ApiControllers
@@ -15,7 +16,7 @@ namespace WebApp.ApiControllers
     /// 
     /// </summary>
     [Route("api/v{version:apiVersion}/[controller]")]
-    [Authorize]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [ApiController]
     public class SubjectsController : ControllerBase
     {
@@ -36,6 +37,7 @@ namespace WebApp.ApiControllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
+        [ProducesResponseType(typeof(IEnumerable<PublicApi.DTO.Subject>), StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<Subject>>> GetSubjects()
         {
             return await _context.Subjects.ToListAsync();
@@ -48,9 +50,14 @@ namespace WebApp.ApiControllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
+        [ProducesResponseType(typeof(PublicApi.DTO.Subject), StatusCodes.Status200OK)]
+
         public async Task<ActionResult<Subject>> GetSubject(Guid id)
         {
-            var subject = await _context.Subjects.FindAsync(id);
+            var subject = await _context.Subjects
+                .Include(x => x.Homeworks)
+                .Include(x => x.Declarations)
+                .FirstOrDefaultAsync(x => x.Id ==id);
 
             if (subject == null)
             {
@@ -69,14 +76,23 @@ namespace WebApp.ApiControllers
         /// <param name="subject"></param>
         /// <returns></returns>
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutSubject(Guid id, Subject subject)
+        [ProducesResponseType(typeof(PublicApi.DTO.Subject), StatusCodes.Status200OK)]
+
+        public async Task<IActionResult> PutSubject(Guid id, PublicApi.DTO.NewSubject subject)
         {
             if (id != subject.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(subject).State = EntityState.Modified;
+            Subject entity = new()
+            {
+                Id = subject.Id,
+                Title = subject.Title,
+                Description = subject.Description,
+            };
+
+            _context.Entry(entity).State = EntityState.Modified;
 
             try
             {
@@ -105,12 +121,20 @@ namespace WebApp.ApiControllers
         /// <param name="subject"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<ActionResult<Subject>> PostSubject(Subject subject)
+        [ProducesResponseType(typeof(PublicApi.DTO.Subject), StatusCodes.Status200OK)]
+
+        public async Task<ActionResult<Subject>> PostSubject(PublicApi.DTO.NewSubject subject)
         {
-            _context.Subjects.Add(subject);
+            Subject entity = new()
+            {
+                Id = subject.Id,
+                Title = subject.Title,
+                Description = subject.Description,
+            };
+            _context.Subjects.Add(entity);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetSubject", new { id = subject.Id }, subject);
+            return CreatedAtAction("GetSubject", new { id = entity.Id }, subject);
         }
 
         // DELETE: api/Subjects/5

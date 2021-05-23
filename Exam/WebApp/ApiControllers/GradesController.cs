@@ -2,12 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DAL;
+using Domain;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using DAL;
-using Domain;
-using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp.ApiControllers
 {
@@ -15,7 +16,7 @@ namespace WebApp.ApiControllers
     /// 
     /// </summary>
     [Route("api/v{version:apiVersion}/[controller]")]
-    [Authorize]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [ApiController]
     public class GradesController : ControllerBase
     {
@@ -36,6 +37,7 @@ namespace WebApp.ApiControllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
+        [ProducesResponseType(typeof(IEnumerable<PublicApi.DTO.Grade>), StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<Grade>>> GetGrades()
         {
             return await _context.Grades.ToListAsync();
@@ -48,6 +50,8 @@ namespace WebApp.ApiControllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
+        [ProducesResponseType(typeof(PublicApi.DTO.Grade), StatusCodes.Status200OK)]
+
         public async Task<ActionResult<Grade>> GetGrade(Guid id)
         {
             var grade = await _context.Grades.FindAsync(id);
@@ -69,14 +73,22 @@ namespace WebApp.ApiControllers
         /// <param name="grade"></param>
         /// <returns></returns>
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutGrade(Guid id, Grade grade)
+        [ProducesResponseType(typeof(PublicApi.DTO.Grade), StatusCodes.Status200OK)]
+
+        public async Task<IActionResult> PutGrade(Guid id, PublicApi.DTO.Grade grade)
         {
             if (id != grade.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(grade).State = EntityState.Modified;
+            Grade entity = new()
+            {
+                Id = grade.Id,
+                GradeType = grade.GradeType,
+                Value = grade.Value
+            };
+            _context.Entry(entity).State = EntityState.Modified;
 
             try
             {
@@ -105,12 +117,20 @@ namespace WebApp.ApiControllers
         /// <param name="grade"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<ActionResult<Grade>> PostGrade(Grade grade)
+        [ProducesResponseType(typeof(PublicApi.DTO.Grade), StatusCodes.Status200OK)]
+
+        public async Task<ActionResult<Grade>> PostGrade(PublicApi.DTO.Grade grade)
         {
-            _context.Grades.Add(grade);
+            Grade entity = new()
+            {
+                Id = new Guid(),
+                GradeType = grade.GradeType,
+                Value = grade.Value
+            };
+            _context.Grades.Add(entity);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetGrade", new { id = grade.Id }, grade);
+            return CreatedAtAction("GetGrade", new { id = entity.Id }, grade);
         }
 
         // DELETE: api/Grades/5

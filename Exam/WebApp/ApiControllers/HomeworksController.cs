@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using DAL;
 using Domain;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp.ApiControllers
@@ -15,7 +16,7 @@ namespace WebApp.ApiControllers
     /// 
     /// </summary>
     [Route("api/v{version:apiVersion}/[controller]")]
-    [Authorize]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [ApiController]
     public class HomeworksController : ControllerBase
     {
@@ -36,6 +37,8 @@ namespace WebApp.ApiControllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
+        [ProducesResponseType(typeof(IEnumerable<PublicApi.DTO.Homework>), StatusCodes.Status200OK)]
+
         public async Task<ActionResult<IEnumerable<Homework>>> GetHomeworks()
         {
             return await _context.Homeworks.ToListAsync();
@@ -48,6 +51,8 @@ namespace WebApp.ApiControllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
+        [ProducesResponseType(typeof(PublicApi.DTO.Homework), StatusCodes.Status200OK)]
+
         public async Task<ActionResult<Homework>> GetHomework(Guid id)
         {
             var homework = await _context.Homeworks.FindAsync(id);
@@ -69,14 +74,23 @@ namespace WebApp.ApiControllers
         /// <param name="homework"></param>
         /// <returns></returns>
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutHomework(Guid id, Homework homework)
+        [ProducesResponseType(typeof(PublicApi.DTO.Homework), StatusCodes.Status200OK)]
+
+        public async Task<IActionResult> PutHomework(Guid id, PublicApi.DTO.NewHomework homework)
         {
             if (id != homework.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(homework).State = EntityState.Modified;
+            Homework entity = new()
+            {
+                Id = homework.Id,
+                Title = homework.Title,
+                Description = homework.Description,
+                SubjectId = homework.SubjectId,
+            };
+            _context.Entry(entity).State = EntityState.Modified;
 
             try
             {
@@ -105,12 +119,21 @@ namespace WebApp.ApiControllers
         /// <param name="homework"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<ActionResult<Homework>> PostHomework(Homework homework)
+        [ProducesResponseType(typeof(PublicApi.DTO.Homework), StatusCodes.Status200OK)]
+
+        public async Task<ActionResult<Homework>> PostHomework(PublicApi.DTO.NewHomework homework)
         {
-            _context.Homeworks.Add(homework);
+            Homework entity = new()
+            {
+                Id = homework.Id,
+                Title = homework.Title,
+                Description = homework.Description,
+                SubjectId = homework.SubjectId,
+            };
+            _context.Homeworks.Add(entity);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetHomework", new { id = homework.Id }, homework);
+            return CreatedAtAction("GetHomework", new { id = entity.Id }, homework);
         }
 
         // DELETE: api/Homeworks/5

@@ -2,12 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DAL;
+using Domain;
+using Extensions;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using DAL;
-using Domain;
-using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp.ApiControllers
 {
@@ -15,7 +17,7 @@ namespace WebApp.ApiControllers
     /// 
     /// </summary>
     [Route("api/v{version:apiVersion}/[controller]")]
-    [Authorize]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [ApiController]
     public class SubmissionsController : ControllerBase
     {
@@ -36,6 +38,7 @@ namespace WebApp.ApiControllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
+        [ProducesResponseType(typeof(IEnumerable<PublicApi.DTO.Submission>), StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<Submission>>> GetSubmissions()
         {
             return await _context.Submissions.ToListAsync();
@@ -48,6 +51,7 @@ namespace WebApp.ApiControllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
+        [ProducesResponseType(typeof(PublicApi.DTO.Submission), StatusCodes.Status200OK)]
         public async Task<ActionResult<Submission>> GetSubmission(Guid id)
         {
             var submission = await _context.Submissions.FindAsync(id);
@@ -69,14 +73,23 @@ namespace WebApp.ApiControllers
         /// <param name="submission"></param>
         /// <returns></returns>
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutSubmission(Guid id, Submission submission)
+        [ProducesResponseType(typeof(PublicApi.DTO.Submission), StatusCodes.Status200OK)]
+        public async Task<IActionResult> PutSubmission(Guid id, PublicApi.DTO.NewSubmission submission)
         {
             if (id != submission.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(submission).State = EntityState.Modified;
+            Submission entity = new()
+            {
+                Id = submission.Id,
+                AppUserId = submission.AppUserId,
+                HomeworkId = submission.HomeworkId,
+                Value = submission.Value,
+                GradeId = submission.GradeId
+            };
+            _context.Entry(entity).State = EntityState.Modified;
 
             try
             {
@@ -105,12 +118,21 @@ namespace WebApp.ApiControllers
         /// <param name="submission"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<ActionResult<Submission>> PostSubmission(Submission submission)
+        [ProducesResponseType(typeof(PublicApi.DTO.Submission), StatusCodes.Status200OK)]
+        public async Task<ActionResult<Submission>> PostSubmission(PublicApi.DTO.NewSubmission submission)
         {
-            _context.Submissions.Add(submission);
+            Submission entity = new()
+            {
+                Id = submission.Id,
+                AppUserId = submission.AppUserId,
+                HomeworkId = submission.HomeworkId,
+                Value = submission.Value,
+                GradeId = submission.GradeId
+            };
+            _context.Submissions.Add(entity);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetSubmission", new { id = submission.Id }, submission);
+            return CreatedAtAction("GetSubmission", new {id = submission.Id}, submission);
         }
 
         // DELETE: api/Submissions/5
