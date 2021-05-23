@@ -57,12 +57,26 @@ namespace WebApp.ApiControllers
 
         public async Task<ActionResult<PublicApi.DTO.Subject>> GetSubject(Guid id)
         {
-            var subject = await _context.Subjects
-                .Include(x => x.Homeworks)
-                .ThenInclude(x => x.Submissions)
-                .ThenInclude(x => x.Grade)
-                .Include(x => x.Declarations)
-                .ThenInclude(x => x.Grade)
+            var query = _context.Subjects.AsNoTracking();
+                
+            if (User.IsInRole("Lecturer") || User.IsInRole("Admin"))
+            {
+                query = query.Include(x => x.Declarations)
+                    .ThenInclude(x => x.Grade)
+                    .Include(x => x.Homeworks)
+                    .ThenInclude(x => x.Submissions)
+                    .ThenInclude(x => x.Grade);
+            }
+            else
+            {
+                query = query.Include(x => x.Declarations!.Where(d => d.AppUserId == User.GetUserId()))
+                    .ThenInclude(x => x.Grade)
+                    .Include(x => x.Homeworks)
+                    .ThenInclude(x => x.Submissions!.Where(s => s.AppUserId == User.GetUserId()))
+                    .ThenInclude(x => x.Grade);
+            }
+            
+            var subject = await query
                 .FirstOrDefaultAsync(x => x.Id ==id);
 
             if (subject == null)
@@ -99,6 +113,7 @@ namespace WebApp.ApiControllers
                         Id = s.Id,
                         HomeworkId = s.HomeworkId,
                         GradeId = s.GradeId,
+                        AppUserId = s.AppUserId,
                         Grade = s.Grade != null ? new PublicApi.DTO.Grade()
                         {
                             Value = s.Grade!.Value

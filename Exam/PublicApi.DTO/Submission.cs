@@ -26,6 +26,6 @@ namespace PublicApi.DTO
 
         public Guid? GradeId { get; set; }
         
-        public Guid AppUserId { get; set; }
+        public Guid? AppUserId { get; set; }
     }
 }

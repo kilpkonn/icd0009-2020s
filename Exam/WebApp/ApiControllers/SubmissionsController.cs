@@ -98,7 +98,7 @@ namespace WebApp.ApiControllers
             Submission entity = new()
             {
                 Id = submission.Id,
-                AppUserId = submission.AppUserId,
+                AppUserId = (Guid) submission.AppUserId!,
                 HomeworkId = submission.HomeworkId,
                 Value = submission.Value,
                 GradeId = submission.GradeId
@@ -138,7 +138,7 @@ namespace WebApp.ApiControllers
             Submission entity = new()
             {
                 Id = submission.Id,
-                AppUserId = submission.AppUserId,
+                AppUserId = (Guid) User.GetUserId()!,
                 HomeworkId = submission.HomeworkId,
                 Value = submission.Value,
                 GradeId = submission.GradeId

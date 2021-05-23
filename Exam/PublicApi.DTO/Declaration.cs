@@ -17,8 +17,7 @@ namespace PublicApi.DTO
     
     public class NewDeclaration : DomainEntityId
     {
-        public Guid AppUserId { get; set; }
-
+        public Guid? AppUserId { get; set; }
         public Guid SubjectId { get; set; }
         
         public Guid? GradeId { get; set; }
