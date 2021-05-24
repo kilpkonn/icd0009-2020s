@@ -85,7 +85,7 @@ namespace WebApp.ApiControllers
             Declaration entity = new()
             {
                 Id = declaration.Id,
-                AppUserId = (Guid) User.GetUserId()!,
+                AppUserId = (Guid) declaration.AppUserId!,
                 GradeId = declaration.GradeId,
                 DeclarationStatus = declaration.DeclarationStatus,
                 SubjectId = declaration.SubjectId,

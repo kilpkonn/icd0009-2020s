@@ -98,6 +98,8 @@ namespace WebApp.ApiControllers
                     GradeId = x.GradeId,
                     Grade = x.Grade != null ? new PublicApi.DTO.Grade()
                     {
+                        Id = x.Grade.Id,
+                        Value = x.Grade.Value,
                         GradeType = x.Grade!.GradeType,
                     } : null,
                     DeclarationStatus = x.DeclarationStatus,
@@ -116,7 +118,9 @@ namespace WebApp.ApiControllers
                         AppUserId = s.AppUserId,
                         Grade = s.Grade != null ? new PublicApi.DTO.Grade()
                         {
-                            Value = s.Grade!.Value
+                            Id = s.Grade.Id,
+                            Value = s.Grade!.Value,
+                            GradeType = s.Grade.GradeType
                         } : null,
                     }).ToList()
                 }).ToList()
